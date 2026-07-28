@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUD Developer | Austin Eco Bilingual School</title>
+    <style>
+    :root {
+        --primary-bg: #2c3e50;
+        --panel-bg: #f8fafc;
+        --sidebar-width: 320px;
+        --accent-green: #27ae60;
+        --border-color: #cbd5e1;
+        --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-heavy: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    body { 
+        font-family: 'Segoe UI', system-ui, sans-serif; 
+        margin: 0; 
+        background: #f1f5f9; 
+        height: 100vh; 
+        display: flex; 
+        flex-direction: column;
+    }
+
+    header { 
+        background: var(--primary-bg); 
+        color: white; 
+        padding: 12px 25px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 10;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
+        flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .sidebar {
+        background: #ffffff;
+        padding: 25px;
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow-y: auto;
+    }
+
+    .main-content {
+        flex-grow: 1;
+        padding: 40px;
+        background: #f1f5f9;
+        overflow-y: auto;
+        min-height: 100vh;
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    
+    label { 
+        font-weight: 700; 
+        font-size: 0.75rem; 
+        color: #64748b; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+    }
+
+    input, textarea { 
+        border: 1px solid var(--border-color); 
+        border-radius: 6px; 
+        padding: 12px; 
+        font-size: 14px;
+        transition: all 0.2s ease;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    input:focus, textarea:focus { 
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+        outline: none;
+    }
+
+    .content-area { height: 180px !important; resize: vertical; }
+    .curricular-area { height: 120px !important; resize: vertical; }
+    .style-orientation { height: 100px !important; resize: vertical; border-left: 5px solid #3498db !important; background: #f0f9ff; }
+
+    .btn-generate {
+        background: var(--accent-green);
+        color: white;
+        border: none;
+        padding: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 8px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3); }
+
+    #output-preview {
+        background: white;
+        padding: 60px;
+        box-shadow: var(--shadow-heavy);
+        border-radius: 4px;
+        width: 100%;
+        max-width: 850px;
+        margin: 20px auto;
+        height: auto !important;
+        min-height: 200px;
+        display: block !important;
+        overflow: visible !important;
+        font-family: 'Arial', sans-serif;
+        color: #111;
+        line-height: 1.5;
+    }
+
+    #output-preview table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+        margin-bottom: 16px;
+    }
+
+    #output-preview td,
+    #output-preview th {
+        border: 1pt solid #000;
+        padding: 8px 10px;
+        vertical-align: top;
+    }
+
+    #output-preview tr {
+        page-break-inside: avoid;
+    }
+
+    #output-preview strong {
+        font-weight: 700;
+    }
+
+    #output-preview p,
+    #output-preview div {
+        font-size: 10pt;
+        margin: 0 0 10px;
+    }
+
+    #output-preview h3,
+    #output-preview h4 {
+        margin: 0 0 12px;
+    }
+
+    .project-box {
+        border: 1px solid #fed7aa;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #fffaf5;
+        margin-bottom: 20px;
+    }
+
+    .badge-ia {
+        background-color: #ffedd5;
+        color: #ea580c;
+        font-size: 0.65rem;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+    }
+
+    @media print {
+        header, .sidebar, .project-box, #btn-guardar, #btn-reset, #print-action-area, .field-group {
+            display: none !important;
+        }
+        body, .dashboard, .main-content { display: block !important; background: white !important; margin: 0 !important; padding: 0 !important;}
+        #output-preview { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>PUD Developer | EpC Framework</div>
+        <div style="font-size: 0.8rem; opacity: 0.7;">Modelo 2452112</div>
+    </header>
+
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="field-group">
+                <label>Nombre de la Unidad</label>
+                <input type="text" id="unit_name" placeholder="Ej: Revolución Francesa">
+            </div>
+            <div class="form-row">
+                <div class="field-group">
+                    <label>Año</label>
+                    <input type="text" id="year_level" placeholder="Ej: 1er Año">
+                </div>
+                <div class="field-group">
+                    <label>Sección</label>
+                    <input type="text" id="section_pud" placeholder="Ej: Eco-Bilingual">
+                </div>
+            </div>
+            <div class="field-group">
+                <label>Materia</label>
+                <input type="text" id="subject" placeholder="Ej: Historia">
+            </div>
+            <div class="form-row">
+                <div class="field-group">
+                    <label>Fecha Inicio</label>
+                    <input type="text" id="start_date" placeholder="Ej: March">
+                </div>
+                <div class="field-group">
+                    <label>Duración</label>
+                    <input type="text" id="duration" placeholder="Ej: 4 semanas">
+                </div>
+            </div>
+            <div class="field-group">
+                <label>Estilo y Orientación</label>
+                <textarea id="orientation" class="style-orientation" placeholder="Para primer grado, tono lúdico..."></textarea>
+            </div>
+            
+            <button class="btn-generate" id="btn-generar">Generar Prompt para IA</button>
+            
+            <button type="button" id="btn-reset" onclick="limpiarFormulario()" style="background: #94a3b8; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; opacity: 0.8; margin-top: 5px;">
+                NUEVA PLANIFICACIÓN
+            </button>
+        </aside>
+
+        <main class="main-content">
+            <div class="field-group" style="margin-bottom: 20px;">
+                <label>Contenidos Curriculares (Diseño Curricular)</label>
+                <textarea id="curricular_content" class="curricular-area" placeholder="¿Qué contenidos del diseño curricular oficial quiero trabajar?..."></textarea>
+            </div>
+
+            <div class="field-group" style="margin-bottom: 20px;">
+                <label>Conceptos Clave / Contenido Base</label>
+                <textarea id="raw_input" class="content-area" placeholder="Vuelque aquí la información base y conceptos de la unidad..."></textarea>
+            </div>
+
+            <div class="project-box">
+                <label>Proyecto Final (Opcional)</label>
+                <textarea id="proyecto-final" style="height: 70px; margin-top:10px;" placeholder="Desempeño final de síntesis..."></textarea>
+            </div>
+
+            <div id="output-preview" contenteditable="true">
+                <p style="text-align:center; color:#999; margin-top: 50px;">
+                    Presioná el botón, copiá el prompt de la consola y pegalo en Gemini. El resultado se renderizará acá.
+                </p>
+            </div>
+
+            <div style="text-align: right; margin-top: 15px;">
+                <button id="btn-guardar" onclick="guardarPlanificacion()" style="background-color: #1a472a; color: white; padding: 12px 24px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">
+                    💾 Guardar en Historial
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ESTRUCTURA DEL RENDER ACTUALIZADA AL MODELO INSTITUCIONAL REAL
+        const AUSTIN_TEMPLATE = `
+<div style="font-family: 'Arial', sans-serif; max-width: 850px; margin: auto; border: 1.5pt solid #000; padding: 0; background-color: white; color: black;">
+    <table style="width: 100%; border-collapse: collapse; border-bottom: 2pt solid #000;">
+        <tr>
+            <td style="width: 20%; padding: 15px; text-align: center;">
+                <div style="width: 80px; height: 80px; border: 2px solid #1a472a; display: flex; align-items: center; justify-content: center; font-size: 8pt; color: #1a472a; font-weight: bold;">
+                    [ LOGO ]<br>AUSTIN
+                </div>
+            </td>
+            <td style="width: 80%; padding: 15px; text-align: right;">
+                <span style="font-size: 16pt; font-weight: bold; color: #1a472a;">AUSTIN ECO BILINGUAL SCHOOL</span><br>
+                <span style="font-size: 10pt; letter-spacing: 1px;">PLANIFICADOR DE UNIDAD DIDÁCTICA (PUD)</span><br>
+                <span style="font-size: 9pt; font-style: italic;">"Developing global citizens for a sustainable future"</span>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr style="font-size: 10pt;">
+            <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>AÑO :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000; width: 35%;">[DATO_ANIO]</td>
+            <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>SECCIÓN :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000; width: 35%;">[DATO_SECCION]</td>
+        </tr>
+        <tr style="font-size: 10pt;">
+            <td style="padding: 8px; border: 1pt solid #000;"><strong>MATERIA :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000;">[DATO_MATERIA]</td>
+            <td style="padding: 8px; border: 1pt solid #000;"><strong>DOCENTE :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000;">Eleazar Avilés</td>
+        </tr>
+        <tr style="font-size: 10pt;">
+            <td style="padding: 8px; border: 1pt solid #000;"><strong>INICIO :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000;">[DATO_INICIO]</td>
+            <td style="padding: 8px; border: 1pt solid #000;"><strong>DURACIÓN :</strong></td>
+            <td style="padding: 8px; border: 1pt solid #000;">[DATO_DURACION]</td>
+        </tr>
+    </table>
+
+    <div style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">CONTENIDOS CURRICULARES:</div>
+    <div style="padding: 15px; border-bottom: 1pt solid #000; font-size: 10pt; line-height: 1.5; white-space: pre-line;">
+        [CONTENIDOS_CURRICULARES_TEXTO]
+    </div>
+
+    <div style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">THROUGHLINES:</div>
+    <div style="padding: 15px; border-bottom: 1pt solid #000; font-size: 10.5pt; line-height: 1.6;">
+        <ol style="margin: 0; padding-left: 18px;">
+            [HILOS_CONDUCTORES]
+        </ol>
+    </div>
+
+    <div style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">TOPIC:</div>
+    <div style="padding: 20px; border-bottom: 1pt solid #000; text-align: center; font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+        “[TITULO_UNIDAD]”
+    </div>
+
+    <div style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">UNDERSTANDING GOALS:</div>
+    <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
+        [FILAS_METAS_COMPRENSION]
+    </table>
+
+    <div style="background-color: #e0e0e0; padding: 10px; font-weight: bold; border-top: 1pt solid #000; border-bottom: 1pt solid #000; font-size: 11pt;">PERFORMANCES AND ASSESSMENT:</div>
+    <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt; table-layout: fixed;">
+        <tr style="background-color: #f2f2f2; font-weight: bold; text-align: center;">
+            <td style="border: 1pt solid #000; padding: 8px; width: 65%;">Actividad/Desempeño & Valoración</td>
+            <td style="border: 1pt solid #000; padding: 8px; width: 8%; text-align: center;">MC</td>
+            <td style="border: 1pt solid #000; padding: 8px; width: 8%; text-align: center;">TD</td>
+            <td style="border: 1pt solid #000; padding: 8px; width: 11%; text-align: center;">IM</td>
+            <td style="border: 1pt solid #000; padding: 8px; width: 8%; text-align: center;">HP</td>
+        </tr>
+        [FILAS_DESEMPENOS]
+        <tr style="background-color: #fff9c4;">
+            <td style="border: 1pt solid #000; padding: 10px;">
+                <strong>FINAL PROJECT: [TITULO_PF]</strong><br>
+                [DETALLE_PF]
+            </td>
+            <td style="border: 1pt solid #000; text-align: center;">All</td>
+            <td style="border: 1pt solid #000; text-align: center;">PF</td>
+            <td style="border: 1pt solid #000; text-align: center;">[IM_PF]</td>
+            <td style="border: 1pt solid #000; text-align: center;">[HP_PF]</td>
+        </tr>
+    </table>
+
+    <div style="padding: 15px; border-top: 1.5pt solid #000; font-size: 8.5pt; color: #444; text-align: center;">
+        <strong>AUSTIN ECO BILINGUAL SCHOOL</strong> | <i>Academic Excellence & Global Sustainability</i><br>
+        Campana, Prov. de Buenos Aires | 2026
+    </div>
+</div>
+`;
+
+        const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXRmbmJkZGhib3NhY2ZnZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mjk3MTcsImV4cCI6MjA4NzAwNTcxN30.P0HLqGab3tB5WdsVGYKXEyK572JvthHYFg7iu3MJpgo'; // Mantén tu clave estática para evitar re-generar
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function prepararPromptParaIA(datos) {
+            // Reemplazamos los datos estáticos del encabezado directamente en el template que va al prompt
+            let templatePersonalizado = AUSTIN_TEMPLATE
+                .replace('[DATO_ANIO]', datos.year_level)
+                .replace('[DATO_SECCION]', datos.section_pud)
+                .replace('[DATO_MATERIA]', datos.subject)
+                .replace('[DATO_INICIO]', datos.start_date)
+                .replace('[DATO_DURACION]', datos.duration);
+
+            return `Actúa como experto en la Enseñanza para la Comprensión (EpC de Harvard Project Zero) para la institución Austin Eco Bilingual School.
+
+ESTILO Y ORIENTACIÓN DOCENTE: ${datos.orientation || 'Estándar institucional'}
+PROYECTO FINAL BASE: ${datos.proyecto_final || 'Generar un desempeño de síntesis integrador creativo'}
+
+DATOS DE LA UNIDAD:
+- Nombre de la unidad: ${datos.unit_name}
+- Materia: ${datos.subject}
+- Contenidos Curriculares: ${datos.curricular_content}
+- Conceptos clave/Entrada base: ${datos.raw_input}
+
+INSTRUCCIONES TÉCNICAS INVIOLABLES:
+1. Usa el TEMPLATE HTML adjunto. NO modifiques etiquetas ni clases. Devuelve SOLO el div principal. Sin formato markdown de código (ni \`\`\`html).
+2. TOPIC: Crea un Generative Topic atractivo, abierto y memorable, no una simple repetición del nombre de la unidad.
+3. THROUGHLINES (4): Genera 4 hilos conductores, uno por cada MC (1-4). Devuélvelos como una lista ordenada HTML vertical, con 4 elementos <li> numerados, y asegúrate de que cada pregunta esté alineada a su meta correspondiente.
+4. METAS (MC 1-4): Genera 4 filas. Estructura: <tr><td><strong>MC X</strong></td><td>Los alumnos desarrollarán comprensión acerca de...</td><td><strong>(DIMENSIÓN)</strong> ¿Pregunta guía?</td></tr>. Usa explicaciones elaboradas y pulidas.
+5. DESEMPEÑOS (6 filas progresivas):
+   - Debes incluir 6 actividades de andamiaje.
+   - Cada fila debe contener en la primera celda un bloque HTML con estas secciones obligatorias, cada una en un nuevo párrafo o renglón:
+     * <strong>Actividad:</strong> [Título de la actividad]
+     * <strong>Inicio:</strong> [Qué hace el/la docente, qué material se presenta y cómo se organiza el grupo]
+     * <strong>Desarrollo:</strong> [Pasos detallados, secuencia, roles de docentes y estudiantes, y acciones concretas]
+     * <strong>Cierre:</strong> [Cómo se sintetiza la experiencia, cómo se comparte el aprendizaje y qué evidencia se registra]
+     * <strong>Valoración:</strong> [Instrumento, rúbrica e instrumento de registro de evidencia]
+   Usa esta estructura de forma estricta. No aceptes descripciones generales; cada desempeño debe ser operativo y ejecutable en el aula.
+6. UX Y VALORACIÓN (Formato obligatorio): En la primera columna, usa esta estructura HTML exacta:
+   <strong>Actividad: [Título]</strong><br>
+   <strong>Inicio:</strong> ...<br>
+   <strong>Desarrollo:</strong> ...<br>
+   <strong>Cierre:</strong> ...<br>
+   <strong>Valoración:</strong> [Instrumento, rúbrica y método de registro].
+7. MATRIZ: Codifica MC (1-4), TD (E, I, PF), IM (L, M, N, V, C, MU, Inter, Intra) y HP (1-8).
+
+DATOS DE LA UNIDAD:
+- Materia: ${datos.subject}
+- Contenidos: ${datos.curricular_content}
+- Conceptos Base: ${datos.raw_input}
+- Estilo: ${datos.orientation}
+- Proyecto Final: ${datos.proyecto_final}
+
+8. CODIFICACIÓN DE COLUMNAS MATRIZ:
+   - MC: Colocar números correspondientes (ej: 1, 2)
+   - TD (Tipo de Desempeño): Utilizar estrictamente las siglas institucionales oficiales del PDF: "E" (Exploración), "I" (Investigación guiada) o "PF" (Proyecto Final).
+   - IM (Inteligencias Múltiples): Siglas oficiales: L, M, N, V, C, MU, Inter, Intra.
+   - HP (Habilidades de Pensamiento): Colocar ÚNICAMENTE el número entero (del 1 al 8) que corresponda estrictamente al Mapa de Comprensión Oficial de la escuela:
+     1. Observar y describir.
+     2. Construir explicaciones.
+     3. Razonar con evidencia.
+     4. Hacer(se) buenas preguntas.
+     5. Establecer conexiones.
+     6. Considerar y explorar diferentes puntos de vista.
+     7. Captar lo esencial.
+     8. Descubrir complejidad.
+     Está terminantemente prohibido usar números fuera de la escala 1-8 (como 9 o 10).
+
+TEMPLATE:
+${templatePersonalizado}`;
+        }
+
+        document.getElementById('btn-generar').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-generar');
+            const preview = document.getElementById('output-preview');
+
+            const payload = {
+                unit_name: document.getElementById('unit_name').value || "Sin nombre",
+                year_level: document.getElementById('year_level').value || "1er Año",
+                section_pud: document.getElementById('section_pud').value || "Eco-Bilingual",
+                subject: document.getElementById('subject').value || "Sin materia",
+                start_date: document.getElementById('start_date').value || "March",
+                duration: document.getElementById('duration').value || "4 semanas",
+                orientation: document.getElementById('orientation').value.trim(),
+                curricular_content: document.getElementById('curricular_content').value.trim(),
+                raw_input: document.getElementById('raw_input').value.trim(),
+                proyecto_final: document.getElementById('proyecto-final').value.trim()
+            };
+
+            if(!payload.raw_input || !payload.curricular_content) {
+                return alert("Por favor, ingresá los Contenidos Curriculares y el Contenido Base.");
+            }
+
+            btn.innerText = "GENERANDO PROMPT...";
+            btn.disabled = true;
+
+            try {
+                // Registro de actividad en Supabase
+                await _supabase.from('planificaciones_pud').insert([{ 
+                    docente_nombre: 'Eleazar Avilés', 
+                    topic_name: payload.unit_name,
+                    raw_input: payload.raw_input,
+                    proyecto_final: payload.proyecto_final,
+                    status: 'prompt_generated',
+                    materia: payload.subject
+                }]);
+
+                const promptFinal = prepararPromptParaIA(payload);
+                console.log("%c PROMPT PARA COPIAR:", "background: #27ae60; color: white; font-weight: bold; padding: 5px;");
+                console.log(promptFinal);
+
+                preview.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <h3 style="color: #27ae60; margin-top:0;">¡Prompt generado e historial registrado!</h3>
+                        <p>Abrí la consola (<b>F12</b>), copiá el bloque verde y pegalo en Gemini.</p>
+                        <button onclick="document.getElementById('output-preview').focus()" style="padding: 10px 15px; cursor: pointer; font-weight:bold; background:#3498db; color:white; border:none; border-radius:4px;">Hacé clic acá y pegá el código HTML devuelto</button>
+                    </div>
+                `;
+
+                btn.innerText = "Generar otro Prompt";
+                btn.disabled = false;
+
+            } catch (err) {
+                console.error("Error:", err);
+                btn.innerText = "Reintentar";
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('output-preview').addEventListener('paste', (e) => {
+            e.preventDefault();
+            const preview = document.getElementById('output-preview');
+            const text = e.clipboardData.getData('text/plain');
+            
+            let cleanHTML = text.replace(/```html|```/g, '').trim();
+            preview.innerHTML = cleanHTML;
+
+            // Inyectar botón PDF flotante o al final si renderiza la estructura
+            if (cleanHTML.includes('<table') || cleanHTML.includes('<div')) {
+                const btnExport = document.createElement('button');
+                btnExport.innerHTML = "📄 Descargar PUD como PDF institucional";
+                btnExport.id = "print-action-area";
+                btnExport.onclick = () => window.print();
+                btnExport.style = "display:block; margin: 30px auto 0 auto; padding: 12px 24px; background: #e67e22; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; box-shadow: var(--shadow-soft); font-family: Arial, sans-serif;";
+                preview.appendChild(btnExport);
+            }
+        });
+
+        async function guardarPlanificacion() {
+            const previewArea = document.getElementById('output-preview');
+            const unitName = document.getElementById('unit_name').value;
+            const subject = document.getElementById('subject').value;
+
+            if (!previewArea.innerHTML || previewArea.innerHTML.includes('¡Prompt generado')) {
+                alert("Primero pegá el resultado de Gemini en el área de preview.");
+                return;
+            }
+
+            const data = {
+                unit_name: unitName || "Sin título",
+                subject: subject || "Sin materia",
+                content_html: previewArea.innerHTML
+            };
+
+            try {
+                const { error } = await _supabase.from('pud_history').insert([data]);
+                if (error) throw error;
+
+                const btnGuardar = document.getElementById('btn-guardar');
+                btnGuardar.innerText = "✅ ¡Guardado con éxito!";
+                btnGuardar.style.backgroundColor = "#2e7d32";
+                
+                setTimeout(() => {
+                    btnGuardar.innerText = "💾 Guardar en Historial";
+                    btnGuardar.style.backgroundColor = "#1a472a";
+                }, 3000);
+            } catch (err) {
+                alert("Error al guardar: " + err.message);
+            }
+        }
+
+        function limpiarFormulario() {
+            if (confirm("¿Estás seguro de que querés borrar todo para empezar una nueva unidad?")) {
+                document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+                document.getElementById('output-preview').innerHTML = '<p style="text-align:center; color:#999; margin-top: 50px;">Presioná el botón, copiá el prompt de la consola y pegalo en Gemini. El resultado se renderizará acá.</p>';
+                window.scrollTo(0, 0);
+            }
+        }
+    </script>
+</body>
+</html>

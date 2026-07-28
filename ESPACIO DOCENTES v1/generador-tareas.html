@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Tareas | Austin Eco</title>
+    <style>
+        :root {
+            --austin-blue: #1a2e5a;
+            --austin-red: #8b1d22;
+            --border: #e2e8f0;
+            --surface: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--surface);
+            color: #333;
+            padding: 32px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 860px;
+            background: var(--white);
+            border-radius: 10px;
+            border-top: 10px solid var(--austin-blue);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 36px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--austin-red);
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+        }
+        header h1 {
+            color: var(--austin-blue);
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        header p { color: #64748b; font-size: 0.8rem; margin-top: 4px; }
+
+        /* SELECCIÓN DE SECCIONES */
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .selection-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 10px;
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 86px;
+        }
+        .selection-card:hover {
+            border-color: var(--austin-blue);
+            transform: translateY(-1px);
+        }
+        .selection-card.selected {
+            border-color: var(--austin-blue);
+            background: #eef4ff;
+            box-shadow: 0 0 0 1px rgba(26, 46, 90, 0.1);
+        }
+        .selection-card input {
+            margin-top: 2px;
+            accent-color: var(--austin-blue);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .selection-card .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .selection-card .num {
+            font-weight: 800;
+            font-size: 0.8rem;
+            color: var(--austin-blue);
+        }
+        .selection-card .name {
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.3;
+            font-size: 0.72rem;
+        }
+        .selection-hint {
+            margin-bottom: 16px;
+            color: #64748b;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--austin-blue);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #1e293b;
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.15s;
+        }
+        textarea:focus { outline: none; border-color: var(--austin-blue); }
+
+        button.btn-main {
+            margin-top: 14px;
+            background: var(--austin-red);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button.btn-main:hover { background: var(--austin-blue); }
+
+        .output-wrapper {
+            margin-top: 28px;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 22px;
+        }
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .output-header label { color: #94a3b8; margin: 0; }
+        .btn-copy {
+            background: var(--austin-blue);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-copy:hover { background: #2563eb; }
+
+        #output-box {
+            width: 100%;
+            min-height: 260px;
+            background: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            resize: vertical;
+        }
+
+        @media (max-width: 960px) {
+            .task-legend {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 22px 14px;
+            }
+
+            .container {
+                padding: 24px;
+                border-radius: 8px;
+                box-shadow: none;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .task-legend {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                min-height: 220px;
+            }
+
+            .output-wrapper {
+                padding: 18px;
+            }
+
+            #output-box {
+                min-height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Generador de Tareas</h1>
+        <p>5 secciones estructuradas sobre el tema &nbsp;|&nbsp; Austin Eco Bilingual School</p>
+    </header>
+
+    <div class="selection-hint">Marcá las secciones que querés incluir en la tarea. El prompt solo generará las que selecciones.</div>
+    <div class="selection-grid" id="section-selector">
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="1" checked>
+            <span class="card-content">
+                <span class="num">1</span>
+                <span class="name">Texto informativo</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="2" checked>
+            <span class="card-content">
+                <span class="num">2</span>
+                <span class="name">3 Preguntas cerradas</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="3" checked>
+            <span class="card-content">
+                <span class="num">3</span>
+                <span class="name">3 Preguntas abiertas</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="4" checked>
+            <span class="card-content">
+                <span class="num">4</span>
+                <span class="name">Actividad de vocabulario</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="5" checked>
+            <span class="card-content">
+                <span class="num">5</span>
+                <span class="name">Clave de corrección</span>
+            </span>
+        </label>
+    </div>
+
+    <label for="f-tema">Tema o contenido de la tarea</label>
+    <textarea id="f-tema" rows="6" placeholder="Describí el tema, unidad, concepto o contenido sobre el que querés generar la tarea. Podés incluir el año, materia o cualquier orientación específica..."></textarea>
+
+    <button class="btn-main" onclick="construirPrompt()">Construir Prompt para Gemini</button>
+
+    <div class="output-wrapper">
+        <div class="output-header">
+            <label>Prompt listo para copiar a Gemini</label>
+            <button class="btn-copy" onclick="copiar()">Copiar Prompt</button>
+        </div>
+        <div id="output-box">Completá el campo de arriba y presioná el botón para generar el prompt...</div>
+    </div>
+
+</div>
+
+<script>
+    const sectionDefinitions = [
+        {
+            id: 1,
+            header: 'SECCIÓN 1 — TEXTO INFORMATIVO',
+            body: `Redactá un texto informativo original sobre el tema. Requisitos:
+- Entre 150 y 220 palabras
+- Lenguaje claro, preciso y adecuado al nivel
+- Debe cubrir los conceptos clave del tema
+- Incluí al menos 5 palabras de vocabulario específico del tema (que luego se trabajarán en la Sección 4)
+- Título atractivo para el texto`
+        },
+        {
+            id: 2,
+            header: 'SECCIÓN 2 — PREGUNTAS CERRADAS (Comprensión literal)',
+            body: `Formulá exactamente 3 preguntas cerradas sobre el texto de la Sección 1. Cada pregunta debe:
+- Tener 3 opciones de respuesta (a, b, c)
+- Solo una opción correcta
+- Estar basada en información explícita del texto
+- Evaluar comprensión literal o de detalle`
+        },
+        {
+            id: 3,
+            header: 'SECCIÓN 3 — PREGUNTAS ABIERTAS (Comprensión profunda)',
+            body: `Formulá exactamente 3 preguntas abiertas. Deben:
+- Requerir respuesta elaborada (no se responden con sí/no)
+- Progresión cognitiva: la primera de comprensión, la segunda de análisis, la tercera de opinión o transferencia
+- Conectar el tema con experiencias reales o con otras áreas del conocimiento
+- Dejar espacio visible para la respuesta del alumno (indicar: "Respuesta: ___________")`
+        },
+        {
+            id: 4,
+            header: 'SECCIÓN 4 — ACTIVIDAD DE VOCABULARIO',
+            body: `Diseñá UNA actividad de vocabulario usando exactamente las 5 palabras clave del texto. Elegí el formato más adecuado al tipo de contenido, solo uno de estos:
+- Opción A: Unir con flechas (palabra → definición)
+- Opción B: Completar oraciones con el banco de palabras
+- Opción C: Clasificar palabras en categorías
+
+Indicá claramente el formato elegido y presentá la actividad lista para el alumno.`
+        },
+        {
+            id: 5,
+            header: 'SECCIÓN 5 — CLAVE DE CORRECCIÓN (solo para el docente)',
+            body: `Al final del documento, agregá una clave de corrección que incluya:
+- Respuestas correctas de las preguntas cerradas (Sección 2)
+- Criterios o ideas esperadas para las preguntas abiertas (Sección 3)
+- Solución de la actividad de vocabulario (Sección 4)
+
+Marcá esta sección claramente con el encabezado: ✂ --- CLAVE DOCENTE (no entregar al alumno) ---`
+        }
+    ];
+
+    function actualizarEstadoSeleccion() {
+        document.querySelectorAll('.selection-card').forEach(card => {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            card.classList.toggle('selected', checkbox.checked);
+        });
+    }
+
+    document.querySelectorAll('.section-toggle').forEach(checkbox => {
+        checkbox.addEventListener('change', actualizarEstadoSeleccion);
+    });
+
+    function construirPrompt() {
+        const tema = document.getElementById('f-tema').value.trim();
+        if (!tema) { alert("Ingresá un tema o contenido."); return; }
+
+        const selectedIds = Array.from(document.querySelectorAll('.section-toggle:checked'))
+            .map(checkbox => Number(checkbox.value))
+            .sort((a, b) => a - b);
+
+        if (selectedIds.length === 0) {
+            alert("Seleccioná al menos una sección para generar el prompt.");
+            return;
+        }
+
+        const selectedSections = sectionDefinitions.filter(section => selectedIds.includes(section.id));
+        const sectionsText = selectedSections.map(section => `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${section.header}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${section.body}`).join('\n\n');
+
+        const prompt = `Actúa como un docente experto en diseño de materiales educativos para educación primaria y secundaria bilingüe.
+
+Tu tarea es crear una TAREA COMPLETA Y LISTA PARA EL AULA sobre el siguiente tema:
+
+---
+${tema}
+---
+
+La tarea debe estar organizada en las secciones seleccionadas, en este orden:
+
+${sectionsText}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESTRICCIONES GENERALES:
+- El output debe estar listo para imprimir y entregar al alumno, excepto en las secciones que correspondan al docente
+- No agregues introducciones, aclaraciones metodológicas ni texto fuera del formato solicitado
+- Usá los separadores visuales indicados para cada sección`;
+
+        document.getElementById('output-box').textContent = prompt;
+    }
+
+    async function copiar() {
+        const box = document.getElementById('output-box');
+        const btn = document.querySelector('.btn-copy');
+        const texto = box.textContent;
+
+        if (texto.startsWith("Completá")) { alert("Primero generá el prompt."); return; }
+
+        try {
+            await navigator.clipboard.writeText(texto);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = texto;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        const orig = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        btn.style.background = "#16a34a";
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ""; }, 1500);
+    }
+</script>
+</body>
+</html>

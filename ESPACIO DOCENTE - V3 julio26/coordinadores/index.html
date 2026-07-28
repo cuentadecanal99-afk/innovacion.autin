@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Coordinadores | Austin Eco Bilingual School</title>
+    <style>
+        :root {
+            --primary-bg: #2c3e50;
+            --panel-bg: #ecf0f1;
+            --accent-green: #27ae60;
+            --accent-blue: #2563eb;
+            --border-color: #cbd5e1;
+            --text-main: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f8fafc;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        header {
+            background: var(--primary-bg);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 50px;
+        }
+
+        header img {
+            height: 32px;
+            width: auto;
+            border-radius: 6px;
+            background: white;
+            padding: 2px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        body[data-view="grados"] #view-grados { display: block; }
+        body[data-view="grados"] #view-areas,
+        body[data-view="grados"] #view-lista,
+        body[data-view="grados"] #view-detalle { display: none; }
+
+        body[data-view="areas"] #view-areas { display: block; }
+        body[data-view="areas"] #view-grados,
+        body[data-view="areas"] #view-lista,
+        body[data-view="areas"] #view-detalle { display: none; }
+
+        body[data-view="lista"] #view-lista { display: block; }
+        body[data-view="lista"] #view-grados,
+        body[data-view="lista"] #view-areas,
+        body[data-view="lista"] #view-detalle { display: none; }
+
+        body[data-view="detalle"] #view-detalle { display: block; }
+        body[data-view="detalle"] #view-grados,
+        body[data-view="detalle"] #view-areas,
+        body[data-view="detalle"] #view-lista { display: none; }
+
+        .breadcrumb {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            color: var(--primary-bg);
+            font-size: 1.3rem;
+        }
+
+        .grid-botones {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .tile-btn {
+            background: white;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 22px 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+            cursor: pointer;
+            text-align: left;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .tile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
+        }
+
+        /* Grilla de grados: 3 columnas fijas (2 filas para los 6 grados),
+           botones más grandes y centrados que la grilla genérica de áreas */
+        #grid-grados {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        #grid-grados .tile-btn {
+            padding: 32px 20px;
+            font-size: 1.15rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left-width: 5px;
+        }
+
+        @media (max-width: 640px) {
+            #grid-grados {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .btn-back-home {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-bottom: 18px;
+        }
+
+        .history-card {
+            background: white;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .history-card h4 { margin: 0 0 6px 0; font-size: 0.98rem; color: var(--primary-bg); }
+        .history-card p { margin: 2px 0; font-size: 0.82rem; color: #64748b; }
+
+        .history-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .history-empty-state {
+            padding: 16px;
+            text-align: center;
+            border: 1px dashed rgba(148, 163, 184, 0.45);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .btn-abrir {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* Componente "Últimas presentaciones" (Home) — mismos tokens de diseño
+           que el resto del panel (radios, sombras, colores) para no introducir estilo nuevo */
+        .panel-resumen {
+            background: white;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-top: 32px;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+        }
+
+        .panel-resumen h3 {
+            margin: 0 0 4px;
+            color: var(--primary-bg);
+            font-size: 1.05rem;
+        }
+
+        .panel-resumen-hint {
+            margin: 0 0 14px;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .ultima-presentacion-fila {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .ultima-presentacion-fila:hover { background: #f1f5f9; }
+
+        .ultima-presentacion-fila + .ultima-presentacion-fila {
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .ultima-presentacion-indicador {
+            font-size: 0.9rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .ultima-presentacion-texto {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .ultima-presentacion-texto strong {
+            font-size: 0.92rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .ultima-presentacion-texto span {
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .btn-ver-todas {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            padding: 6px 4px;
+            margin-top: 4px;
+        }
+
+        .btn-ver-todas:hover { text-decoration: underline; }
+
+        .detalle-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .detalle-meta div strong { display: block; color: var(--primary-bg); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .detalle-meta div span { font-size: 0.95rem; }
+
+        .detalle-content {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .detalle-acciones {
+            display: flex;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .btn-aprobar, .btn-cambios {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-aprobar { background: var(--accent-green); color: white; }
+        .btn-cambios { background: #d97706; color: white; }
+
+        @media (max-width: 600px) {
+            main { padding: 20px 14px 50px; }
+            .detalle-acciones { flex-direction: column; }
+        }
+    </style>
+</head>
+<body data-view="grados">
+
+    <header>
+        <img src="../austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+        <div>Panel de Coordinadores | PUDs Presentados</div>
+    </header>
+
+    <main>
+        <section id="view-grados">
+            <h2>Seleccioná un grado</h2>
+            <div id="grid-grados" class="grid-botones"></div>
+
+            <div class="panel-resumen">
+                <h3>Últimas presentaciones</h3>
+                <p class="panel-resumen-hint">Combinaciones de Área y Año ordenadas por antigüedad de su última presentación.</p>
+                <div id="ultimas-presentaciones-lista"></div>
+                <button class="btn-ver-todas" id="btn-ver-todas-presentaciones" onclick="toggleVerTodasPresentaciones()" style="display:none;">▼ Ver todas</button>
+            </div>
+        </section>
+
+        <section id="view-areas">
+            <button class="btn-back-home" onclick="volverAGrados()">◀ Grados</button>
+            <div class="breadcrumb" id="breadcrumb-areas"></div>
+            <h2>Seleccioná un área</h2>
+            <div id="grid-areas" class="grid-botones"></div>
+        </section>
+
+        <section id="view-lista">
+            <button class="btn-back-home" onclick="volverAAreas()">◀ Áreas</button>
+            <div class="breadcrumb" id="breadcrumb-lista"></div>
+            <h2>PUDs presentados</h2>
+            <div id="contenedor-lista"></div>
+        </section>
+
+        <section id="view-detalle">
+            <button class="btn-back-home" onclick="volverALista()">◀ Volver a la lista</button>
+            <h2>Detalle del PUD</h2>
+            <div class="detalle-meta" id="detalle-meta"></div>
+            <div class="detalle-acciones">
+                <button class="btn-aprobar" onclick="aprobarPUD()">✅ Aprobar</button>
+                <button class="btn-cambios" onclick="solicitarCambios()">✏️ Solicitar cambios</button>
+            </div>
+            <div class="detalle-content" id="detalle-content"></div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXRmbmJkZGhib3NhY2ZnZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mjk3MTcsImV4cCI6MjA4NzAwNTcxN30.P0HLqGab3tB5WdsVGYKXEyK572JvthHYFg7iu3MJpgo';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // ---- Permisos por coordinador (preparado para cuando exista login) ----
+        // `null` en years/subjects significa "sin restricción": el coordinador ve
+        // todas las combinaciones. Hoy no hay autenticación, así que queda así para
+        // todos. Cuando se agregue login, este objeto se completará por coordinador
+        // (ej. leyendo una tabla coordinador_permisos) con los arrays de años y
+        // materias a los que tiene acceso, y el resto del panel ya queda filtrando
+        // en base a eso sin más cambios.
+        window.permisosCoordinador = {
+            years: null,    // ej: ['1° Grado Primaria', '2° Grado Primaria']
+            subjects: null  // ej: ['Matemática', 'Naturales', 'Música']
+        };
+
+        function tieneAcceso(tipo, valor) {
+            const permitidos = window.permisosCoordinador[tipo];
+            return permitidos === null || permitidos.includes(valor);
+        }
+
+        window.gradoSeleccionado = null;
+        window.areaSeleccionada = null;
+        window.pudsListados = [];
+        window.pudSeleccionado = null;
+
+        function escapeHtml(value = '') {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatearFecha(iso) {
+            if (!iso) return 'Sin fecha';
+            return new Date(iso).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // La estructura de tarjetas (Año/curso y Materia/área) se arma a partir de
+        // lo que efectivamente absorbió pud_history de los PUDs entregados, en vez
+        // de listas fijas: así el panel nunca queda desincronizado de lo que los
+        // docentes presentaron realmente, y cada eje (year, subject) queda listo
+        // para filtrarse por permisosCoordinador cuando haya login.
+        async function cargarGradosDisponibles() {
+            const { data, error } = await _supabase
+                .from('pud_history')
+                .select('year')
+                .eq('status', 'presented');
+
+            if (error) {
+                console.error('Error cargando cursos:', error);
+                return [];
+            }
+
+            const years = [...new Set((data || []).map(row => row.year).filter(Boolean))]
+                .filter(year => tieneAcceso('years', year));
+            years.sort((a, b) => a.localeCompare(b, 'es'));
+            return years;
+        }
+
+        async function cargarAreasDisponibles(grado) {
+            const { data, error } = await _supabase
+                .from('pud_history')
+                .select('subject')
+                .eq('status', 'presented')
+                .eq('year', grado);
+
+            if (error) {
+                console.error('Error cargando áreas:', error);
+                return [];
+            }
+
+            const subjects = [...new Set((data || []).map(row => row.subject).filter(Boolean))]
+                .filter(subject => tieneAcceso('subjects', subject));
+            subjects.sort((a, b) => a.localeCompare(b, 'es'));
+            return subjects;
+        }
+
+        async function mostrarVistaGrados() {
+            const grid = document.getElementById('grid-grados');
+            const grados = await cargarGradosDisponibles();
+
+            grid.innerHTML = grados.length > 0
+                ? grados.map(grado => `
+                    <button class="tile-btn" onclick="seleccionarGrado('${escapeHtml(grado)}')">${escapeHtml(grado)}</button>
+                `).join('')
+                : '<div class="history-empty-state">Todavía no hay PUDs presentados.</div>';
+
+            document.body.setAttribute('data-view', 'grados');
+        }
+
+        async function seleccionarGrado(grado) {
+            window.gradoSeleccionado = grado;
+            document.getElementById('breadcrumb-areas').textContent = grado;
+            const grid = document.getElementById('grid-areas');
+            grid.innerHTML = '<div class="history-empty-state">Cargando áreas...</div>';
+            document.body.setAttribute('data-view', 'areas');
+
+            const areas = await cargarAreasDisponibles(grado);
+            grid.innerHTML = areas.length > 0
+                ? areas.map(area => `
+                    <button class="tile-btn" onclick="seleccionarArea('${escapeHtml(area)}')">${escapeHtml(area)}</button>
+                `).join('')
+                : '<div class="history-empty-state">No hay PUDs presentados para este curso.</div>';
+        }
+
+        async function seleccionarArea(area) {
+            window.areaSeleccionada = area;
+            document.getElementById('breadcrumb-lista').textContent = `${window.gradoSeleccionado} · ${area}`;
+            await cargarPUDsPresentados();
+            document.body.setAttribute('data-view', 'lista');
+        }
+
+        async function cargarPUDsPresentados() {
+            const contenedor = document.getElementById('contenedor-lista');
+
+            if (!tieneAcceso('years', window.gradoSeleccionado) || !tieneAcceso('subjects', window.areaSeleccionada)) {
+                contenedor.innerHTML = '<div class="history-empty-state">No tenés permiso para ver esta combinación.</div>';
+                window.pudsListados = [];
+                return;
+            }
+
+            contenedor.innerHTML = '<div class="history-empty-state">Cargando registros...</div>';
+
+            const { data, error } = await _supabase
+                .from('pud_history')
+                .select('*')
+                .eq('status', 'presented')
+                .eq('year', window.gradoSeleccionado)
+                .eq('subject', window.areaSeleccionada)
+                .order('presented_at', { ascending: false });
+
+            if (error) {
+                contenedor.innerHTML = '<div class="history-empty-state" style="color:#ef4444;">Error al cargar los PUDs presentados.</div>';
+                console.error(error);
+                return;
+            }
+
+            window.pudsListados = data || [];
+
+            if (window.pudsListados.length === 0) {
+                contenedor.innerHTML = '<div class="history-empty-state">Todavía no hay PUDs presentados para este grado y área.</div>';
+                return;
+            }
+
+            contenedor.innerHTML = window.pudsListados.map(item => `
+                <div class="history-card">
+                    <div>
+                        <span class="history-badge">v${item.presented_version || 1}</span>
+                        <h4>${escapeHtml(item.unit_name || 'Sin título')}</h4>
+                        <p><strong>Docente:</strong> ${escapeHtml(item.docente_nombre || 'Sin especificar')}</p>
+                        <p><strong>Curso:</strong> ${escapeHtml(item.year || '-')} &nbsp;|&nbsp; <strong>Materia:</strong> ${escapeHtml(item.subject || '-')}</p>
+                        <p><strong>Presentado:</strong> ${formatearFecha(item.presented_at)}</p>
+                    </div>
+                    <button class="btn-abrir" onclick="abrirPUD('${item.id}')">Abrir</button>
+                </div>
+            `).join('');
+        }
+
+        // ---- Componente "Últimas presentaciones" (Home) ----
+
+        window.ultimasPresentaciones = [];
+        window.mostrarTodasPresentaciones = false;
+
+        function diasDesde(iso) {
+            const ms = Date.now() - new Date(iso).getTime();
+            return Math.max(0, Math.floor(ms / 86400000));
+        }
+
+        function indicadorPorDias(dias) {
+            if (dias > 45) return '🔴';
+            if (dias >= 30) return '🟠';
+            if (dias >= 15) return '🟡';
+            return '🟢';
+        }
+
+        // Los años se guardan como "2° Grado Primaria"; para filas legacy sin ese
+        // formato fijo, se muestra el valor tal cual llegó.
+        function abreviarGrado(year) {
+            const match = /^(\d+°)/.exec(year || '');
+            return match ? match[1] : (year || '-');
+        }
+
+        async function cargarUltimasPresentaciones() {
+            const { data, error } = await _supabase
+                .from('pud_history')
+                .select('subject, year, presented_at')
+                .eq('status', 'presented')
+                .order('presented_at', { ascending: false });
+
+            if (error) {
+                console.error('Error cargando últimas presentaciones:', error);
+                window.ultimasPresentaciones = [];
+                renderUltimasPresentaciones();
+                return;
+            }
+
+            // Los datos ya vienen ordenados por fecha desc: la primera fila que
+            // aparece para cada combinación Área+Año es, por definición, la más reciente.
+            const vistos = new Set();
+            const resumen = [];
+            (data || []).forEach(row => {
+                if (!row.subject || !row.year || !row.presented_at) return;
+                if (!tieneAcceso('years', row.year) || !tieneAcceso('subjects', row.subject)) return;
+                const clave = row.subject + '|||' + row.year;
+                if (vistos.has(clave)) return;
+                vistos.add(clave);
+                resumen.push({ subject: row.subject, year: row.year, dias: diasDesde(row.presented_at) });
+            });
+
+            resumen.sort((a, b) => b.dias - a.dias);
+            window.ultimasPresentaciones = resumen;
+            renderUltimasPresentaciones();
+        }
+
+        function renderUltimasPresentaciones() {
+            const contenedor = document.getElementById('ultimas-presentaciones-lista');
+            const boton = document.getElementById('btn-ver-todas-presentaciones');
+            const lista = window.ultimasPresentaciones;
+
+            if (lista.length === 0) {
+                contenedor.innerHTML = '<div class="history-empty-state">Todavía no hay PUDs presentados.</div>';
+                boton.style.display = 'none';
+                return;
+            }
+
+            const visibles = window.mostrarTodasPresentaciones ? lista : lista.slice(0, 5);
+            contenedor.innerHTML = visibles.map(item => `
+                <div class="ultima-presentacion-fila" onclick="abrirUltimaPresentacion('${escapeHtml(item.subject)}', '${escapeHtml(item.year)}')">
+                    <span class="ultima-presentacion-indicador">${indicadorPorDias(item.dias)}</span>
+                    <span class="ultima-presentacion-texto">
+                        <strong>${escapeHtml(item.subject)} · ${escapeHtml(abreviarGrado(item.year))}</strong>
+                        <span>${item.dias === 0 ? 'Hoy' : `Hace ${item.dias} día${item.dias === 1 ? '' : 's'}`}</span>
+                    </span>
+                </div>
+            `).join('');
+
+            boton.style.display = lista.length > 5 ? 'inline-flex' : 'none';
+            boton.textContent = window.mostrarTodasPresentaciones ? '▲ Ver menos' : '▼ Ver todas';
+        }
+
+        function toggleVerTodasPresentaciones() {
+            window.mostrarTodasPresentaciones = !window.mostrarTodasPresentaciones;
+            renderUltimasPresentaciones();
+        }
+
+        // Reutiliza el flujo existente de grado→área→lista para dejar el estado de
+        // navegación consistente (el botón "Volver a la lista" del detalle funciona igual).
+        async function abrirUltimaPresentacion(area, anio) {
+            window.gradoSeleccionado = anio;
+            window.areaSeleccionada = area;
+            document.getElementById('breadcrumb-areas').textContent = anio;
+            document.getElementById('breadcrumb-lista').textContent = `${anio} · ${area}`;
+            await cargarPUDsPresentados();
+            if (window.pudsListados.length > 0) {
+                abrirPUD(window.pudsListados[0].id);
+            }
+        }
+
+        function mostrarDetallePUD(row) {
+            window.pudSeleccionado = row;
+
+            document.getElementById('detalle-meta').innerHTML = `
+                <div><strong>Docente</strong><span>${escapeHtml(row.docente_nombre || 'Sin especificar')}</span></div>
+                <div><strong>Curso</strong><span>${escapeHtml(row.year || '-')}</span></div>
+                <div><strong>Materia</strong><span>${escapeHtml(row.subject || '-')}</span></div>
+                <div><strong>Presentado</strong><span>${formatearFecha(row.presented_at)}</span></div>
+                <div><strong>Estado</strong><span>${escapeHtml(row.status || '-')}</span></div>
+            `;
+            // content_html se genera en el editor del docente (raíz del proyecto), donde
+            // el logo se referencia como ruta relativa sin prefijo. Coordinadores vive un
+            // nivel más abajo, así que esa misma ruta relativa hay que corregirla acá.
+            const contentHtml = (row.content_html || '')
+                .replace(/src="austin-eco-bilingual-school-campana-argentina\.jpg"/g, 'src="../austin-eco-bilingual-school-campana-argentina.jpg"');
+            document.getElementById('detalle-content').innerHTML = contentHtml || '<p style="color:#94a3b8;">No hay contenido disponible.</p>';
+            document.body.setAttribute('data-view', 'detalle');
+        }
+
+        function abrirPUD(id) {
+            const row = window.pudsListados.find(item => String(item.id) === String(id));
+            if (!row) return;
+            mostrarDetallePUD(row);
+        }
+
+        function aprobarPUD() {
+            alert('Próximamente: esta acción se habilitará en una futura versión.');
+        }
+
+        function solicitarCambios() {
+            alert('Próximamente: esta acción se habilitará en una futura versión.');
+        }
+
+        function volverAGrados() {
+            document.body.setAttribute('data-view', 'grados');
+        }
+
+        function volverAAreas() {
+            document.body.setAttribute('data-view', 'areas');
+        }
+
+        function volverALista() {
+            document.body.setAttribute('data-view', 'lista');
+        }
+
+        mostrarVistaGrados();
+        cargarUltimasPresentaciones();
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secuencias Didácticas EpC | Austin Eco</title>
+    <style>
+        :root {
+            --austin-blue: #1a2e5a;
+            --austin-red: #8b1d22;
+            --green-dark: #1a472a;
+            --border: #e2e8f0;
+            --surface: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--surface);
+            color: #333;
+            padding: 32px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 860px;
+            background: var(--white);
+            border-radius: 10px;
+            border-top: 10px solid var(--austin-blue);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 36px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--austin-red);
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+        }
+        header h1 {
+            color: var(--austin-blue);
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        header p { color: #64748b; font-size: 0.8rem; margin-top: 4px; }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--austin-blue);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #1e293b;
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.15s;
+            min-height: 160px;
+        }
+        textarea:focus { outline: none; border-color: var(--austin-blue); }
+
+        button.btn-main {
+            margin-top: 14px;
+            background: var(--austin-red);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .container {
+                border-radius: 0;
+                box-shadow: none;
+                padding: 24px;
+            }
+
+            header h1 {
+                font-size: 1.15rem;
+            }
+
+            .output-wrapper {
+                padding: 18px;
+            }
+
+            .output-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .btn-copy,
+            button.btn-main {
+                width: 100%;
+                padding: 12px;
+            }
+
+            #output-box {
+                min-height: 280px;
+            }
+        }
+        button.btn-main:hover { background: var(--austin-blue); }
+
+        /* OUTPUT */
+        .output-wrapper {
+            margin-top: 28px;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 22px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .output-header label {
+            color: #94a3b8;
+            margin: 0;
+            font-size: 0.72rem;
+        }
+        .btn-copy {
+            background: var(--austin-blue);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-copy:hover { background: #2563eb; }
+
+        #output-box {
+            width: 100%;
+            min-height: 260px;
+            background: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Generador de Secuencias Didácticas</h1>
+        <p>Marco EpC — Harvard Project Zero &nbsp;|&nbsp; Austin Eco Bilingual School</p>
+    </header>
+
+    <label for="f-objetivo">Objetivo o tópico a desarrollar</label>
+    <textarea id="f-objetivo" rows="6" placeholder="Describí el objetivo de comprensión, tópico generativo, contenidos clave o performances que querés secuenciar..."></textarea>
+
+    <button class="btn-main" onclick="construirPrompt()">Construir Prompt para Gemini</button>
+
+    <div class="output-wrapper">
+        <div class="output-header">
+            <label>Prompt listo para copiar a Gemini</label>
+            <button class="btn-copy" onclick="copiar()">Copiar Prompt</button>
+        </div>
+        <div id="output-box">Completá el campo de arriba y presioná el botón para generar el prompt...</div>
+    </div>
+
+</div>
+
+<script>
+    function construirPrompt() {
+        const objetivo = document.getElementById('f-objetivo').value.trim();
+        if (!objetivo) { alert("Ingresá un objetivo o tópico."); return; }
+
+        const prompt = `Actúa como un experto en EpC (Enseñanza para la Comprensión, Harvard Project Zero) con experiencia en planificación didáctica para educación bilingüe.
+
+Tu tarea es generar una SECUENCIA DIDÁCTICA estructurada en exactamente 5 pasos según el marco EpC, a partir del siguiente objetivo o tópico:
+
+---
+${objetivo}
+---
+
+ESTRUCTURA OBLIGATORIA DE LOS 5 PASOS:
+
+PASO 1 — EXPLORACIÓN (Tópico Generativo)
+Activación de saberes previos y conexión con la experiencia del alumno. El tópico debe ser genuinamente interesante, central a la disciplina y accesible. Incluí una pregunta generativa potente que abra el pensamiento.
+
+PASO 2 — INVESTIGACIÓN GUIADA (Metas de Comprensión en acción)
+Profundización conceptual con andamiaje docente. Las actividades deben apuntar directamente a las metas de comprensión. El alumno no solo recibe información: construye comprensión con apoyo estructurado.
+
+PASO 3 — SÍNTESIS Y CONEXIÓN (Transferencia)
+Integración de lo aprendido. El alumno conecta los nuevos conceptos con otros contextos, disciplinas o situaciones reales. Actividades de síntesis visible (mapas, discusiones, comparaciones).
+
+PASO 4 — PRODUCCIÓN (Desempeño de Comprensión visible)
+El alumno demuestra su comprensión a través de un producto auténtico y concreto. Debe ser un desempeño real, no una prueba tradicional. Público o propósito real siempre que sea posible.
+
+PASO 5 — EVALUACIÓN FINAL (Valoración Continua + Metacognición)
+Reflexión sobre el propio aprendizaje. Criterios de evaluación compartidos con el alumno. Cierre que consolida la comprensión y abre nuevas preguntas.
+
+FORMATO DE ENTREGA:
+Para cada paso incluí:
+- Nombre y subtítulo descriptivo
+- Duración estimada
+- Pregunta guía del paso
+- 2 a 3 actividades concretas con sugerencia para el docente
+- Recursos necesarios
+- Cómo se evalúa la comprensión en ese paso
+- Conexión explícita con el marco EpC
+
+Al inicio del documento indicá:
+- Título de la secuencia
+- Meta de comprensión central (una oración que comience con "Los estudiantes desarrollarán comprensión sobre...")
+
+El output debe estar listo para usar en el aula, con lenguaje claro y preciso. No agregues introducciones ni aclaraciones metodológicas dirigidas al docente fuera del formato solicitado.`;
+
+        document.getElementById('output-box').textContent = prompt;
+    }
+
+    async function copiar() {
+        const box = document.getElementById('output-box');
+        const btn = document.querySelector('.btn-copy');
+        const texto = box.textContent;
+
+        if (texto.startsWith("Completá")) { alert("Primero generá el prompt."); return; }
+
+        try {
+            await navigator.clipboard.writeText(texto);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = texto;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        const orig = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        btn.style.background = "#16a34a";
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ""; }, 1500);
+    }
+</script>
+</body>
+</html>

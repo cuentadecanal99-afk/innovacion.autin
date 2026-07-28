@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUD Workspace | Austin Eco Bilingual School</title>
+    <style>
+        :root {
+            --primary-bg: #2c3e50;
+            --panel-bg: #ecf0f1;
+            --accent-green: #27ae60;
+            --accent-blue: #2563eb;
+            --border-color: #cbd5e1;
+            --text-main: #334155;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            background: #f8fafc; 
+            min-height: 100vh; 
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        header { 
+            background: var(--primary-bg); 
+            color: white; 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            min-height: 50px;
+            gap: 12px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* CONTROL DE ESTADOS VISUALES */
+        body[data-view="home"] .workspace-layout { display: none; }
+        body[data-view="home"] .home-layout { display: grid; }
+
+        body[data-view="workspace"] .home-layout { display: none; }
+        body[data-view="workspace"] .workspace-layout { display: grid; }
+
+        body[data-view="gate"] header,
+        body[data-view="gate"] .home-layout,
+        body[data-view="gate"] .workspace-layout { display: none !important; }
+
+        body[data-view="gate"] #auth-gate { display: flex; }
+
+        body[data-view="welcome"] .home-layout,
+        body[data-view="welcome"] .workspace-layout { display: none !important; }
+
+        body[data-view="welcome"] #welcome-panel { display: flex; }
+
+        body[data-view="home"] .btn-back-home:not(#btn-ir-bienvenida),
+        body[data-view="welcome"] .btn-back-home,
+        body[data-view="gate"] .btn-back-home { display: none; }
+
+        /* ==========================================
+           1. LAYOUT PANTALLA PRINCIPAL (HOME)
+           ========================================== */
+        .home-layout {
+            grid-template-columns: 1fr 350px;
+            height: calc(100vh - 50px);
+        }
+
+        .creator-section {
+            padding: 30px;
+            overflow-y: auto;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .history-section {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+            border-left: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 18px 0 0 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow-y: auto;
+            box-shadow: inset 1px 0 0 rgba(255,255,255,0.7), 0 14px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .history-header {
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(39, 174, 96, 0.12));
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .history-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--primary-bg);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-header p {
+            margin: 4px 0 0;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .history-search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            box-sizing: border-box;
+        }
+
+        .history-search-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .history-search-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .history-toggle {
+            display: none;
+            border: none;
+            background: var(--accent-blue);
+            color: white;
+            padding: 8px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .history-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-weight: bold; font-size: 0.9rem; color: #555; }
+        .required { color: #e74c3c; font-weight: bold; }
+        input, textarea { 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            padding: 10px; 
+            font-size: 14px;
+        }
+        .style-orientation { height: 80px; resize: vertical; }
+        .content-area { height: 180px; resize: vertical; }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .history-card {
+            background: white;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 12px 13px;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+        }
+        .history-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
+            border-color: var(--accent-green);
+        }
+        .history-card h4 { margin: 0 0 6px 0; font-size: 0.95rem; color: var(--primary-bg); line-height: 1.3; }
+        .history-card p { margin: 0; font-size: 0.8rem; color: #64748b; }
+        .history-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .history-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .history-badge.is-presented {
+            background: #ecfdf5;
+            color: #059669;
+        }
+        .history-date {
+            font-size: 0.72rem;
+            color: #64748b;
+        }
+        .history-empty-state {
+            padding: 16px;
+            text-align: center;
+            border: 1px dashed rgba(148, 163, 184, 0.45);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ==========================================
+           PANTALLA DE ACCESO (LOGIN GATE)
+           ========================================== */
+        #auth-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+            background:
+                radial-gradient(circle at 12% 15%, rgba(39, 174, 96, 0.28), transparent 42%),
+                radial-gradient(circle at 88% 10%, rgba(37, 99, 235, 0.28), transparent 45%),
+                linear-gradient(160deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
+        }
+
+        .auth-gate-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.99);
+            border-radius: 20px;
+            padding: 34px 32px 28px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            animation: authGateIn 0.45s ease;
+        }
+
+        @keyframes authGateIn {
+            from { opacity: 0; transform: translateY(14px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .auth-gate-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .auth-gate-brand img {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+            padding: 3px;
+        }
+
+        .auth-gate-brand strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--primary-bg);
+        }
+
+        .auth-gate-brand span {
+            font-size: 0.76rem;
+            color: #64748b;
+        }
+
+        .auth-gate-header h1 {
+            margin: 0 0 6px;
+            font-size: 1.4rem;
+            color: var(--primary-bg);
+            letter-spacing: -0.01em;
+        }
+
+        .auth-gate-header p {
+            margin: 0 0 22px;
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .auth-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .auth-field label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .auth-field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .auth-field input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+        }
+
+        .auth-gate-primary {
+            width: 100%;
+            padding: 13px;
+            margin-top: 4px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .auth-gate-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 26px rgba(37, 99, 235, 0.32);
+        }
+
+        .auth-gate-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0 14px;
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        .auth-gate-divider::before,
+        .auth-gate-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(148, 163, 184, 0.35);
+        }
+
+        .auth-gate-secondary {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: white;
+            color: var(--primary-bg);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .auth-gate-secondary:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .auth-status {
+            margin-top: 16px;
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .header-user-pill {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            padding: 5px 6px 5px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            color: white;
+        }
+
+        .header-user-pill span {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .header-user-pill button {
+            border: none;
+            background: rgba(239, 68, 68, 0.85);
+            color: white;
+            padding: 5px 11px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .header-user-pill button:hover {
+            background: #ef4444;
+        }
+
+        @media (max-width: 480px) {
+            .auth-gate-card {
+                padding: 26px 20px 22px;
+            }
+        }
+
+        /* ==========================================
+           PANEL DE BIENVENIDA (POST-LOGIN)
+           ========================================== */
+        #welcome-panel {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 50px);
+            padding: 40px 24px;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(39, 174, 96, 0.10), transparent 40%),
+                radial-gradient(circle at 90% 0%, rgba(37, 99, 235, 0.10), transparent 40%),
+                #f8fafc;
+        }
+
+        .welcome-card {
+            width: 100%;
+            max-width: 680px;
+            background: white;
+            border-radius: 22px;
+            padding: 40px 36px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            animation: authGateIn 0.45s ease;
+        }
+
+        .welcome-greeting {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-greeting-label {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+        }
+
+        .welcome-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            border-bottom: 2px dashed transparent;
+            outline: none;
+            cursor: text;
+            padding: 0 2px;
+        }
+
+        .welcome-name:hover,
+        .welcome-name:focus {
+            border-bottom-color: var(--accent-blue);
+        }
+
+        .welcome-edit-hint {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .welcome-subtitle {
+            margin: 8px 0 28px;
+            font-size: 0.92rem;
+            color: #64748b;
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .welcome-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: #f8fafc;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .welcome-tile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.14);
+            border-color: var(--accent-blue);
+        }
+
+        .welcome-tile-icon {
+            font-size: 1.6rem;
+        }
+
+        .welcome-tile-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+        }
+
+        .welcome-tile-desc {
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .welcome-tile-add {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: transparent;
+            border-style: dashed;
+            border-color: rgba(148, 163, 184, 0.4);
+            color: #64748b;
+        }
+
+        .welcome-tile-add:hover {
+            border-color: var(--accent-blue);
+            background: rgba(37, 99, 235, 0.04);
+        }
+
+        .welcome-tile-add .welcome-tile-icon {
+            font-size: 1.7rem;
+            color: var(--accent-blue);
+        }
+
+        .welcome-tile-custom {
+            position: relative;
+        }
+
+        .welcome-tile-remove {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(15, 23, 42, 0.08);
+            color: #475569;
+            font-size: 0.7rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .welcome-tile-custom:hover .welcome-tile-remove {
+            display: flex;
+        }
+
+        .welcome-tile-remove:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .shortcut-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1600;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.55);
+        }
+
+        .shortcut-modal.open {
+            display: flex;
+        }
+
+        .shortcut-modal-card {
+            width: 100%;
+            max-width: 360px;
+            background: white;
+            border-radius: 18px;
+            padding: 28px 26px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            animation: authGateIn 0.3s ease;
+        }
+
+        .shortcut-modal-card h3 {
+            margin: 0 0 18px;
+            font-size: 1.05rem;
+            color: var(--primary-bg);
+        }
+
+        .shortcut-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .shortcut-modal-actions button {
+            flex: 1;
+        }
+
+        @media (max-width: 560px) {
+            .welcome-card {
+                padding: 28px 22px;
+            }
+
+            .welcome-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-greeting-label,
+            .welcome-name {
+                font-size: 1.4rem;
+            }
+        }
+
+        .confirm-banner {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-width: min(92vw, 520px);
+            max-width: 620px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-green), #16a34a);
+            color: white;
+            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
+        }
+
+        .confirm-banner strong {
+            font-size: 0.95rem;
+        }
+
+        .confirm-banner button {
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 999px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .action-banner {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        /* NUEVA ZONA ADAPTATIVA DOBLE COLUMNA EN EL HOME */
+        .split-capture-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .capture-box {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .capture-box label {
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        .capture-box-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            min-height: 26px;
+        }
+        .prompt-preview-area {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            font-family: monospace;
+            font-size: 11px;
+            height: 120px;
+            resize: none;
+            color: #475569;
+        }
+        .btn-secondary-sm {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 3px;
+            align-self: flex-start;
+        }
+
+        .ai-quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .ai-quick-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
+        }
+
+        .ai-quick-link-gemini {
+            background: linear-gradient(135deg, #4285f4, #9b72cb);
+        }
+
+        .ai-quick-link-chatgpt {
+            background: #10a37f;
+        }
+
+        .btn-secondary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .home-action-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .home-action-group button {
+            flex: 1;
+            width: 100%;
+        }
+
+        body[data-view="workspace"][data-mode="libre"] .panel-pud-fijo {
+            display: none;
+        }
+
+        body[data-view="workspace"][data-mode="libre"] .workspace-layout {
+            grid-template-columns: 1fr;
+        }
+
+        body[data-view="workspace"][data-mode="libre"] .panel-herramientas-dinamico {
+            border-left: none;
+        }
+
+        /* ==========================================
+           2. LAYOUT MESA DE TRABAJO (WORKSPACE)
+           ========================================== */
+        .workspace-layout {
+            grid-template-columns: 45% 55%;
+            height: calc(100vh - 50px);
+        }
+
+        .panel-pud-fijo {
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+            overflow: hidden;
+        }
+        .panel-pud-header {
+            padding: 12px 20px;
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-pud-header h3 {
+            text-align: center;
+        }
+        .panel-pud-header > div {
+            justify-content: center;
+            width: 100%;
+        }
+        .pud-scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .panel-herramientas-dinamico {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            overflow: hidden;
+        }
+
+        .tabs-bar {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab-btn {
+            padding: 15px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 56px;
+        }
+        .tab-btn:last-child {
+            border-right: none;
+        }
+        .tab-btn.active {
+            background: white;
+            color: var(--accent-blue);
+            border-bottom: 3px solid var(--accent-blue);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .tab-content.active { display: block; }
+
+        /* Evitar doble scroll en los tabs de carga HTML mediante iframe */
+        #tab-adaptaciones,
+        #tab-secuencias,
+        #tab-tareas {
+            overflow: hidden;
+            padding: 22px;
+        }
+        #tab-adaptaciones > .output-placeholder,
+        #tab-secuencias > .output-placeholder,
+        #tab-tareas > .output-placeholder {
+            height: 100%;
+            overflow: hidden;
+            padding: 0;
+            border: none;
+        }
+        #tab-adaptaciones #display-dinamico,
+        #tab-secuencias #display-secuencias,
+        #tab-tareas #display-tareas {
+            min-height: 520px;
+            padding: 12px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        @media (max-width: 680px) {
+            #tab-adaptaciones #display-dinamico,
+            #tab-secuencias #display-secuencias,
+            #tab-tareas #display-tareas {
+                min-height: 420px;
+            }
+        }
+
+        .output-placeholder {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            min-height: 250px;
+        }
+
+        .btn-back-home {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Los 3 botones de acción del PUD activo (Descargar/Guardar/Presentar)
+           deben verse parejos entre sí, sin afectar otros usos de .btn-back-home */
+        .panel-pud-header .btn-back-home {
+            flex: 1 1 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* REGLAS DE IMPRESIÓN */
+        @media (max-width: 1000px) {
+            .home-layout,
+            .workspace-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .creator-section,
+            .history-section,
+            .panel-pud-fijo,
+            .panel-herramientas-dinamico {
+                min-height: auto;
+            }
+
+            .history-section {
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .panel-pud-fijo {
+                border-right: none;
+            }
+
+            .tabs-bar {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1 1 50%;
+                min-width: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .tab-btn.active {
+                border-bottom: 3px solid var(--accent-blue);
+            }
+
+            .output-placeholder {
+                min-height: 320px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .home-layout,
+            .workspace-layout {
+                gap: 0;
+                height: auto;
+            }
+
+            .creator-section,
+            .history-section,
+            .panel-herramientas-dinamico,
+            .panel-pud-fijo {
+                padding: 16px;
+            }
+
+            .home-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .workspace-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-pud-fijo {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .panel-pud-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .panel-pud-header > div {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .split-capture-container {
+                grid-template-columns: 1fr;
+            }
+
+            .history-section {
+                border-top: 1px solid rgba(148, 163, 184, 0.35);
+                border-left: none;
+                border-radius: 16px;
+                padding: 14px;
+            }
+
+            .history-header {
+                padding: 12px 13px;
+            }
+
+            .history-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .history-section[data-collapsed="true"] .history-content {
+                display: none;
+            }
+
+            .history-section[data-collapsed="false"] .history-content {
+                display: flex;
+            }
+
+            .history-card {
+                padding: 11px 12px;
+            }
+
+            .history-card-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .btn-primary,
+            .btn-secondary,
+            .btn-secondary-sm {
+                width: 100%;
+            }
+
+            .btn-back-home {
+                width: auto;
+            }
+
+            .tab-btn {
+                font-size: 0.82rem;
+                padding: 12px 10px;
+            }
+
+            .pud-scroll-container,
+            .panel-herramientas-dinamico,
+            .panel-pud-fijo {
+                min-height: auto;
+            }
+        }
+
+        @media print {
+            header, .tabs-bar, .tab-content, .btn-back-home, .panel-pud-header h3 { display: none !important; }
+            .workspace-layout { display: block !important; }
+            .panel-pud-fijo { border: none !important; width: 100% !important; overflow: visible !important; }
+            .pud-scroll-container { overflow: visible !important; padding: 0 !important; }
+            table tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+            .pud-section-title { page-break-after: avoid !important; break-after: avoid !important; }
+        }
+    </style>
+</head>
+<body data-view="gate">
+
+    <div id="auth-gate">
+        <div class="auth-gate-card">
+            <div class="auth-gate-brand">
+                <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+                <div>
+                    <strong>Austin Eco Bilingual School</strong>
+                    <span>PUD Workspace · EpC &amp; L&amp;D Tech</span>
+                </div>
+            </div>
+            <div class="auth-gate-header">
+                <h1>Bienvenido/a</h1>
+                <p>Ingresá con tu cuenta para acceder a la herramienta y a tu historial personal de planificaciones.</p>
+            </div>
+            <div id="auth-form">
+                <div class="auth-field">
+                    <label for="auth-email">Correo electrónico</label>
+                    <input type="email" id="auth-email" placeholder="correo@ejemplo.com" autocomplete="username" onkeydown="if(event.key==='Enter'){iniciarSesionAuth();}">
+                </div>
+                <div class="auth-field">
+                    <label for="auth-password">Contraseña</label>
+                    <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter'){iniciarSesionAuth();}">
+                </div>
+                <button class="auth-gate-primary" type="button" onclick="iniciarSesionAuth()">Iniciar sesión</button>
+                <div class="auth-gate-divider"><span>¿No tenés cuenta?</span></div>
+                <button class="auth-gate-secondary" type="button" onclick="registrarAuth()">Crear cuenta nueva</button>
+            </div>
+            <div id="auth-status" class="auth-status">Ingresá tus datos para continuar.</div>
+        </div>
+    </div>
+
+    <header>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School" style="height:32px; width:auto; border-radius:6px; background:white; padding:2px;">
+            <div>PUD Workspace | EpC & L&D Tech</div>
+        </div>
+        <div class="header-actions">
+            <div id="header-user-pill" class="header-user-pill">
+                <span id="header-user-email"></span>
+                <button type="button" onclick="cerrarSesionAuth()">Cerrar sesión</button>
+            </div>
+            <button class="btn-back-home" id="btn-ir-bienvenida" onclick="irABienvenida()" style="background:#0f172a;">🏠 Inicio</button>
+            <button class="btn-back-home" onclick="volverAlHome()" style="background:#2563eb;">◀ Volver al Inicio</button>
+            <div id="view-indicator" style="font-size: 0.8rem; opacity: 0.7;">Entorno de Carga</div>
+        </div>
+    </header>
+
+    <div id="confirm-banner" class="confirm-banner" role="status" aria-live="polite">
+        <strong id="confirm-banner-text">✅ ¡Cuenta confirmada con éxito! Ya podés usar la app.</strong>
+        <button type="button" onclick="ocultarConfirmBanner()">Cerrar</button>
+    </div>
+
+    <div id="welcome-panel">
+        <div class="welcome-card">
+            <div class="welcome-greeting">
+                <span class="welcome-greeting-label">Hola,</span>
+                <span id="welcome-name" class="welcome-name" contenteditable="true" spellcheck="false"></span>
+            </div>
+            <span class="welcome-edit-hint">✎ podés editar tu nombre</span>
+            <p class="welcome-subtitle">Elegí una herramienta para comenzar a trabajar.</p>
+            <div class="welcome-grid">
+                <button class="welcome-tile" type="button" onclick="irAMesaDeTrabajo()">
+                    <span class="welcome-tile-icon">🧩</span>
+                    <span class="welcome-tile-title">Mesa de Trabajo</span>
+                    <span class="welcome-tile-desc">PUDs inteligentes, prompts automáticos — creá y gestioná tus planificaciones didácticas.</span>
+                </button>
+                <a class="welcome-tile" href="https://web.handing.co/users/sign_in" target="_blank" rel="noopener">
+                    <span class="welcome-tile-icon">🔗</span>
+                    <span class="welcome-tile-title">Handing</span>
+                    <span class="welcome-tile-desc">Revisa tus mensajes. Mantente en contacto con la comunidad educativa.</span>
+                </a>
+                <a class="welcome-tile" href="https://plataforma.acadeu.com/i/austin-eco-bilingual-school" target="_blank" rel="noopener">
+                    <span class="welcome-tile-icon">🎓</span>
+                    <span class="welcome-tile-title">Acadeu</span>
+                    <span class="welcome-tile-desc">Carga notas parciales, evaluaciones y cierres de períodos.</span>
+                </a>
+                <a class="welcome-tile" href="https://mail.google.com/" target="_blank" rel="noopener">
+                    <span class="welcome-tile-icon">📧</span>
+                    <span class="welcome-tile-title">Gmail</span>
+                    <span class="welcome-tile-desc">Iniciar sesión en tu correo institucional. Organiza tus archivos y más.</span>
+                </a>
+                <div id="welcome-custom-shortcuts" style="display:contents;"></div>
+                <button class="welcome-tile welcome-tile-add" type="button" onclick="abrirModalShortcut()">
+                    <span class="welcome-tile-icon">➕</span>
+                    <span class="welcome-tile-title">Agregar acceso</span>
+                    <span class="welcome-tile-desc">Creá tu propio atajo a cualquier sitio.</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shortcut-modal" class="shortcut-modal" onclick="if(event.target===this){cerrarModalShortcut();}">
+        <div class="shortcut-modal-card">
+            <h3>Nuevo acceso rápido</h3>
+            <div class="auth-field">
+                <label for="shortcut-name">Nombre</label>
+                <input type="text" id="shortcut-name" placeholder="Ej: ChatGPT" onkeydown="if(event.key==='Enter'){document.getElementById('shortcut-url').focus();}">
+            </div>
+            <div class="auth-field">
+                <label for="shortcut-url">Enlace (URL)</label>
+                <input type="text" id="shortcut-url" placeholder="https://..." onkeydown="if(event.key==='Enter'){guardarShortcutPersonalizado();}">
+            </div>
+            <div class="shortcut-modal-actions">
+                <button class="auth-gate-secondary" type="button" onclick="cerrarModalShortcut()">Cancelar</button>
+                <button class="auth-gate-primary" type="button" onclick="guardarShortcutPersonalizado()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="area-modal" class="shortcut-modal" onclick="if(event.target===this){cerrarModalArea();}">
+        <div class="shortcut-modal-card">
+            <h3>Nueva área / materia</h3>
+            <div class="auth-field">
+                <label for="area-nombre">Nombre</label>
+                <input type="text" id="area-nombre" placeholder="Ej: Educación Física" onkeydown="if(event.key==='Enter'){guardarAreaNueva();}">
+            </div>
+            <div class="shortcut-modal-actions">
+                <button class="auth-gate-secondary" type="button" onclick="cerrarModalArea()">Cancelar</button>
+                <button class="auth-gate-primary" type="button" onclick="guardarAreaNueva()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-layout">
+        <section class="creator-section">
+            <h3>Construcción de Unidad Didáctica (PUD)</h3>
+            <div class="field-group">
+                <label>Año <span class="required">*</span></label>
+                <select id="unit_year">
+                    <option value="">Seleccioná un grado...</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label>Nombre de la Unidad</label>
+                <input type="text" id="unit_name" placeholder="Ej: Journey of our Food">
+            </div>
+            <div class="field-group">
+                <label>Materia / Área <span class="required">*</span></label>
+                <select id="subject" onchange="manejarCambioSubject()">
+                    <option value="">Seleccioná un área...</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label>Orientación Pedagógica</label>
+                <textarea id="orientation" class="style-orientation" placeholder="Ej: grupo con nivel de alfabetización inicial, alumnos con dificultades de lectura, enfoque inclusivo con apoyos visuales..."></textarea>
+                <small style="color:#64748b; font-size:0.85rem; line-height:1.4;">Sugiere nivel de alfabetización, fortalezas o debilidades del grupo, estilo de enseñanza y adaptaciones necesarias. Esta información se usa para ajustar la propuesta pedagógica del prompt.</small>
+            </div>
+            <div class="field-group">
+                <label>Contenido de la Unidad <span class="required">*</span></label>
+                <textarea id="raw_input" class="content-area" placeholder="Vuelque aquí los conceptos clave..."></textarea>
+            </div>
+
+            <button class="btn-primary" id="btn-generar" onclick="generarPromptEstructurado()">Generar Prompt Estructurado</button>
+
+            <div id="home-view" class="home-action-group">
+                <button class="btn-secondary" onclick="iniciarFlujo('libre')">Trabajar sin PUD</button>
+            </div>
+
+            <div id="banner-exito" class="action-banner" style="display: none;">
+                <div>
+                    <strong>Prompt generado y copiado.</strong>
+                    <p style="margin:2px 0 0 0; font-size:0.85rem; color:#0369a1;">Procesalo en Gemini y pegá el JSON devuelto a la derecha para activar la mesa de trabajo.</p>
+                </div>
+                <button class="btn-primary" onclick="entrarAMesaDeTrabajo()">Esperando render de PUD...</button>
+            </div>
+
+            <div id="pud-capture-zone" class="split-capture-container" style="display:none;">
+                <div class="capture-box">
+                    <label>📋 Prompt Generado (Respaldo Visual):</label>
+                    <div class="capture-box-actions">
+                        <button class="btn-secondary-sm" onclick="recopiarPromptManual()">Volver a copiar prompt</button>
+                    </div>
+                    <textarea id="prompt-visual-viewer" class="prompt-preview-area" readonly></textarea>
+                </div>
+                <div class="capture-box">
+                    <label>📥 Pegá el JSON devuelto por Gemini acá:</label>
+                    <div class="capture-box-actions">
+                        <a class="ai-quick-link ai-quick-link-gemini" href="https://gemini.google.com/app" target="_blank" rel="noopener">✨ Abrir Gemini</a>
+                        <a class="ai-quick-link ai-quick-link-chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener">🤖 Abrir ChatGPT</a>
+                    </div>
+                    <textarea id="json-paster" style="width:100%; height:120px; border:1px dashed var(--accent-blue); font-family: monospace; font-size: 11px; padding: 10px;" placeholder="[{ ... }]"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <aside class="history-section" id="historial-container" data-collapsed="true">
+            <div class="history-header" id="historial-header">
+                <h3>🗂️ Historial de PUDs</h3>
+                <p>Planificaciones guardadas y listas para volver a abrir</p>
+                <input type="text" id="historial-search" class="history-search-input" placeholder="Buscar por nombre..." onkeyup="filtrarHistorial()">
+                <button class="history-toggle" id="history-toggle-btn" type="button" aria-expanded="false" aria-controls="historial-body">Mostrar historial</button>
+            </div>
+            <div class="history-content" id="historial-body"></div>
+        </aside>
+    </div>
+
+    <div class="workspace-layout">
+        
+        <aside class="panel-pud-fijo">
+            <div class="panel-pud-header">
+                <h3 style="margin:0; font-size:1rem;" id="w-pud-title">PUD Activo</h3>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <button class="btn-back-home" style="background:#27ae60;" onclick="window.print()">🖨 Descargar PUD</button>
+                    <button class="btn-back-home" onclick="guardarPUD()">💾 Guardar en historial</button>
+                    <button class="btn-back-home" style="background:#d97706;" onclick="presentarPUD()">📤 Presentar</button>
+                </div>
+            </div>
+            <div id="output-preview" class="pud-scroll-container" contenteditable="true">
+                <p style="color:#94a3b8; text-align:center; margin-top:100px;">Ninguna grilla cargada. Volvé al inicio, generá el prompt o seleccioná un registro histórico.</p>
+            </div>
+        </aside>
+
+        <main class="panel-herramientas-dinamico">
+            <nav class="tabs-bar">
+                <button class="tab-btn active" onclick="cambiarPestaña(event, 'secuencias')">📑 1. Secuencias</button>
+                <button class="tab-btn" onclick="cambiarPestaña(event, 'tareas')">📝 2. Tareas de Práctica</button>
+            </nav>
+
+            <section id="tab-secuencias" class="tab-content active">
+                <div class="output-placeholder">
+                    <div id="display-secuencias" style="min-height:360px; padding:12px; color:#475569;"></div>
+                </div>
+            </section>
+
+            <section id="tab-tareas" class="tab-content">
+                <div class="output-placeholder">
+                    <div id="display-tareas" style="min-height:360px; padding:12px; color:#475569;"></div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXRmbmJkZGhib3NhY2ZnZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mjk3MTcsImV4cCI6MjA4NzAwNTcxN30.P0HLqGab3tB5WdsVGYKXEyK572JvthHYFg7iu3MJpgo';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        window.pudActivoJson = null;
+        window.authUser = null;
+
+        const GRADOS_PRIMARIA = [
+            '1° Grado Primaria', '2° Grado Primaria', '3° Grado Primaria',
+            '4° Grado Primaria', '5° Grado Primaria', '6° Grado Primaria'
+        ];
+
+        function poblarSelectGrados() {
+            const select = document.getElementById('unit_year');
+            if (!select) return;
+            GRADOS_PRIMARIA.forEach(grado => {
+                const opt = document.createElement('option');
+                opt.value = grado;
+                opt.textContent = grado;
+                select.appendChild(opt);
+            });
+        }
+
+        async function cargarAreasEnSelect() {
+            const select = document.getElementById('subject');
+            if (!select) return;
+
+            const valorPrevio = select.value;
+            const { data, error } = await _supabase.from('areas').select('name').order('name');
+            const nombres = (!error && data && data.length > 0)
+                ? data.map(item => item.name)
+                : ['Sociales', 'Naturales', 'Lengua', 'Matemática'];
+
+            select.innerHTML = '<option value="">Seleccioná un área...</option>';
+            nombres.forEach(nombre => {
+                const opt = document.createElement('option');
+                opt.value = nombre;
+                opt.textContent = nombre;
+                select.appendChild(opt);
+            });
+            const optAgregar = document.createElement('option');
+            optAgregar.value = '__add_new__';
+            optAgregar.textContent = '+ Agregar nueva área';
+            select.appendChild(optAgregar);
+
+            if (valorPrevio && nombres.includes(valorPrevio)) {
+                select.value = valorPrevio;
+            }
+        }
+
+        function manejarCambioSubject() {
+            const select = document.getElementById('subject');
+            if (select.value === '__add_new__') {
+                select.value = select.dataset.previousValue || '';
+                abrirModalArea();
+                return;
+            }
+            select.dataset.previousValue = select.value;
+        }
+
+        function abrirModalArea() {
+            document.getElementById('area-nombre').value = '';
+            document.getElementById('area-modal').classList.add('open');
+            document.getElementById('area-nombre').focus();
+        }
+
+        function cerrarModalArea() {
+            document.getElementById('area-modal').classList.remove('open');
+        }
+
+        async function guardarAreaNueva() {
+            const nombre = document.getElementById('area-nombre').value.trim();
+            if (!nombre) return alert('Ingresá un nombre para la nueva área.');
+
+            const { error } = await _supabase.from('areas').insert([{ name: nombre }]);
+            if (error && error.code !== '23505') {
+                return alert('No se pudo guardar el área: ' + (error.message || JSON.stringify(error)));
+            }
+
+            await cargarAreasEnSelect();
+            const select = document.getElementById('subject');
+            select.value = nombre;
+            select.dataset.previousValue = nombre;
+            cerrarModalArea();
+        }
+
+        function mostrarConfirmBanner(mensaje) {
+            const banner = document.getElementById('confirm-banner');
+            if (!banner) return;
+            const textEl = document.getElementById('confirm-banner-text');
+            if (textEl) textEl.textContent = mensaje || '✅ ¡Cuenta confirmada con éxito! Ya podés usar la app.';
+            banner.style.display = 'flex';
+            window.clearTimeout(window.confirmBannerTimeout);
+            window.confirmBannerTimeout = window.setTimeout(() => {
+                ocultarConfirmBanner();
+            }, 8000);
+        }
+
+        function ocultarConfirmBanner() {
+            const banner = document.getElementById('confirm-banner');
+            if (!banner) return;
+            banner.style.display = 'none';
+            window.clearTimeout(window.confirmBannerTimeout);
+        }
+
+        function revisarConfirmacionSupabase() {
+            const hash = window.location.hash || '';
+            const shouldShow = /type=(signup|email_change)/i.test(hash);
+            if (!shouldShow) return;
+
+            mostrarConfirmBanner();
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+
+        function mostrarApp() {
+            if (document.body.getAttribute('data-view') === 'gate') {
+                document.body.setAttribute('data-view', 'welcome');
+            }
+        }
+
+        function mostrarGate() {
+            document.body.removeAttribute('data-mode');
+            document.body.setAttribute('data-view', 'gate');
+        }
+
+        function irABienvenida() {
+            document.body.removeAttribute('data-mode');
+            document.body.setAttribute('data-view', 'welcome');
+            document.getElementById('view-indicator').innerText = 'Panel de Bienvenida';
+        }
+
+        function irAMesaDeTrabajo() {
+            document.body.setAttribute('data-view', 'home');
+            document.getElementById('view-indicator').innerText = 'Entorno de Carga';
+        }
+
+        function derivarNombreDesdeEmail(email) {
+            const local = (email || '').split('@')[0];
+            if (!local) return 'Docente';
+            return local
+                .split(/[._-]+/)
+                .filter(Boolean)
+                .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+                .join(' ') || 'Docente';
+        }
+
+        function actualizarBienvenida() {
+            const nameEl = document.getElementById('welcome-name');
+            if (!nameEl || !window.authUser) return;
+
+            const email = window.authUser.email || '';
+            const storageKey = 'pud_welcome_name_' + email;
+            const saved = email ? localStorage.getItem(storageKey) : null;
+
+            nameEl.dataset.storageKey = storageKey;
+            nameEl.textContent = saved || derivarNombreDesdeEmail(email);
+
+            renderShortcutsPersonalizados();
+        }
+
+        function getShortcutsStorageKey() {
+            return 'pud_custom_shortcuts_' + (window.authUser?.email || '');
+        }
+
+        function cargarShortcutsPersonalizados() {
+            if (!window.authUser) return [];
+            try {
+                return JSON.parse(localStorage.getItem(getShortcutsStorageKey()) || '[]');
+            } catch (err) {
+                return [];
+            }
+        }
+
+        function guardarListaShortcuts(lista) {
+            localStorage.setItem(getShortcutsStorageKey(), JSON.stringify(lista));
+        }
+
+        function renderShortcutsPersonalizados() {
+            const container = document.getElementById('welcome-custom-shortcuts');
+            if (!container || !window.authUser) return;
+
+            const lista = cargarShortcutsPersonalizados();
+            container.innerHTML = lista.map((item, index) => `
+                <a class="welcome-tile welcome-tile-custom" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
+                    <button type="button" class="welcome-tile-remove" title="Eliminar acceso" aria-label="Eliminar acceso" onclick="event.preventDefault(); event.stopPropagation(); eliminarShortcutPersonalizado(${index});">✕</button>
+                    <span class="welcome-tile-icon">🔗</span>
+                    <span class="welcome-tile-title">${escapeHtml(item.label)}</span>
+                    <span class="welcome-tile-desc">${escapeHtml(item.url)}</span>
+                </a>
+            `).join('');
+        }
+
+        function eliminarShortcutPersonalizado(index) {
+            const lista = cargarShortcutsPersonalizados();
+            lista.splice(index, 1);
+            guardarListaShortcuts(lista);
+            renderShortcutsPersonalizados();
+        }
+
+        function normalizarUrlShortcut(url) {
+            return /^https?:\/\//i.test(url) ? url : 'https://' + url;
+        }
+
+        function abrirModalShortcut() {
+            document.getElementById('shortcut-name').value = '';
+            document.getElementById('shortcut-url').value = '';
+            document.getElementById('shortcut-modal').classList.add('open');
+            document.getElementById('shortcut-name').focus();
+        }
+
+        function cerrarModalShortcut() {
+            document.getElementById('shortcut-modal').classList.remove('open');
+        }
+
+        function guardarShortcutPersonalizado() {
+            const nameInput = document.getElementById('shortcut-name');
+            const urlInput = document.getElementById('shortcut-url');
+            const label = nameInput.value.trim();
+            const urlRaw = urlInput.value.trim();
+
+            if (!label || !urlRaw) {
+                return alert('Completá un nombre y un enlace.');
+            }
+
+            const lista = cargarShortcutsPersonalizados();
+            lista.push({ label, url: normalizarUrlShortcut(urlRaw) });
+            guardarListaShortcuts(lista);
+            renderShortcutsPersonalizados();
+            cerrarModalShortcut();
+        }
+
+        function guardarNombreBienvenida() {
+            const nameEl = document.getElementById('welcome-name');
+            if (!nameEl) return;
+
+            const key = nameEl.dataset.storageKey;
+            const value = nameEl.textContent.trim();
+            if (key && value) {
+                localStorage.setItem(key, value);
+            }
+        }
+
+        (function configurarNombreBienvenida() {
+            const nameEl = document.getElementById('welcome-name');
+            if (!nameEl) return;
+
+            nameEl.addEventListener('blur', guardarNombreBienvenida);
+            nameEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    nameEl.blur();
+                }
+            });
+        })();
+
+        function actualizarUIAuth() {
+            const status = document.getElementById('auth-status');
+            const emailInput = document.getElementById('auth-email');
+            const passwordInput = document.getElementById('auth-password');
+            const headerPill = document.getElementById('header-user-pill');
+            const headerEmail = document.getElementById('header-user-email');
+
+            if (window.authUser) {
+                const fullName = window.authUser.user_metadata?.full_name || window.authUser.user_metadata?.name || '';
+                const displayName = fullName || window.authUser.email || 'usuario';
+                if (headerPill) headerPill.style.display = 'flex';
+                if (headerEmail) headerEmail.textContent = displayName;
+                if (status) status.textContent = 'Sesión activa. Ingresando…';
+                if (emailInput) emailInput.value = '';
+                if (passwordInput) passwordInput.value = '';
+                actualizarBienvenida();
+            } else {
+                if (headerPill) headerPill.style.display = 'none';
+                if (headerEmail) headerEmail.textContent = '';
+                if (status) status.textContent = 'Ingresá tus datos para continuar.';
+            }
+        }
+
+        async function iniciarSesionAuth() {
+            const email = document.getElementById('auth-email')?.value?.trim();
+            const password = document.getElementById('auth-password')?.value;
+            if (!email || !password) return alert('Ingresá tu correo y contraseña.');
+
+            const status = document.getElementById('auth-status');
+            if (status) status.textContent = 'Iniciando sesión…';
+
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                console.error(error);
+                if (status) status.textContent = 'No se pudo iniciar sesión. Revisá tus datos o confirmá tu cuenta.';
+                return alert('No se pudo iniciar sesión: ' + error.message);
+            }
+
+            window.authUser = data.user;
+            actualizarUIAuth();
+            mostrarApp();
+            await recuperarHistorialReal();
+        }
+
+        async function registrarAuth() {
+            const email = document.getElementById('auth-email')?.value?.trim();
+            const password = document.getElementById('auth-password')?.value;
+            if (!email || !password) return alert('Ingresá tu correo y contraseña.');
+
+            const status = document.getElementById('auth-status');
+            if (status) status.textContent = 'Creando cuenta…';
+
+            const { data, error } = await _supabase.auth.signUp({ email, password });
+            if (error) {
+                console.error(error);
+                if (status) status.textContent = 'No se pudo crear la cuenta. Revisá los datos.';
+                return alert('No se pudo crear la cuenta: ' + error.message);
+            }
+
+            if (data.user && !data.session) {
+                if (status) status.textContent = 'Cuenta creada. Revisá tu correo para confirmar antes de entrar.';
+                alert('Cuenta creada. Revisá tu correo para confirmar la cuenta antes de iniciar sesión.');
+            } else {
+                window.authUser = data.user;
+                actualizarUIAuth();
+                mostrarApp();
+                await recuperarHistorialReal();
+            }
+        }
+
+        async function cerrarSesionAuth() {
+            const status = document.getElementById('auth-status');
+            if (status) status.textContent = 'Cerrando sesión…';
+            await _supabase.auth.signOut();
+            window.authUser = null;
+            actualizarUIAuth();
+            mostrarGate();
+            await recuperarHistorialReal();
+        }
+
+        const renderAustinPUD = (data) => {
+            const hilosHtml = data.throughlines.map(h => `${h}<br>`).join('');
+            const metasHtml = data.understanding_goals.map(ug => `
+                <tr>
+                    <td style="border: 1pt solid #000; padding: 10px; width: 55%;"><strong>${ug.id}:</strong> ${ug.text}</td>
+                    <td style="border: 1pt solid #000; padding: 10px; width: 15%; text-align: center; font-weight: bold; background-color: #f1f8e9;">${ug.dimension}</td>
+                    <td style="border: 1pt solid #000; padding: 10px;">${ug.question}</td>
+                </tr>
+            `).join('');
+
+            const desempenosHtml = data.performances.map(p => `
+                <tr>
+                    <td style="border: 1pt solid #000; padding: 10px;">
+                        <strong>${p.title}:</strong> ${p.description}<br><strong>Assessment:</strong> ${p.assessment}
+                    </td>
+                    <td style="border: 1pt solid #000; text-align: center;">${p.ug}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${p.upt}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${p.mi}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${p.td}</td>
+                </tr>
+            `).join('');
+
+            return `
+            <div style="font-family: 'Arial', sans-serif; max-width: 850px; margin: auto; border: 1.5pt solid #000; padding: 0; background-color: white; color: black; text-align: left;">
+                <table style="width: 100%; border-collapse: collapse; border-bottom: 2pt solid #000;">
+                    <tr>
+                        <td style="width: 20%; padding: 15px; text-align: center;">
+                            <div class="logo-container" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            </div>
+                        </td>
+                        <td style="width: 80%; padding: 15px; text-align: right;">
+                            <span style="font-size: 16pt; font-weight: bold; color: #1a472a;">AUSTIN ECO BILINGUAL SCHOOL</span><br>
+                            <span style="font-size: 10pt; letter-spacing: 1px;">PLANIFICADOR DE UNIDAD DIDÁCTICA (PUD)</span><br>
+                            <span style="font-size: 9pt; font-style: italic;">"Developing global citizens for a sustainable future"</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="font-size: 10pt;">
+                        <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>AÑO :</strong></td>
+                        <td id="render-year" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${data.meta.year || ''}</td>
+                        <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>SECCIÓN :</strong></td>
+                        <td id="render-section" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${data.meta.section || ''}</td>
+                    </tr>
+                    <tr style="font-size: 10pt;">
+                        <td style="padding: 8px; border: 1pt solid #000;"><strong>MATERIA :</strong></td>
+                        <td id="render-subject" style="padding: 8px; border: 1pt solid #000;">${data.meta.subject || ''}</td>
+                        <td style="padding: 8px; border: 1pt solid #000;"><strong>DOCENTE :</strong></td>
+                        <td id="render-docente" style="padding: 8px; border: 1pt solid #000;" contenteditable="true" placeholder="Escriba su nombre..."></td>
+                    </tr>
+                </table>
+
+                <div class="pud-section-title" style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-top: 1pt solid #000; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">THROUGHLINES:</div>
+                <div style="padding: 15px; border-bottom: 1pt solid #000; font-size: 10.5pt; line-height: 1.6;">${hilosHtml}</div>
+
+                <div class="pud-section-title" style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">TOPIC:</div>
+                <div style="padding: 20px; border-bottom: 1pt solid #000; text-align: center; font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">"${data.topic}"</div>
+
+                <div class="pud-section-title" style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">UNDERSTANDING GOALS:</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">${metasHtml}</table>
+
+                <div class="pud-section-title" style="background-color: #e0e0e0; padding: 10px; font-weight: bold; border-top: 1pt solid #000; border-bottom: 1pt solid #000; font-size: 11pt;">PERFORMANCES AND ASSESSMENT:</div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 9pt;">
+                    <tr style="background-color: #f2f2f2; font-weight: bold; text-align: center;">
+                        <td style="border: 1pt solid #000; padding: 8px;">Understanding Performances + Assessment</td>
+                        <td style="border: 1pt solid #000; width: 40px;">UG</td>
+                        <td style="border: 1pt solid #000; width: 40px;">UPT</td>
+                        <td style="border: 1pt solid #000; width: 50px;">MI</td>
+                        <td style="border: 1pt solid #000; width: 60px;">TD</td>
+                    </tr>
+                    ${desempenosHtml}
+                    <tr style="background-color: #fff9c4;">
+                        <td style="border: 1pt solid #000; padding: 10px;">
+                            <strong>FINAL PROJECT: ${data.final_project.title}</strong><br>${data.final_project.description}
+                        </td>
+                        <td style="border: 1pt solid #000; text-align: center;">All</td>
+                        <td style="border: 1pt solid #000; text-align: center;">PF</td>
+                        <td style="border: 1pt solid #000; text-align: center;">${data.final_project.mi}</td>
+                        <td style="border: 1pt solid #000; text-align: center;">${data.final_project.td}</td>
+                    </tr>
+                </table>
+                <div style="padding: 15px; border-top: 1.5pt solid #000; font-size: 8.5pt; color: #444; text-align: center;">
+                    <strong>AUSTIN ECO BILINGUAL SCHOOL</strong> | Campana, Prov. de Buenos Aires
+                </div>
+            </div>`;
+        };
+
+        function detectarIdioma(datosUsuario) {
+            const texto = `${datosUsuario.subject || ''} ${datosUsuario.unit_name || ''} ${datosUsuario.orientation || ''} ${datosUsuario.raw_input || ''}`.toLowerCase();
+            if (!texto.trim()) {
+                return 'es';
+            }
+
+            const spanishSignals = [
+                ' y ', ' de ', ' la ', ' el ', ' los ', ' las ', ' que ', ' para ', ' por ',
+                ' con ', ' una ', ' unos ', ' alumno', ' docente', ' unidad', ' materia',
+                ' educación', ' enseñanza', ' aprendizaje', ' escuela', ' español', ' ñ', 'á', 'é', 'í', 'ó', 'ú'
+            ];
+            const englishSignals = [
+                ' and ', ' of ', ' the ', ' for ', ' with ', ' that ', ' students', ' teachers', ' unit',
+                ' subject', ' learning', ' school', ' class', ' english', ' bilingual', ' global', ' science', ' history'
+            ];
+
+            const countMatches = (terms) => terms.reduce((count, term) => {
+                const regex = new RegExp(term.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+                return count + ((texto.match(regex) || []).length);
+            }, 0);
+
+            const spanishCount = countMatches(spanishSignals);
+            const englishCount = countMatches(englishSignals);
+
+            if (spanishCount > englishCount) return 'es';
+            if (englishCount > spanishCount) return 'en';
+
+            return texto.includes(' the ') || texto.includes(' and ') || texto.includes(' is ') ? 'en' : 'es';
+        }
+
+        function prepararPromptParaIA(datosUsuario) {
+            const idioma = detectarIdioma(datosUsuario);
+            const esIngles = idioma === 'en';
+
+            const idiomaInstruccion = esIngles 
+                ? `CRITERIO DE IDIOMA Y REDACCIÓN OBLIGATORIO:
+Todas las variables de texto didáctico (topic, throughlines, text, question, title, description, assessment) DEBEN ser redactadas exclusivamente en INGLÉS.
+Todas las metas de comprensión ('text' dentro de 'understanding_goals') DEBEN comenzar obligatoriamente con: "Students will develop understanding about..."`
+                : `CRITERIO DE IDIOMA Y REDACCIÓN OBLIGATORIO:
+Todas las variables de texto didáctico (topic, throughlines, text, question, title, description, assessment) DEBEN ser redactadas exclusivamente en ESPAÑOL.
+Todas las metas de comprensión ('text' dentro de 'understanding_goals') DEBEN comenzar obligatoriamente con: "Los estudiantes desarrollarán comprensión sobre..."`;
+
+            const ejemploMeta = esIngles ? "Students will develop understanding about..." : "Los estudiantes desarrollarán comprensión sobre...";
+            
+            return `Actúa como experto en EpC (Harvard Project Zero) para Austin Eco Bilingual School.
+Genera la planificación solicitada siguiendo estrictamente el siguiente esquema de datos en formato JSON puro. No agregues explicaciones, markdown ni bloques de código redundantes, solo el objeto JSON estructurado.
+
+${idiomaInstruccion}
+
+IMPORTANTE: Usa la información de "Enfoque Pedagógico" para ajustar el diseño educativo y las recomendaciones metodológicas. Si el texto incluye nivel de alfabetización, fortalezas o debilidades del grupo, apoyos necesarios, ritmo de lectura u otras características del alumnado, incorpora esos detalles en la orientación del output.
+
+DATOS DE ENTRADA:
+- Unidad: ${datosUsuario.unit_name || "Sin nombre"}
+- Materia: ${datosUsuario.subject}
+- Año: ${datosUsuario.year}
+- Enfoque Pedagógico: ${datosUsuario.orientation}
+- Contenidos base: ${datosUsuario.raw_input}
+
+ESTRUCTURA JSON REQUERIDA DE SALIDA:
+{
+  "meta": { "year": "${datosUsuario.year}", "section": "", "subject": "${datosUsuario.subject}" },
+  "topic": "Título optimizado",
+  "throughlines": [ "Pregunta 1?", "Pregunta 2?", "Pregunta 3?", "Pregunta 4?" ],
+  "understanding_goals": [
+    { "id": "UG 1", "text": "${ejemploMeta}", "dimension": "KNOWLEDGE", "question": "Pregunta guía" },
+    { "id": "UG 2", "text": "${ejemploMeta}", "dimension": "METHOD", "question": "Pregunta guía" },
+    { "id": "UG 3", "text": "${ejemploMeta}", "dimension": "PURPOSE", "question": "Pregunta guía" },
+    { "id": "UG 4", "text": "${ejemploMeta}", "dimension": "COMMUNICATION", "question": "Pregunta guía" }
+  ],
+  "performances": [
+    { "title": "Actividad 1", "description": "Detalle", "assessment": "Evaluación", "ug": "1", "upt": "GI", "mi": "L", "td": "3" }
+  ],
+  "final_project": { "title": "Proyecto Final", "description": "Detalle", "mi": "L", "td": "7" }
+}
+Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el input sea limitado. Genera exactamente 4 'understanding_goals' (repartiendo dimensiones) y al menos 4 'performances' articuladas.`;
+        }
+
+        function generarPromptEstructurado() {
+            const payload = {
+                unit_name: document.getElementById('unit_name').value || "",
+                subject: document.getElementById('subject').value || "",
+                year: document.getElementById('unit_year').value || "",
+                orientation: document.getElementById('orientation').value,
+                raw_input: document.getElementById('raw_input').value
+            };
+
+            if(!payload.year || !payload.subject || !payload.raw_input) {
+                return alert("Por favor complete todos los campos obligatorios (*).");
+            }
+
+            const btn = document.getElementById('btn-generar');
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
+
+            try {
+                const promptFinal = prepararPromptParaIA(payload);
+                
+                // 1. Mostrar de forma persistente en el Front
+                document.getElementById('prompt-visual-viewer').value = promptFinal;
+
+                // 2. Ejecutar copia automática al portapapeles
+                const tx = document.createElement('textarea');
+                tx.value = promptFinal;
+                document.body.appendChild(tx);
+                tx.select();
+                document.execCommand('copy');
+                document.body.removeChild(tx);
+
+                // 3. Modificaciones de UI y bloqueo de seguridad
+                document.getElementById('banner-exito').style.display = 'flex';
+                
+                const btnMesa = document.querySelector('#banner-exito button');
+                btnMesa.disabled = true;
+                btnMesa.style.opacity = '0.4';
+                btnMesa.style.cursor = 'not-allowed';
+                btnMesa.innerText = "Esperando render de PUD...";
+
+                document.getElementById('pud-capture-zone').style.display = 'grid'; // Grid para split
+                btn.innerText = "Generar otro Prompt";
+                btn.disabled = false;
+
+            } catch (err) {
+                console.error("Fallo copia:", err);
+                btn.innerText = "Generar Prompt Estructurado";
+                btn.disabled = false;
+                return alert("Error al generar localmente.");
+            }
+
+            if (typeof _supabase !== 'undefined') {
+                _supabase.from('planificaciones_pud').insert([{ 
+                    docente_nombre: '', 
+                    topic_name: payload.unit_name,
+                    raw_input: payload.raw_input,
+                    status: 'workspace_v2_prompt_generated',
+                    materia: payload.subject
+                }]).then(undefined, e => console.log("Supabase block ignored."));
+            }
+        }
+
+        function recopiarPromptManual() {
+            const promptTexto = document.getElementById('prompt-visual-viewer').value;
+            if(!promptTexto) return;
+            
+            const tx = document.createElement('textarea');
+            tx.value = promptTexto;
+            document.body.appendChild(tx);
+            tx.select();
+            document.execCommand('copy');
+            document.body.removeChild(tx);
+            alert("Prompt copiado nuevamente al portapapeles.");
+        }
+
+        const preview = document.getElementById('output-preview');
+        const pasteZone = document.getElementById('json-paster');
+
+        const procesarTextoYRenderizar = (textoJson) => {
+            try {
+                const cleanJson = textoJson.replace(/```json|```html|```/g, '').trim();
+                const jsonData = JSON.parse(cleanJson);
+                window.pudActivoJson = jsonData; 
+                
+                preview.innerHTML = renderAustinPUD(jsonData);
+
+                // CONTROL HUMANO: Desbloqueo tras validación exitosa
+                const btnMesa = document.querySelector('#banner-exito button');
+                if (btnMesa) {
+                    btnMesa.disabled = false;
+                    btnMesa.style.opacity = '1';
+                    btnMesa.style.cursor = 'pointer';
+                    btnMesa.style.background = 'var(--accent-blue)';
+                    btnMesa.innerText = "Ir a Mesa de Trabajo →";
+                }
+                return true;
+            } catch (err) {
+                console.error(err);
+                alert("El texto no contiene un objeto JSON válido. Revisá la copia.");
+                return false;
+            }
+        };
+
+        preview.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const text = e.clipboardData.getData('text/plain');
+            procesarTextoYRenderizar(text);
+        });
+
+        pasteZone.addEventListener('input', (e) => {
+            if(pasteZone.value.trim() !== "") {
+                procesarTextoYRenderizar(pasteZone.value);
+            }
+        });
+
+        function entrarAMesaDeTrabajo() {
+            const unitTitle = document.getElementById('unit_name').value || window.pudActivoJson?.topic || 'Unidad Activa';
+            document.getElementById('w-pud-title').innerText = "PUD: " + unitTitle;
+            document.body.setAttribute('data-view', 'workspace');
+            document.getElementById('view-indicator').innerText = "Mesa de Operaciones Satélite";
+        }
+
+        function volverAlHome() {
+            const homeView = document.getElementById('home-view');
+            if (homeView) homeView.style.display = '';
+
+            document.body.setAttribute('data-view', 'home');
+            document.body.removeAttribute('data-mode');
+            document.getElementById('view-indicator').innerText = "Entorno de Carga";
+            document.getElementById('w-pud-title').innerText = "PUD Activo";
+            document.getElementById('banner-exito').style.display = 'none';
+            document.getElementById('pud-capture-zone').style.display = 'none';
+            document.getElementById('json-paster').value = "";
+            document.getElementById('prompt-visual-viewer').value = "";
+            recuperarHistorialReal();
+        }
+
+        function getActivePUDMeta() {
+            return {
+                unit_name: document.getElementById('unit_name').value || window.pudActivoJson?.topic || 'PUD sin nombre',
+                subject: document.getElementById('subject').value || window.pudActivoJson?.meta?.subject || 'Sin materia',
+                year: document.getElementById('unit_year').value || window.pudActivoJson?.meta?.year || '',
+                content_html: document.getElementById('output-preview')?.innerHTML || '',
+                content_json: window.pudActivoJson ? JSON.stringify(window.pudActivoJson) : null,
+                docente_nombre: (document.getElementById('render-docente')?.textContent || '').trim(),
+            };
+        }
+
+        async function guardarPUD() {
+            if (typeof _supabase === 'undefined') {
+                return alert('Supabase no está disponible para guardar el PUD.');
+            }
+
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) {
+                return alert('Debes iniciar sesión para guardar el PUD y verlo en tu historial.');
+            }
+
+            const pudMeta = getActivePUDMeta();
+            if (!pudMeta.content_html || pudMeta.content_html.trim().length === 0) {
+                return alert('No hay PUD cargado para guardar.');
+            }
+
+            const payload = {
+                user_id: user.id,
+                unit_name: pudMeta.unit_name,
+                subject: pudMeta.subject,
+                year: pudMeta.year,
+                content_html: pudMeta.content_html,
+                docente_nombre: pudMeta.docente_nombre || null
+            };
+            if (pudMeta.content_json) {
+                payload.content_json = pudMeta.content_json;
+            }
+
+            try {
+                console.log('guardarPUD payload', payload);
+                const { data, error } = await _supabase.from('pud_history').insert([payload]);
+                if (error) {
+                    throw error;
+                }
+                alert('PUD guardado correctamente.');
+                recuperarHistorialReal();
+                return data;
+            } catch (err) {
+                console.error('Error guardando PUD:', err);
+                const errorMessage = err?.message || err?.msg || JSON.stringify(err);
+                alert('No se pudo guardar el PUD: ' + errorMessage);
+            }
+        }
+
+        async function presentarPUD() {
+            if (typeof _supabase === 'undefined') {
+                return alert('Supabase no está disponible para presentar el PUD.');
+            }
+
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) {
+                return alert('Debes iniciar sesión para presentar el PUD.');
+            }
+
+            const pudMeta = getActivePUDMeta();
+            if (!pudMeta.content_html || pudMeta.content_html.trim().length === 0) {
+                return alert('No hay PUD cargado para presentar.');
+            }
+
+            const docenteNombre = pudMeta.docente_nombre || derivarNombreDesdeEmail(user.email);
+
+            try {
+                const { count, error: countError } = await _supabase
+                    .from('pud_history')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('user_id', user.id)
+                    .eq('unit_name', pudMeta.unit_name)
+                    .eq('subject', pudMeta.subject)
+                    .eq('year', pudMeta.year)
+                    .eq('status', 'presented');
+
+                if (countError) throw countError;
+
+                const payload = {
+                    user_id: user.id,
+                    unit_name: pudMeta.unit_name,
+                    subject: pudMeta.subject,
+                    year: pudMeta.year,
+                    content_html: pudMeta.content_html,
+                    docente_nombre: docenteNombre,
+                    status: 'presented',
+                    presented_at: new Date().toISOString(),
+                    presented_version: (count || 0) + 1
+                };
+                if (pudMeta.content_json) {
+                    payload.content_json = pudMeta.content_json;
+                }
+
+                const { error } = await _supabase.from('pud_history').insert([payload]);
+                if (error) throw error;
+
+                mostrarConfirmBanner(`✅ ¡PUD presentado correctamente! Versión ${payload.presented_version}.`);
+                recuperarHistorialReal();
+            } catch (err) {
+                console.error('Error presentando PUD:', err);
+                const errorMessage = err?.message || err?.msg || JSON.stringify(err);
+                alert('No se pudo presentar el PUD: ' + errorMessage);
+            }
+        }
+
+        function cambiarPestaña(event, idHerramienta) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('tab-' + idHerramienta).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function escapeHtml(value = '') {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function configurarHistorialMovil() {
+            const section = document.getElementById('historial-container');
+            const button = document.getElementById('history-toggle-btn');
+            if (!section || !button) return;
+
+            const mediaQuery = window.matchMedia('(max-width: 680px)');
+
+            const aplicarEstado = () => {
+                if (!mediaQuery.matches) {
+                    section.setAttribute('data-collapsed', 'false');
+                    button.setAttribute('aria-expanded', 'true');
+                    button.textContent = 'Historial abierto';
+                    return;
+                }
+
+                const currentlyCollapsed = section.getAttribute('data-collapsed') === 'true';
+                button.setAttribute('aria-expanded', String(!currentlyCollapsed));
+                button.textContent = currentlyCollapsed ? 'Mostrar historial' : 'Ocultar historial';
+            };
+
+            button.addEventListener('click', () => {
+                const nextState = section.getAttribute('data-collapsed') === 'true';
+                section.setAttribute('data-collapsed', String(!nextState));
+                aplicarEstado();
+            });
+
+            aplicarEstado();
+            if (mediaQuery.addEventListener) {
+                mediaQuery.addEventListener('change', aplicarEstado);
+            } else {
+                mediaQuery.addListener(aplicarEstado);
+            }
+        }
+
+        function filtrarHistorial() {
+            const searchInput = document.getElementById('historial-search');
+            if (!searchInput) return;
+
+            const searchValue = searchInput.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.history-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h4')?.textContent?.toLowerCase() || '';
+                const subject = card.querySelector('p')?.textContent?.toLowerCase() || '';
+                
+                const matches = searchValue === '' || title.includes(searchValue) || subject.includes(searchValue);
+                
+                if (matches) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostrar mensaje si no hay resultados
+            const container = document.getElementById('historial-body');
+            let emptyState = container?.querySelector('.history-empty-state-search');
+            
+            if (visibleCount === 0 && searchValue !== '' && cards.length > 0) {
+                if (!emptyState) {
+                    emptyState = document.createElement('div');
+                    emptyState.className = 'history-empty-state history-empty-state-search';
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = `No se encontraron PUDs que coincidan con "<strong>${escapeHtml(searchValue)}</strong>".`;
+                    container.appendChild(emptyState);
+                } else {
+                    emptyState.style.display = 'block';
+                    emptyState.innerHTML = `No se encontraron PUDs que coincidan con "<strong>${escapeHtml(searchValue)}</strong>".`;
+                }
+            } else if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        async function recuperarHistorialReal() {
+            const container = document.getElementById('historial-body');
+            if (!container) return;
+            container.innerHTML = '<div class="history-empty-state">Cargando registros...</div>';
+            
+            try {
+                const { data: { user } } = await _supabase.auth.getUser();
+                window.authUser = user || null;
+                actualizarUIAuth();
+
+                if (!user) {
+                    container.innerHTML = '<div class="history-empty-state">Iniciá sesión para ver y cargar tu historial personal de PUDs.</div>';
+                    return;
+                }
+
+                const query = _supabase
+                    .from('pud_history')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                const { data, error } = await query;
+
+                if (error) {
+                    if (error.code === '42703') {
+                        container.innerHTML = '<div class="history-empty-state">Tu tabla necesita la columna user_id para filtrar por usuario.<br>Podés agregarla desde Supabase SQL Editor.</div>';
+                        return;
+                    }
+                    throw error;
+                }
+
+                if(!data || data.length === 0) {
+                    container.innerHTML = '<div class="history-empty-state">Todavía no hay planificaciones guardadas para este usuario.<br>Cuando guardes un PUD aparecerá aquí.</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'history-card';
+                    const createdDate = item.created_at
+                        ? new Date(item.created_at).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })
+                        : 'Sin fecha';
+                    const estaPresentado = item.status === 'presented';
+                    const badgeTexto = estaPresentado
+                        ? `Presentado${item.presented_version ? ' v' + item.presented_version : ''}`
+                        : 'Guardado';
+                    card.innerHTML = `
+                        <div class="history-card-top">
+                            <span class="history-badge${estaPresentado ? ' is-presented' : ''}">${badgeTexto}</span>
+                            <span class="history-date">${escapeHtml(createdDate)}</span>
+                        </div>
+                        <h4>${escapeHtml(item.unit_name || 'Sin título')}</h4>
+                        <p><strong>Materia:</strong> ${escapeHtml(item.subject || 'Sin materia')}</p>
+                    `;
+                    card.onclick = () => {
+                        document.getElementById('w-pud-title').innerText = "PUD Histórico: " + (item.unit_name || 'Sin título');
+                        preview.innerHTML = item.content_html || '<p style="color:#94a3b8;">No hay contenido disponible.</p>';
+
+                        // Restaurar el contexto del PUD activo (topic/meta + campos del
+                        // formulario de inicio): sin esto, getActivePUDMeta() no encuentra
+                        // nada al Guardar/Presentar desde acá y cae en los fallback
+                        // ("PUD sin nombre" / "Sin materia" / año vacío), que además hace
+                        // que el PUD presentado no aparezca en el panel de coordinadores.
+                        try {
+                            window.pudActivoJson = item.content_json ? JSON.parse(item.content_json) : null;
+                        } catch (e) {
+                            window.pudActivoJson = null;
+                        }
+                        document.getElementById('unit_name').value = item.unit_name || '';
+                        document.getElementById('subject').value = item.subject || '';
+                        document.getElementById('unit_year').value = item.year || '';
+
+                        document.body.setAttribute('data-view', 'workspace');
+                        document.getElementById('view-indicator').innerText = "Mesa de Operaciones Satélite";
+                    };
+                    container.appendChild(card);
+                });
+
+                // Limpiar búsqueda al cargar historial
+                const searchInput = document.getElementById('historial-search');
+                if (searchInput) searchInput.value = '';
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<div class="history-empty-state" style="color:#ef4444;">Error de conexión local con el historial.</div>';
+            }
+        }
+
+        async function inicializarSesionAuth() {
+            poblarSelectGrados();
+            cargarAreasEnSelect();
+
+            const { data: { session } } = await _supabase.auth.getSession();
+            window.authUser = session?.user || null;
+            actualizarUIAuth();
+            if (window.authUser) {
+                mostrarApp();
+            } else {
+                mostrarGate();
+            }
+            await recuperarHistorialReal();
+        }
+
+        revisarConfirmacionSupabase();
+
+        _supabase.auth.onAuthStateChange((event, session) => {
+            window.authUser = session?.user || null;
+            actualizarUIAuth();
+            if (window.authUser) {
+                mostrarApp();
+            } else if (event === 'SIGNED_OUT') {
+                mostrarGate();
+            }
+            if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+                recuperarHistorialReal();
+            }
+        });
+
+        // Setup: cargar HTML dentro de un iframe en el tab correspondiente
+        (function setupHtmlTabLoader(){
+            function installLoader(tabKey, displayId, filename){
+                const display = document.getElementById(displayId);
+                if(!display) return;
+
+                function loadFile(){
+                    if (display.querySelector('iframe')) {
+                        return;
+                    }
+
+                    display.innerHTML = '';
+                    const iframe = document.createElement('iframe');
+                    iframe.src = filename;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.minHeight = '520px';
+                    iframe.style.border = '0';
+                    display.appendChild(iframe);
+                }
+
+                const tabBtn = document.querySelector(`button[onclick*="${tabKey}"]`);
+                if(tabBtn) tabBtn.addEventListener('click', loadFile);
+
+                // Si la pestaña ya está activa al cargar la página, cargar el contenido inmediatamente.
+                const tabSection = document.getElementById(`tab-${tabKey}`);
+                if(tabSection && tabSection.classList.contains('active')){
+                    loadFile();
+                }
+            }
+
+            installLoader('secuencias', 'display-secuencias', 'secuencias-epc.html');
+            installLoader('tareas', 'display-tareas', 'generador-tareas.html');
+
+            // Le pasa al Generador de Tareas el grado/materia/objetivos de la PUD
+            // activa (sin tocar installLoader: el iframe se crea una sola vez, así
+            // que el contexto se reenvía por postMessage cada vez que hace falta).
+            function construirContextoParaTareas() {
+                return {
+                    type: 'pud-workspace:contexto',
+                    grado: document.getElementById('unit_year')?.value || '',
+                    materia: document.getElementById('subject')?.value || '',
+                    unitName: document.getElementById('unit_name')?.value || window.pudActivoJson?.topic || '',
+                    topic: window.pudActivoJson?.topic || '',
+                    objetivos: (window.pudActivoJson?.understanding_goals || [])
+                        .slice(0, 3)
+                        .map(ug => ug.text)
+                        .filter(Boolean)
+                };
+            }
+
+            function enviarContextoATareas() {
+                const iframe = document.querySelector('#display-tareas iframe');
+                if (!iframe || !iframe.contentWindow) return;
+                iframe.contentWindow.postMessage(construirContextoParaTareas(), '*');
+            }
+
+            const tabBtnTareas = document.querySelector('button[onclick*="tareas"]');
+            if (tabBtnTareas) tabBtnTareas.addEventListener('click', enviarContextoATareas);
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'tareas:ready') {
+                    enviarContextoATareas();
+                }
+            });
+        })();
+
+        configurarHistorialMovil();
+        inicializarSesionAuth();
+
+        function iniciarFlujo(modo) {
+            if (modo !== 'libre') {
+                return;
+            }
+
+            const homeView = document.getElementById('home-view');
+            if (homeView) homeView.style.display = 'none';
+
+            document.body.setAttribute('data-mode', 'libre');
+            document.getElementById('w-pud-title').innerText = 'Mesa de Trabajo libre';
+            document.getElementById('view-indicator').innerText = 'Mesa Libre sin PUD';
+            document.body.setAttribute('data-view', 'workspace');
+        }
+    </script>
+</body>
+</html>

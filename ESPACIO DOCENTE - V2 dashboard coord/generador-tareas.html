@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Tareas | Austin Eco</title>
+    <style>
+        :root {
+            --austin-blue: #1a2e5a;
+            --austin-red: #8b1d22;
+            --border: #e2e8f0;
+            --surface: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--surface);
+            color: #333;
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 860px;
+            background: var(--white);
+            border-radius: 10px;
+            border-top: 10px solid var(--austin-blue);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 24px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--austin-red);
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+        }
+        header h1 {
+            color: var(--austin-blue);
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        header p { color: #64748b; font-size: 0.8rem; margin-top: 4px; }
+
+        /* SELECCIÓN DE SECCIONES */
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .selection-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 7px 8px;
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 60px;
+        }
+        .selection-card:hover {
+            border-color: var(--austin-blue);
+            transform: translateY(-1px);
+        }
+        .selection-card.selected {
+            border-color: var(--austin-blue);
+            background: #eef4ff;
+            box-shadow: 0 0 0 1px rgba(26, 46, 90, 0.1);
+        }
+        .selection-card input {
+            margin-top: 2px;
+            accent-color: var(--austin-blue);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .selection-card .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .selection-card .num {
+            font-weight: 800;
+            font-size: 0.7rem;
+            color: var(--austin-blue);
+        }
+        .selection-card .name {
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.25;
+            font-size: 0.66rem;
+        }
+        .selection-hint {
+            margin-bottom: 16px;
+            color: #64748b;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--austin-blue);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #1e293b;
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.15s;
+        }
+        textarea:focus { outline: none; border-color: var(--austin-blue); }
+
+        select {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #1e293b;
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        select:focus { border-color: var(--austin-blue); }
+
+        .optional-badge { text-transform: none; font-weight: 400; color: #94a3b8; }
+
+        .campo-edad { max-width: 320px; margin-bottom: 18px; }
+
+        .contexto-pud-panel {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: #eef4ff;
+            border: 1px solid #c7d7f5;
+            border-radius: 7px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            font-size: 0.78rem;
+            color: #1e293b;
+        }
+        .contexto-pud-titulo {
+            font-weight: 800;
+            color: var(--austin-blue);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        button.btn-main {
+            margin-top: 14px;
+            background: var(--austin-red);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button.btn-main:hover { background: var(--austin-blue); }
+
+        .output-wrapper {
+            margin-top: 28px;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 22px;
+        }
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .output-header label { color: #94a3b8; margin: 0; }
+        .btn-copy {
+            background: var(--austin-blue);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-copy:hover { background: #2563eb; }
+
+        #output-box {
+            width: 100%;
+            min-height: 260px;
+            background: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            resize: vertical;
+        }
+
+        @media (max-width: 960px) {
+            .selection-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 620px) {
+            .selection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 380px) {
+            .selection-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 18px 12px;
+            }
+
+            .container {
+                padding: 18px;
+                border-radius: 8px;
+                box-shadow: none;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            textarea {
+                min-height: 220px;
+            }
+
+            .output-wrapper {
+                padding: 18px;
+            }
+
+            #output-box {
+                min-height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Generador de Tareas</h1>
+        <p>5 secciones estructuradas sobre el tema &nbsp;|&nbsp; Austin Eco Bilingual School</p>
+    </header>
+
+    <div class="selection-hint">Marcá las secciones que querés incluir en la tarea. El prompt solo generará las que selecciones.</div>
+    <div class="selection-grid" id="section-selector">
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="1" checked>
+            <span class="card-content">
+                <span class="num">1</span>
+                <span class="name">Texto informativo</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="2" checked>
+            <span class="card-content">
+                <span class="num">2</span>
+                <span class="name">3 Preguntas cerradas</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="3" checked>
+            <span class="card-content">
+                <span class="num">3</span>
+                <span class="name">3 Preguntas abiertas</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="4" checked>
+            <span class="card-content">
+                <span class="num">4</span>
+                <span class="name">Actividad de vocabulario</span>
+            </span>
+        </label>
+        <label class="selection-card selected">
+            <input type="checkbox" class="section-toggle" value="5" checked>
+            <span class="card-content">
+                <span class="num">5</span>
+                <span class="name">Clave de corrección</span>
+            </span>
+        </label>
+    </div>
+
+    <div id="contexto-pud-panel" class="contexto-pud-panel"></div>
+
+    <div class="form-group campo-edad">
+        <label for="f-edad">Edad / Grado del alumno <span class="optional-badge">(opcional)</span></label>
+        <select id="f-edad">
+            <option value="">Sin especificar</option>
+            <option value="inicial">1° Grado Primaria</option>
+            <option value="inicial">2° Grado Primaria</option>
+            <option value="medio">3° Grado Primaria</option>
+            <option value="medio">4° Grado Primaria</option>
+            <option value="medio">5° Grado Primaria</option>
+            <option value="avanzado">6° Grado Primaria</option>
+        </select>
+    </div>
+
+    <label for="f-tema">Tema o contenido de la tarea</label>
+    <textarea id="f-tema" rows="6" placeholder="Describí el tema, unidad, concepto o contenido sobre el que querés generar la tarea. Podés incluir el año, materia o cualquier orientación específica..."></textarea>
+
+    <button class="btn-main" onclick="construirPrompt()">Construir Prompt para Gemini</button>
+
+    <div class="output-wrapper">
+        <div class="output-header">
+            <label>Prompt listo para copiar a Gemini</label>
+            <button class="btn-copy" onclick="copiar()">Copiar Prompt</button>
+        </div>
+        <div id="output-box">Completá el campo de arriba y presioná el botón para generar el prompt...</div>
+    </div>
+
+</div>
+
+<script>
+    // Bandas de calibración por edad e idioma. Para inglés se referencian
+    // niveles MCER (Pre-A1/A1, A2/B1, B1/B2); para castellano, estándares de
+    // lectura por grado (no aplica MCER, que es un marco de lengua extranjera).
+    // Mismo shape { label, vocabulario, gramatica } en ambos idiomas para que
+    // bloqueBandaEdad sea una sola función.
+    const BANDAS_EDAD = {
+        es: {
+            inicial: {
+                label: '1°-2° Grado — estándar de lectura inicial',
+                vocabulario: 'Cotidiano y concreto; evitar términos abstractos sin explicarlos primero.',
+                gramatica: 'Oraciones de 5 a 8 palabras, sin subordinadas.'
+            },
+            medio: {
+                label: '3°-5° Grado — estándar de lectura media',
+                vocabulario: 'Específico del área, siempre explicado en contexto.',
+                gramatica: 'Oraciones de hasta 12-15 palabras, con subordinadas simples.'
+            },
+            avanzado: {
+                label: '6° Grado — estándar de lectura avanzada',
+                vocabulario: 'Técnico del área, con primeras nociones de argumentación.',
+                gramatica: 'Oraciones más complejas, con conectores de causa-consecuencia.'
+            }
+        },
+        en: {
+            inicial: {
+                label: 'Pre-A1 / A1 (MCER)',
+                vocabulario: 'High-frequency, everyday words only.',
+                gramatica: 'Present simple, regular plurals, sentences of 5-8 words, no compound tenses.'
+            },
+            medio: {
+                label: 'A2 / B1 (MCER)',
+                vocabulario: 'Everyday vocabulary plus basic academic terms.',
+                gramatica: 'Past simple and "going to" future; simple compound sentences with and/but/because.'
+            },
+            avanzado: {
+                label: 'B1 / B2 (MCER)',
+                vocabulario: 'Academic and abstract vocabulary.',
+                gramatica: 'Subordinate clauses, passive voice, cause-effect connectors, argumentative language.'
+            }
+        }
+    };
+
+    function bloqueBandaEdad(banda, idioma) {
+        const info = BANDAS_EDAD[idioma]?.[banda];
+        if (!info) return null;
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nCALIBRACIÓN POR EDAD (${info.label})\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n- VOCABULARIO: ${info.vocabulario}\n- GRAMÁTICA/SINTAXIS: ${info.gramatica}`;
+    }
+
+    // Mismo diccionario de señales léxicas que ya usa index.html (detectarIdioma),
+    // separado del veredicto final para poder reusar el conteo en textos cortos
+    // (ver recolectarDatosFormulario).
+    function contarSenalesIdioma(texto) {
+        const cuerpo = (texto || '').toLowerCase();
+
+        const spanishSignals = [
+            ' y ', ' de ', ' la ', ' el ', ' los ', ' las ', ' que ', ' para ', ' por ',
+            ' con ', ' una ', ' unos ', ' alumno', ' docente', ' unidad', ' materia',
+            ' educación', ' enseñanza', ' aprendizaje', ' escuela', ' español'
+        ];
+        const englishSignals = [
+            ' and ', ' of ', ' the ', ' for ', ' with ', ' that ', ' students', ' teachers', ' unit',
+            ' subject', ' learning', ' school', ' class', ' english', ' bilingual', ' global', ' science', ' history'
+        ];
+
+        const countMatches = (terms) => terms.reduce((count, term) => {
+            const regex = new RegExp(term.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+            return count + ((cuerpo.match(regex) || []).length);
+        }, 0);
+
+        return { es: countMatches(spanishSignals), en: countMatches(englishSignals) };
+    }
+
+    function detectarIdiomaTexto(texto) {
+        const cuerpo = (texto || '').toLowerCase().trim();
+        if (!cuerpo) return 'es';
+
+        // Señal fuerte y muy confiable: tildes/ñ/signos propios del castellano.
+        if (/[áéíóúñ¿¡]/.test(cuerpo)) return 'es';
+
+        const { es, en } = contarSenalesIdioma(cuerpo);
+        if (es > en) return 'es';
+        if (en > es) return 'en';
+
+        // Empate a cero (frecuente en títulos cortos sin conectores, ej. "Analyze
+        // climate change causes"): sin tildes ni señales de castellano, se asume
+        // inglés antes que forzar castellano por defecto — es el sesgo más útil
+        // para una escuela bilingüe donde muchos temas se titulan en inglés.
+        return 'en';
+    }
+
+    function bloqueIdiomaSalida(idioma) {
+        return idioma === 'en'
+            ? `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nIDIOMA DE SALIDA: INGLÉS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nToda la tarea generada (texto, preguntas, vocabulario, consignas y clave de corrección) debe redactarse íntegramente en inglés, sin importar el idioma de estas instrucciones.`
+            : `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nIDIOMA DE SALIDA: CASTELLANO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nToda la tarea generada debe redactarse íntegramente en castellano.`;
+    }
+
+    function escapeHtml(value = '') {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // ---- Contexto del PUD activo (recibido por postMessage desde index.html) ----
+
+    window.contextoPUD = null;
+
+    if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'tareas:ready' }, '*');
+    }
+
+    window.addEventListener('message', (event) => {
+        const data = event.data;
+        if (!data || data.type !== 'pud-workspace:contexto') return;
+        aplicarContextoPUD(data);
+    });
+
+    function aplicarContextoPUD(data) {
+        window.contextoPUD = data;
+
+        const selectEdad = document.getElementById('f-edad');
+        // Solo autocompleta si el campo está vacío o si el valor actual lo
+        // pusimos nosotros antes (nunca pisa una elección manual del docente).
+        if (data.grado && (selectEdad.value === '' || selectEdad.dataset.autofilled === 'true')) {
+            const opcion = Array.from(selectEdad.options).find(o => o.textContent.trim() === data.grado.trim());
+            if (opcion) {
+                selectEdad.value = opcion.value;
+                selectEdad.dataset.autofilled = 'true';
+            }
+        }
+
+        renderContextoPUD(data);
+    }
+
+    function renderContextoPUD(data) {
+        const panel = document.getElementById('contexto-pud-panel');
+        if (!panel) return;
+
+        const tieneAlgo = data.materia || data.unitName || data.topic || (data.objetivos && data.objetivos.length > 0);
+        if (!tieneAlgo) { panel.style.display = 'none'; return; }
+
+        const partes = [`<p class="contexto-pud-titulo">📎 Contexto tomado del PUD activo</p>`];
+        if (data.materia) partes.push(`<span><strong>Materia:</strong> ${escapeHtml(data.materia)}</span>`);
+        if (data.unitName) partes.push(`<span><strong>Unidad:</strong> ${escapeHtml(data.unitName)}</span>`);
+        if (data.topic && data.topic !== data.unitName) partes.push(`<span><strong>Tema PUD:</strong> ${escapeHtml(data.topic)}</span>`);
+        if (data.objetivos && data.objetivos.length > 0) {
+            partes.push(`<span><strong>Objetivos:</strong> ${data.objetivos.map(escapeHtml).join(' · ')}</span>`);
+        }
+
+        panel.innerHTML = partes.join('');
+        panel.style.display = 'flex';
+    }
+
+    function bloqueContextoPUD(contexto) {
+        if (!contexto) return null;
+        const lineas = [];
+        if (contexto.materia) lineas.push(`- Materia/Área: ${contexto.materia}`);
+        if (contexto.unitName) lineas.push(`- Unidad didáctica: ${contexto.unitName}`);
+        if (contexto.topic && contexto.topic !== contexto.unitName) lineas.push(`- Tópico de la PUD: ${contexto.topic}`);
+        if (contexto.objetivos && contexto.objetivos.length > 0) {
+            lineas.push(`- Objetivos de comprensión de la unidad: ${contexto.objetivos.join(' | ')}`);
+        }
+        if (lineas.length === 0) return null;
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nCONTEXTO DE LA UNIDAD DIDÁCTICA (PUD) ACTIVA\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTené en cuenta este contexto para que la tarea sea coherente con la unidad en curso:\n${lineas.join('\n')}`;
+    }
+
+    // Cada 'body' recibe la banda de edad y devuelve el texto de la sección.
+    // Sin banda (o banda sin regla propia), el resultado es idéntico al texto
+    // fijo que la herramienta usaba antes de esta mejora.
+    const sectionDefinitions = [
+        {
+            id: 1,
+            header: 'SECCIÓN 1 — TEXTO INFORMATIVO',
+            body: (banda) => {
+                const requisitos = {
+                    inicial: '- Entre 80 y 120 palabras\n- Oraciones muy cortas y simples (una idea por oración)\n- Vocabulario cotidiano y concreto',
+                    avanzado: '- Entre 200 y 280 palabras\n- Oraciones más complejas, con conectores de causa/consecuencia\n- Vocabulario técnico permitido'
+                }[banda] || '- Entre 150 y 220 palabras\n- Lenguaje claro, preciso y adecuado al nivel';
+                return `Redactá un texto informativo original sobre el tema. Requisitos:
+${requisitos}
+- Debe cubrir los conceptos clave del tema
+- Incluí al menos 5 palabras de vocabulario específico del tema (que luego se trabajarán en la Sección 4)
+- Título atractivo para el texto`;
+            }
+        },
+        {
+            id: 2,
+            header: 'SECCIÓN 2 — PREGUNTAS CERRADAS (Comprensión literal)',
+            body: (banda) => {
+                const notaComplejidad = {
+                    inicial: 'Usá lenguaje simple y directo en las opciones, evitando dobles negaciones o distractores ambiguos.',
+                    avanzado: 'Las opciones incorrectas (distractores) deben ser plausibles y requerir atención al detalle para descartarlas.'
+                }[banda];
+                return `Formulá exactamente 3 preguntas cerradas sobre el texto de la Sección 1. Cada pregunta debe:
+- Tener 3 opciones de respuesta (a, b, c)
+- Solo una opción correcta
+- Estar basada en información explícita del texto
+- Evaluar comprensión literal o de detalle${notaComplejidad ? `\n- ${notaComplejidad}` : ''}`;
+            }
+        },
+        {
+            id: 3,
+            header: 'SECCIÓN 3 — PREGUNTAS ABIERTAS (Comprensión profunda)',
+            body: (banda) => {
+                const progresion = {
+                    inicial: 'la primera de recordar un dato concreto del texto, la segunda de comprensión simple, la tercera de opinión personal breve',
+                    avanzado: 'la primera de análisis, la segunda de evaluación crítica, la tercera de argumentación y transferencia a otros contextos'
+                }[banda] || 'la primera de comprensión, la segunda de análisis, la tercera de opinión o transferencia';
+                return `Formulá exactamente 3 preguntas abiertas. Deben:
+- Requerir respuesta elaborada (no se responden con sí/no)
+- Progresión cognitiva: ${progresion}
+- Conectar el tema con experiencias reales o con otras áreas del conocimiento
+- Dejar espacio visible para la respuesta del alumno (indicar: "Respuesta: ___________")`;
+            }
+        },
+        {
+            id: 4,
+            header: 'SECCIÓN 4 — ACTIVIDAD DE VOCABULARIO',
+            body: (banda) => {
+                const notaDefiniciones = {
+                    inicial: 'Las definiciones deben ser muy simples, con ejemplos concretos y cotidianos (evitá definiciones circulares o abstractas).',
+                    avanzado: 'Las definiciones pueden incluir matices técnicos y relacionarse con otros conceptos del tema.'
+                }[banda];
+                return `Diseñá UNA actividad de vocabulario usando exactamente las 5 palabras clave del texto. Elegí el formato más adecuado al tipo de contenido, solo uno de estos:
+- Opción A: Unir con flechas (palabra → definición)
+- Opción B: Completar oraciones con el banco de palabras
+- Opción C: Clasificar palabras en categorías
+
+Indicá claramente el formato elegido y presentá la actividad lista para el alumno.${notaDefiniciones ? `\n${notaDefiniciones}` : ''}`;
+            }
+        },
+        {
+            id: 5,
+            header: 'SECCIÓN 5 — CLAVE DE CORRECCIÓN (solo para el docente)',
+            body: () => `Al final del documento, agregá una clave de corrección que incluya:
+- Respuestas correctas de las preguntas cerradas (Sección 2)
+- Criterios o ideas esperadas para las preguntas abiertas (Sección 3)
+- Solución de la actividad de vocabulario (Sección 4)
+
+Marcá esta sección claramente con el encabezado: ✂ --- CLAVE DOCENTE (no entregar al alumno) ---`
+        }
+    ];
+
+    function actualizarEstadoSeleccion() {
+        document.querySelectorAll('.selection-card').forEach(card => {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            card.classList.toggle('selected', checkbox.checked);
+        });
+    }
+
+    document.querySelectorAll('.section-toggle').forEach(checkbox => {
+        checkbox.addEventListener('change', actualizarEstadoSeleccion);
+    });
+
+    // ---- L2: recolectar datos / armar bloques / unir prompt ----
+
+    function recolectarDatosFormulario() {
+        const tema = document.getElementById('f-tema').value.trim();
+        const contexto = window.contextoPUD;
+
+        // El idioma de salida depende únicamente del tema (el input propio de
+        // esta herramienta) — deliberadamente NO se mezcla con el contexto del
+        // PUD: que el docente tenga abierta una PUD en otro idioma no debería
+        // cambiar en qué idioma sale una tarea cuyo tema él mismo tipeó.
+        const idioma = detectarIdiomaTexto(tema);
+
+        return {
+            tema,
+            banda: document.getElementById('f-edad').value,
+            idioma,
+            contexto,
+            selectedIds: Array.from(document.querySelectorAll('.section-toggle:checked'))
+                .map(checkbox => Number(checkbox.value))
+                .sort((a, b) => a - b)
+        };
+    }
+
+    function armarBloques(datos) {
+        const selectedSections = sectionDefinitions.filter(section => datos.selectedIds.includes(section.id));
+        const sectionsText = selectedSections.map(section =>
+            `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${section.header}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${section.body(datos.banda)}`
+        ).join('\n\n');
+
+        // P3: duración inferida de la cantidad de secciones combinadas (no es un campo nuevo).
+        const duracionEstimada = selectedSections.length <= 1
+            ? 'una actividad corta (10-15 minutos)'
+            : selectedSections.length <= 3
+                ? 'una actividad de duración media (20-30 minutos)'
+                : 'una clase completa (40-50 minutos)';
+
+        return {
+            contextoPUD: bloqueContextoPUD(datos.contexto),
+            idiomaSalida: bloqueIdiomaSalida(datos.idioma),
+            bandaEdad: bloqueBandaEdad(datos.banda, datos.idioma),
+            secciones: sectionsText,
+            duracionEstimada
+        };
+    }
+
+    function unirPrompt(datos, bloques) {
+        const extras = [bloques.contextoPUD, bloques.idiomaSalida, bloques.bandaEdad]
+            .filter(Boolean)
+            .map(bloque => `\n\n${bloque}`)
+            .join('');
+
+        return `Actúa como un docente experto en diseño de materiales educativos para educación primaria y secundaria bilingüe.
+
+Tu tarea es crear una TAREA COMPLETA Y LISTA PARA EL AULA sobre el siguiente tema:
+
+---
+${datos.tema}
+---${extras}
+
+La tarea debe estar organizada en las secciones seleccionadas, en este orden:
+
+${bloques.secciones}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESTRICCIONES GENERALES:
+- El output debe estar listo para imprimir y entregar al alumno, excepto en las secciones que correspondan al docente
+- No agregues introducciones, aclaraciones metodológicas ni texto fuera del formato solicitado
+- Usá los separadores visuales indicados para cada sección
+- Esta tarea está pensada para ${bloques.duracionEstimada} de trabajo en el aula`;
+    }
+
+    function construirPrompt() {
+        const datos = recolectarDatosFormulario();
+        if (!datos.tema) { alert("Ingresá un tema o contenido."); return; }
+        if (datos.selectedIds.length === 0) {
+            alert("Seleccioná al menos una sección para generar el prompt.");
+            return;
+        }
+
+        const bloques = armarBloques(datos);
+        const prompt = unirPrompt(datos, bloques);
+        document.getElementById('output-box').textContent = prompt;
+    }
+
+    async function copiar() {
+        const box = document.getElementById('output-box');
+        const btn = document.querySelector('.btn-copy');
+        const texto = box.textContent;
+
+        if (texto.startsWith("Completá")) { alert("Primero generá el prompt."); return; }
+
+        try {
+            await navigator.clipboard.writeText(texto);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = texto;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+
+        const orig = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        btn.style.background = "#16a34a";
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ""; }, 1500);
+    }
+</script>
+</body>
+</html>

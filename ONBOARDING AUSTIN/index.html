@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sendero de Bienvenida | Austin Eco Bilingual School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DE DISEÑO
+   Paleta extraída directamente del logo de Austin Eco Bilingual
+   School: naranja (#F18636), verde lima (#A9CF44) y azul petróleo
+   (#395968). El azul se usa como color estructural (headers,
+   footer, texto), el verde como acento de acción/éxito y el
+   naranja como acento de logro (XP, paso activo).
+   ============================================================ */
+:root {
+    --cream:        #FAF9F4;
+    --cream-deep:    #F0EEE2;
+    --ink:          #26343E;
+    --moss-900:     #26343E;
+    --moss-700:     #35505E;
+    --moss-600:     #6B8A28;
+    --moss-400:     #A9CF44;
+    --moss-100:     #EAF3D2;
+    --moss-50:      #F4F8EA;
+    --amber-600:    #E0701F;
+    --amber-500:    #F18636;
+    --amber-100:    #FDE6D0;
+    --coral-600:    #B84B34;
+    --coral-100:    #F9E1DA;
+    --stone-600:    #5B6459;
+    --stone-400:    #8B9186;
+    --stone-200:    #D8D9CF;
+    --paper:        #FFFFFF;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+    --radius:       14px;
+    --radius-sm:    8px;
+    --shadow-card:  0 1px 2px rgba(38,52,62,0.06), 0 8px 24px rgba(38,52,62,0.07);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--moss-900); }
+
+button { font-family: var(--font-body); }
+
+a { color: var(--moss-600); }
+
+::selection { background: var(--amber-100); }
+
+/* Foco visible en todo elemento interactivo — accesibilidad */
+a:focus-visible, button:focus-visible, input:focus-visible,
+[tabindex]:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--amber-500);
+    outline-offset: 2px;
+}
+
+.hidden { display: none !important; }
+
+/* ============================================================
+   PANTALLA DE INGRESO
+   ============================================================ */
+#login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+        radial-gradient(circle at 15% 15%, var(--moss-100) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, var(--amber-100) 0%, transparent 40%),
+        var(--cream);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--paper);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    padding: 36px 32px;
+    border: 1px solid var(--cream-deep);
+}
+
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.login-brand img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    background: white;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid var(--stone-200);
+}
+
+.login-brand .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stone-400);
+    font-weight: 600;
+}
+
+.login-brand .name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--moss-900);
+    line-height: 1.2;
+}
+
+.login-card h1 {
+    font-size: 1.7rem;
+    margin-bottom: 6px;
+}
+
+.login-sub {
+    color: var(--stone-600);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 26px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field-group label { font-size: 0.82rem; font-weight: 600; color: var(--moss-700); }
+.field-group input {
+    border: 1.5px solid var(--stone-200);
+    border-radius: var(--radius-sm);
+    padding: 11px 12px;
+    font-size: 0.95rem;
+    background: var(--cream);
+    color: var(--ink);
+}
+.field-group input:focus { border-color: var(--moss-400); background: white; }
+
+.btn {
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-primary { background: var(--moss-600); color: white; width: 100%; }
+.btn-primary:hover:not(:disabled) { background: var(--moss-700); }
+.btn-ghost { background: transparent; color: var(--moss-700); border: 1.5px solid var(--stone-200); width: 100%; }
+.btn-ghost:hover:not(:disabled) { border-color: var(--moss-400); }
+
+.login-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+.login-status {
+    margin-top: 14px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--stone-600);
+    min-height: 1.2em;
+}
+.login-status.is-error { color: var(--coral-600); }
+
+.spinner {
+    display: inline-block;
+    width: 13px; height: 13px;
+    border: 2px solid rgba(255,255,255,0.45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+.btn-ghost .spinner { border-color: rgba(47,107,76,0.3); border-top-color: var(--moss-600); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   SHELL PRINCIPAL / DASHBOARD
+   ============================================================ */
+#app-shell { min-height: 100vh; }
+
+.topbar {
+    background: var(--moss-900);
+    color: var(--cream);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.topbar-brand img { height: 30px; width: 30px; border-radius: 6px; background: white; padding: 2px; }
+.topbar-brand span { font-family: var(--font-display); font-size: 1.05rem; }
+
+.topbar-user { display: flex; align-items: center; gap: 14px; }
+.xp-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(241,134,54,0.18);
+    border: 1px solid rgba(241,134,54,0.4);
+    color: var(--amber-100);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.topbar-user .email { font-size: 0.8rem; opacity: 0.75; }
+.btn-logout {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--cream);
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    cursor: pointer;
+}
+.btn-logout:hover { border-color: rgba(255,255,255,0.5); }
+
+.shell-body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+}
+
+.hero-block {
+    margin-bottom: 26px;
+}
+.hero-block .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--moss-600);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.hero-block h1 { font-size: 2rem; margin-bottom: 8px; }
+.hero-block p { color: var(--stone-600); max-width: 560px; line-height: 1.55; font-size: 0.95rem; }
+
+/* Resumen de avance general */
+.overview-panel {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px 22px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+@media (max-width: 720px) { .overview-panel { grid-template-columns: 1fr; } }
+
+.overview-item { display: flex; align-items: center; gap: 12px; }
+.overview-ring {
+    flex: 0 0 auto;
+    position: relative;
+    width: 52px; height: 52px;
+}
+.overview-ring svg { transform: rotate(-90deg); }
+.overview-ring .ring-track { fill: none; stroke: var(--stone-200); stroke-width: 5; }
+.overview-ring .ring-fill { fill: none; stroke: var(--moss-600); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
+.overview-ring .ring-label {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: var(--moss-700);
+}
+.overview-text .t-title { font-size: 0.85rem; font-weight: 700; color: var(--moss-900); margin-bottom: 2px; }
+.overview-text .t-sub { font-size: 0.76rem; color: var(--stone-500); }
+
+/* Tarjetas de tópico */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+@media (max-width: 860px) { .topics-grid { grid-template-columns: 1fr; } }
+
+.topic-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.topic-card:hover { border-color: var(--moss-400); transform: translateY(-2px); }
+.topic-card.is-active { border-color: var(--moss-600); background: var(--moss-50); }
+
+.topic-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--moss-100);
+    color: var(--moss-700);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+}
+
+.topic-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
+.topic-card .topic-desc { font-size: 0.8rem; color: var(--stone-500); line-height: 1.4; min-height: 34px; }
+
+/* Mini-sendero (preview de 5 pasos dentro de la tarjeta) */
+.mini-trail { display: flex; align-items: center; gap: 4px; }
+.mini-node {
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--stone-200);
+}
+.mini-node.is-done { background: var(--moss-600); }
+.mini-node.is-current { background: var(--amber-500); }
+
+.topic-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--stone-500);
+    font-weight: 600;
+}
+.topic-card-footer .badge-final {
+    color: var(--amber-600);
+}
+
+/* ============================================================
+   VISTA DE SENDERO (5 PASOS DE UN TÓPICO)
+   ============================================================ */
+#trail-view {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 26px;
+    margin-top: 26px;
+}
+
+.trail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+.trail-header .back-link {
+    background: none; border: none; cursor: pointer;
+    color: var(--moss-600); font-weight: 600; font-size: 0.82rem;
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 0; margin-bottom: 8px;
+}
+.trail-header h2 { font-size: 1.5rem; }
+
+/* Camino SVG con 5 nodos */
+.trail-path-wrap { overflow-x: auto; padding: 6px 2px 18px; margin-bottom: 6px; }
+.trail-path { display: flex; align-items: center; min-width: 460px; }
+.trail-node-btn {
+    background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 4px; flex: 0 0 auto; width: 92px;
+}
+.trail-node-btn:disabled { cursor: not-allowed; }
+.node-circle {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.95rem;
+    border: 2.5px solid var(--stone-200);
+    background: var(--cream);
+    color: var(--stone-400);
+    transition: all 0.15s ease;
+}
+.trail-node-btn:not(:disabled):hover .node-circle { border-color: var(--moss-400); }
+.node-circle.is-done { background: var(--moss-600); border-color: var(--moss-600); color: white; }
+.node-circle.is-current {
+    background: var(--amber-500); border-color: var(--amber-500); color: white;
+    box-shadow: 0 0 0 5px rgba(241,134,54,0.2);
+}
+.node-label { font-size: 0.72rem; text-align: center; color: var(--stone-600); font-weight: 600; line-height: 1.25; }
+.trail-connector { flex: 1; height: 3px; background: var(--stone-200); min-width: 20px; margin: 0 -6px 26px; border-radius: 2px; }
+.trail-connector.is-filled { background: var(--moss-600); }
+
+/* Panel del paso activo */
+.step-panel {
+    border-top: 1.5px solid var(--cream-deep);
+    padding-top: 20px;
+}
+.step-panel .step-kicker {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--amber-600); font-weight: 700; margin-bottom: 6px;
+}
+.step-panel h3 { font-size: 1.3rem; margin-bottom: 14px; }
+
+.media-slot {
+    margin-bottom: 18px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--moss-50);
+    border: 1px solid var(--cream-deep);
+}
+.media-slot iframe, .media-slot video { width: 100%; display: block; aspect-ratio: 16/9; border: none; }
+.media-slot audio { width: 100%; display: block; margin: 14px; }
+.media-slot img { width: 100%; display: block; }
+.media-slot.is-empty {
+    padding: 26px; text-align: center; color: var(--stone-400); font-size: 0.85rem;
+}
+
+.step-content-md { line-height: 1.7; font-size: 0.95rem; color: var(--ink); }
+.step-content-md h1, .step-content-md h2, .step-content-md h3 { margin: 18px 0 8px; font-size: 1.1rem; }
+.step-content-md p { margin: 0 0 12px; }
+.step-content-md ul, .step-content-md ol { margin: 0 0 12px; padding-left: 22px; }
+.step-content-md a { color: var(--moss-600); font-weight: 600; }
+.step-content-md code { background: var(--cream-deep); padding: 2px 5px; border-radius: 4px; font-size: 0.85em; }
+
+.step-footer {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.step-footer .xp-note { font-size: 0.8rem; color: var(--stone-500); font-weight: 600; }
+
+.locked-note {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--coral-100); color: var(--coral-600);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    font-size: 0.85rem; font-weight: 600;
+}
+
+.completion-banner {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--moss-100); color: var(--moss-900);
+    border-radius: var(--radius-sm); padding: 16px 18px;
+    font-size: 0.9rem;
+}
+.completion-banner .trophy { font-size: 1.6rem; }
+
+/* ============================================================
+   ACTIVIDAD DE EVALUACIÓN (quiz) — mecanismo de avance automático
+   ============================================================ */
+.activity-block {
+    margin-top: 22px;
+    background: var(--moss-50);
+    border: 1.5px solid var(--moss-100);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+.activity-kicker {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--moss-700); font-weight: 700; margin-bottom: 4px;
+}
+.activity-hint { font-size: 0.82rem; color: var(--stone-600); margin: 0 0 16px; }
+
+.quiz-question { margin-bottom: 16px; }
+.quiz-question-text { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--paper); border: 1.5px solid var(--stone-200);
+    border-radius: var(--radius-sm); padding: 10px 12px;
+    font-size: 0.86rem; cursor: pointer; transition: border-color 0.12s ease;
+}
+.quiz-option:hover { border-color: var(--moss-400); }
+.quiz-option input { accent-color: var(--moss-600); }
+
+.quiz-feedback { margin-top: 14px; font-size: 0.85rem; font-weight: 600; min-height: 1.2em; }
+.quiz-feedback.is-success { color: var(--moss-700); }
+.quiz-feedback.is-error { color: var(--coral-600); }
+.quiz-feedback.is-warning { color: var(--amber-600); }
+
+/* ============================================================
+   FOOTER INSTITUCIONAL
+   ============================================================ */
+.site-footer {
+    background: var(--moss-900);
+    color: var(--cream);
+    margin-top: 50px;
+}
+.footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 24px 26px;
+}
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 30px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid rgba(250,249,244,0.15);
+}
+.footer-logo {
+    height: 44px; width: 44px; object-fit: contain;
+    background: white; border-radius: 10px; padding: 4px;
+    flex: 0 0 auto;
+}
+.footer-brand-name { font-family: var(--font-display); font-size: 1.1rem; }
+.footer-brand-tag { font-size: 0.78rem; color: rgba(250,249,244,0.65); font-style: italic; margin-top: 2px; }
+
+.footer-values-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 30px;
+}
+@media (max-width: 900px) { .footer-values-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .footer-values-grid { grid-template-columns: 1fr; } }
+
+.value-card {
+    background: rgba(250,249,244,0.06);
+    border: 1px solid rgba(250,249,244,0.14);
+    border-radius: var(--radius-sm);
+    padding: 16px 14px;
+}
+.value-card .value-icon { font-size: 1.3rem; margin-bottom: 8px; display: block; }
+.value-card .value-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--cream); }
+.value-card .value-desc { font-size: 0.76rem; line-height: 1.4; color: rgba(250,249,244,0.7); }
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(250,249,244,0.15);
+    margin-bottom: 18px;
+}
+.footer-links a {
+    color: var(--cream);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    opacity: 0.85;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.footer-links a:hover { opacity: 1; text-decoration: underline; }
+
+.footer-bottom {
+    font-size: 0.74rem;
+    color: rgba(250,249,244,0.5);
+}
+
+@media (max-width: 600px) {
+    .shell-body { padding: 20px 14px 50px; }
+    .overview-panel { padding: 16px; }
+    #trail-view { padding: 18px; }
+    .btn { min-height: 44px; }
+    .footer-inner { padding: 32px 18px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= PANTALLA DE LOGIN ================= -->
+<section id="login-screen">
+    <div class="login-card">
+        <div class="login-brand">
+            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+            <div>
+                <div class="eyebrow">Austin Eco Bilingual School</div>
+                <div class="name">Sendero de Bienvenida</div>
+            </div>
+        </div>
+        <h1>Empecemos el recorrido</h1>
+        <p class="login-sub">Ingresá con el correo institucional autorizado por el colegio. Si es tu primera vez, creá tu cuenta — solo se habilita si tu correo está en la lista aprobada.</p>
+
+        <div class="field-group">
+            <label for="login-email">Correo institucional</label>
+            <input type="email" id="login-email" placeholder="nombre.apellido@austineco.edu.ar" autocomplete="username">
+        </div>
+        <div class="field-group">
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" placeholder="Tu contraseña" autocomplete="current-password">
+        </div>
+
+        <div class="login-actions">
+            <button class="btn btn-primary" id="btn-login" onclick="handleLogin()">Iniciar sendero</button>
+            <button class="btn btn-ghost" id="btn-signup" onclick="handleSignup()">Crear cuenta con mi correo</button>
+        </div>
+        <div class="login-status" id="login-status" aria-live="polite">Esperando datos de acceso…</div>
+    </div>
+</section>
+
+<!-- ================= APP PRINCIPAL ================= -->
+<div id="app-shell" class="hidden">
+    <header class="topbar">
+        <div class="topbar-brand">
+            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+            <span>Sendero de Bienvenida</span>
+        </div>
+        <div class="topbar-user">
+            <span class="xp-pill">⭐ <span id="xp-total">0</span> XP</span>
+            <span class="email" id="topbar-email"></span>
+            <button class="btn-logout" onclick="handleLogout()">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <main class="shell-body">
+        <div class="hero-block">
+            <div class="eyebrow">Onboarding docente</div>
+            <h1 id="greeting-title">Bienvenida/o al equipo</h1>
+            <p>Recorré los tres tópicos a tu ritmo. Cada tópico tiene 5 pasos: completar uno destraba el siguiente. Tu avance se guarda automáticamente.</p>
+        </div>
+
+        <!-- Panel de avance general (conectado a los niveles de cada tópico) -->
+        <div class="overview-panel" id="overview-panel"></div>
+
+        <!-- Tarjetas de los 3 tópicos -->
+        <div class="topics-grid" id="topics-grid"></div>
+
+        <!-- Vista de sendero de 5 pasos del tópico seleccionado -->
+        <section id="trail-view" class="hidden"></section>
+    </main>
+
+    <!-- ================= FOOTER INSTITUCIONAL =================
+         Logo: es el archivo real que subiste
+         ("austin-eco-bilingual-school-campana-argentina.jpg"),
+         copiado junto a este index.html — si lo movés a otra carpeta
+         o servidor, llevate la imagen junto con el HTML.
+         Los 5 valores y los links de abajo son PLACEHOLDER: texto y
+         URLs listos para que edites directamente en este bloque. -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img class="footer-logo" src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+                <div>
+                    <div class="footer-brand-name">Austin Eco Bilingual School</div>
+                    <div class="footer-brand-tag">Developing global citizens for a sustainable future</div>
+                </div>
+            </div>
+
+            <div class="footer-values-grid">
+                <div class="value-card">
+                    <span class="value-icon" aria-hidden="true">🌱</span>
+                    <div class="value-title">Sustentabilidad</div>
+                    <div class="value-desc">Hábitos y proyectos con foco ambiental en cada nivel.</div>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon" aria-hidden="true">🌎</span>
+                    <div class="value-title">Ciudadanía global</div>
+                    <div class="value-desc">Pensamiento crítico con mirada internacional.</div>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon" aria-hidden="true">🗣️</span>
+                    <div class="value-title">Bilingüismo real</div>
+                    <div class="value-desc">Inmersión en inglés y español dentro y fuera del aula.</div>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon" aria-hidden="true">🤝</span>
+                    <div class="value-title">Comunidad</div>
+                    <div class="value-desc">Vínculos cercanos entre familias, docentes y alumnos.</div>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon" aria-hidden="true">📚</span>
+                    <div class="value-title">Enseñanza para la Comprensión</div>
+                    <div class="value-desc">Marco pedagógico de Harvard Project Zero (EpC).</div>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="https://www.austinecobilingual.edu.ar" target="_blank" rel="noopener">🌐 Sitio web del colegio</a>
+                <a href="mailto:coordinacion@austineco.edu.ar">✉️ Consultas a coordinación</a>
+                <a href="https://herramientadocentes.netlify.app/" target="_blank" rel="noopener">📋 PUD Workspace (docentes)</a>
+                <a href="#" target="_blank" rel="noopener">📘 Manual de convivencia</a>
+                <a href="#" target="_blank" rel="noopener">💬 Soporte técnico del staff</a>
+            </div>
+
+            <div class="footer-bottom">
+                © 2026 Austin Eco Bilingual School — Campana, Provincia de Buenos Aires
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+/* ============================================================
+   CONFIGURACIÓN DE SUPABASE
+   Reemplazá con las credenciales de tu proyecto. Podés usar el
+   mismo proyecto de PUD Workspace o crear uno nuevo dedicado al
+   onboarding — el esquema necesario está documentado en
+   SETUP-SUPABASE.md (se entrega junto a este archivo).
+   ============================================================ */
+const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
+const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+
+let _supabase = null;
+try {
+    _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch (err) {
+    console.warn('Supabase todavía no está configurado (esperado en modo demo):', err.message);
+}
+
+/* ============================================================
+   CONTROL TEMPORAL DE ACCESO
+   Mientras no tengas cargada la tabla `allowed_emails`, dejá esto
+   en `false` para poder probar el registro con cualquier correo.
+   Cuando cargues la lista (ver SETUP-SUPABASE.md), volvé a poner
+   `true` para reactivar el chequeo contra el colegio.
+   ============================================================ */
+const REQUIRE_AUTHORIZED_EMAIL = false;
+const SUPABASE_CONFIGURADO = _supabase !== null && !SUPABASE_URL.includes('TU-PROYECTO') && !SUPABASE_KEY.includes('TU_SUPABASE');
+
+/* ============================================================
+   MODO DEMO — sin Supabase
+   Mientras no tengas el backend armado, dejá esto en `true` para
+   probar toda la app (login, sendero, XP, progreso) guardando todo
+   en el navegador (localStorage), sin ningún llamado a Supabase.
+   Cuando tengas SUPABASE_URL / SUPABASE_KEY reales cargados,
+   cambiá esto a `false` para conectar de verdad.
+   ============================================================ */
+const DEMO_MODE = true;
+const DEMO_STORAGE_KEY = 'onboarding_demo_progress_v1';
+
+function demoCargarProgreso() {
+    try {
+        const raw = localStorage.getItem(DEMO_STORAGE_KEY);
+        return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch (err) {
+        return new Set();
+    }
+}
+function demoGuardarProgreso() {
+    localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify([...completedSteps]));
+}
+
+/* ============================================================
+   ESTRUCTURA DE CONTENIDO (3 tópicos x 5 pasos)
+   Esto es contenido PLACEHOLDER en markdown para que puedas
+   reemplazarlo directamente acá, o (recomendado a futuro) cargarlo
+   desde una tabla `onboarding_steps` en Supabase — ver
+   intentarCargarContenidoDesdeSupabase() más abajo, que ya intenta
+   traerlo del backend y solo usa este arreglo como respaldo.
+
+   media.type admite: 'youtube' | 'vimeo' | 'drive' | 'video' |
+   'audio' | 'image' | 'iframe' | null
+   ============================================================ */
+let ONBOARDING_STRUCTURE = [
+    {
+        id: 'topic-1',
+        title: 'Nuestra Escuela',
+        icon: '🌱',
+        description: 'Historia, misión EpC y cultura institucional.',
+        steps: [
+            { id: 't1-s1', title: 'Bienvenida y misión', xp: 20, media: { type: null, url: '' },
+              content_md: '## Bienvenida\n\nReemplazá este texto con la introducción institucional. Podés usar **negrita**, *itálica*, listas y [links](https://).\n\n- Historia de Austin Eco\n- Misión y visión\n- Valores del proyecto EpC' },
+            { id: 't1-s2', title: 'Enseñanza para la Comprensión (EpC)', xp: 20, media: { type: 'youtube', url: '' },
+              content_md: '## ¿Qué es EpC?\n\nTexto placeholder sobre el marco de Harvard Project Zero usado en la escuela.' },
+            { id: 't1-s3', title: 'Comunidad bilingüe', xp: 20, media: { type: null, url: '' },
+              content_md: '## Comunidad bilingüe\n\nDescribí cómo funciona la inmersión en inglés/español en el día a día.' },
+            { id: 't1-s4', title: 'Sustentabilidad y proyecto eco', xp: 20, media: { type: 'image', url: '' },
+              content_md: '## Eje de sustentabilidad\n\nExplicá las iniciativas ecológicas del colegio.' },
+            { id: 't1-s5', title: 'Quiz de cierre: Nuestra Escuela', xp: 20, media: { type: null, url: '' },
+              content_md: '## Repaso final\n\nEspacio para preguntas de autoevaluación o un resumen de cierre del tópico.' },
+        ]
+    },
+    {
+        id: 'topic-2',
+        title: 'Vida en el Campus',
+        icon: '🏫',
+        description: 'Horarios, espacios, protocolos y convivencia diaria.',
+        steps: [
+            { id: 't2-s1', title: 'Horarios y jornada', xp: 20, media: { type: null, url: '' },
+              content_md: '## Horarios\n\nDetallá la jornada escolar, recreos y horarios de entrada/salida.' },
+            { id: 't2-s2', title: 'Mapa del campus', xp: 20, media: { type: 'image', url: '' },
+              content_md: '## Recorrido por el campus\n\nUbicación de aulas, comedor, dirección y espacios comunes.' },
+            { id: 't2-s3', title: 'Protocolos de convivencia', xp: 20, media: { type: null, url: '' },
+              content_md: '## Convivencia\n\nNormas de convivencia y protocolos ante situaciones frecuentes.' },
+            { id: 't2-s4', title: 'Salud y seguridad', xp: 20, media: { type: 'video', url: '' },
+              content_md: '## Salud y seguridad\n\nProtocolos de emergencia, primeros auxilios y contactos clave.' },
+            { id: 't2-s5', title: 'Quiz de cierre: Vida en el Campus', xp: 20, media: { type: null, url: '' },
+              content_md: '## Repaso final\n\nEspacio de autoevaluación del tópico.' },
+        ]
+    },
+    {
+        id: 'topic-3',
+        title: 'Herramientas y Recursos',
+        icon: '🧰',
+        description: 'Plataformas digitales, materiales y contactos clave.',
+        steps: [
+            { id: 't3-s1', title: 'Google Workspace institucional', xp: 20, media: { type: 'youtube', url: '' },
+              content_md: '## Google Workspace\n\nCómo acceder al correo, Drive compartido y Calendar del colegio.' },
+            { id: 't3-s2', title: 'PUD Workspace y planificación', xp: 20, media: { type: null, url: '' },
+              content_md: '## Herramientas de planificación\n\nPresentación de PUD Workspace y otras herramientas docentes.' },
+            { id: 't3-s3', title: 'Recursos didácticos compartidos', xp: 20, media: { type: 'drive', url: '' },
+              content_md: '## Biblioteca de recursos\n\nDónde encontrar material didáctico compartido entre docentes.' },
+            { id: 't3-s4', title: 'Contactos y soporte técnico', xp: 20, media: { type: null, url: '' },
+              content_md: '## A quién recurrir\n\nContactos de coordinación, soporte técnico y administración.' },
+            { id: 't3-s5', title: 'Quiz de cierre: Herramientas', xp: 20, media: { type: null, url: '' },
+              content_md: '## Repaso final\n\nCierre del onboarding y próximos pasos.' },
+        ]
+    }
+];
+
+/* ============================================================
+   ACTIVIDAD DE EVALUACIÓN POR PASO (placeholder)
+   Cada paso necesita una `activity` para poder completarse — así
+   el avance siempre es automático (nunca manual), aunque el
+   contenido real todavía no esté cargado.
+
+   Por ahora se genera una pregunta de ejemplo por paso (la opción A
+   es la correcta) para poder probar el flujo. Cuando tengas el
+   contenido real, reemplazá `step.activity` de cada paso por su
+   propio objeto, con este formato:
+
+   activity: {
+       type: 'quiz',
+       passing_score: 2,          // cuántas hay que acertar para pasar
+       questions: [
+           { id: 'q1', text: '¿Pregunta real?', options: ['A','B','C'], correct_index: 0 },
+           { id: 'q2', text: '¿Otra pregunta?', options: ['A','B','C'], correct_index: 2 }
+       ]
+   }
+   ============================================================ */
+function generarActividadPlaceholder(title) {
+    return {
+        type: 'quiz',
+        passing_score: 1,
+        questions: [
+            {
+                id: 'q1',
+                text: `Pregunta de repaso sobre "${title}" (placeholder — reemplazar por la pregunta real).`,
+                options: ['Opción A (marcá esta por ahora)', 'Opción B', 'Opción C'],
+                correct_index: 0
+            }
+        ]
+    };
+}
+ONBOARDING_STRUCTURE.forEach(topic => {
+    topic.steps.forEach(step => {
+        if (!step.activity) step.activity = generarActividadPlaceholder(step.title);
+    });
+});
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+let currentUser = null;
+let completedSteps = new Set();   // guarda step.id de pasos completados
+let activeTopicIndex = null;
+let quizAnswers = {};             // { [stepId]: { [questionId]: opcionSeleccionada } }
+
+/* ============================================================
+   UTILIDADES DE UI (loading states en botones)
+   ============================================================ */
+function setBtnLoading(btn, loading, loadingText, idleText) {
+    if (!btn) return;
+    if (loading) {
+        btn.dataset.idle = btn.dataset.idle || idleText || btn.innerText;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner" aria-hidden="true"></span>${loadingText}`;
+    } else {
+        btn.disabled = false;
+        btn.innerText = idleText || btn.dataset.idle || btn.innerText;
+    }
+}
+
+function escapeHtml(str = '') {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ============================================================
+   AUTENTICACIÓN — solo correos autorizados por el colegio
+   La lista vive en la tabla `allowed_emails` de Supabase.
+   Ver SETUP-SUPABASE.md para el esquema y las políticas RLS
+   recomendadas (incluye un trigger a nivel de base de datos para
+   que la validación no dependa solo del chequeo del cliente).
+   ============================================================ */
+async function correoAutorizado(email) {
+    try {
+        const { data, error } = await _supabase
+            .from('allowed_emails')
+            .select('email')
+            .ilike('email', email)
+            .maybeSingle();
+        if (error) {
+            console.warn('No se pudo validar contra allowed_emails, revisá el esquema:', error.message);
+            return { ok: false, reason: 'schema' };
+        }
+        return { ok: !!data, reason: data ? null : 'not_listed' };
+    } catch (err) {
+        console.error(err);
+        return { ok: false, reason: 'network' };
+    }
+}
+
+async function handleSignup() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const status = document.getElementById('login-status');
+    const btn = document.getElementById('btn-signup');
+    if (!email || !password) {
+        status.textContent = 'Completá correo y contraseña.';
+        status.classList.add('is-error');
+        return;
+    }
+
+    if (DEMO_MODE) {
+        setBtnLoading(btn, true, 'Creando cuenta…', 'Crear cuenta con mi correo');
+        status.classList.remove('is-error');
+        status.textContent = 'Modo demo: creando cuenta local…';
+        await onLoginSuccess({ id: 'demo-user', email });
+        setBtnLoading(btn, false, '', 'Crear cuenta con mi correo');
+        return;
+    }
+
+    setBtnLoading(btn, true, 'Verificando correo…', 'Crear cuenta con mi correo');
+    status.classList.remove('is-error');
+
+    if (REQUIRE_AUTHORIZED_EMAIL) {
+        status.textContent = 'Verificando que tu correo esté autorizado…';
+        const check = await correoAutorizado(email);
+        if (!check.ok) {
+            setBtnLoading(btn, false, '', 'Crear cuenta con mi correo');
+            status.classList.add('is-error');
+            status.textContent = check.reason === 'not_listed'
+                ? 'Este correo no está en la lista autorizada por el colegio. Pedile a coordinación que lo agregue.'
+                : 'No se pudo verificar el correo. Intentá de nuevo en unos minutos.';
+            return;
+        }
+    } else {
+        console.warn('REQUIRE_AUTHORIZED_EMAIL está en false: cualquier correo puede registrarse. Recordá reactivarlo antes de producción.');
+    }
+
+    status.textContent = 'Creando tu cuenta…';
+    const { data, error } = await _supabase.auth.signUp({ email, password });
+    setBtnLoading(btn, false, '', 'Crear cuenta con mi correo');
+
+    if (error) {
+        status.classList.add('is-error');
+        status.textContent = 'No se pudo crear la cuenta: ' + error.message;
+        return;
+    }
+
+    if (data.user && !data.session) {
+        status.textContent = 'Cuenta creada. Revisá tu correo institucional para confirmarla antes de ingresar.';
+    } else {
+        await onLoginSuccess(data.user);
+    }
+}
+
+async function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const status = document.getElementById('login-status');
+    const btn = document.getElementById('btn-login');
+    if (!email || !password) {
+        status.textContent = 'Completá correo y contraseña.';
+        status.classList.add('is-error');
+        return;
+    }
+
+    if (DEMO_MODE) {
+        setBtnLoading(btn, true, 'Ingresando…', 'Iniciar sendero');
+        status.classList.remove('is-error');
+        status.textContent = 'Modo demo: entrando sin Supabase…';
+        await onLoginSuccess({ id: 'demo-user', email });
+        setBtnLoading(btn, false, '', 'Iniciar sendero');
+        return;
+    }
+
+    setBtnLoading(btn, true, 'Ingresando…', 'Iniciar sendero');
+    status.classList.remove('is-error');
+    status.textContent = 'Verificando credenciales…';
+
+    try {
+        const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+        setBtnLoading(btn, false, '', 'Iniciar sendero');
+
+        if (error) {
+            status.classList.add('is-error');
+            status.textContent = 'No se pudo iniciar sesión. Revisá tus datos o confirmá tu cuenta primero.';
+            return;
+        }
+
+        await onLoginSuccess(data.user);
+    } catch (err) {
+        console.error('Fallo de conexión al iniciar sesión:', err);
+        setBtnLoading(btn, false, '', 'Iniciar sendero');
+        status.classList.add('is-error');
+        status.textContent = 'No se pudo conectar con Supabase. Revisá que SUPABASE_URL y SUPABASE_KEY estén bien configurados en el archivo.';
+    }
+}
+
+async function handleLogout() {
+    if (!DEMO_MODE) await _supabase.auth.signOut();
+    currentUser = null;
+    completedSteps = new Set();
+    document.getElementById('app-shell').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('login-status').textContent = 'Esperando datos de acceso…';
+    document.getElementById('login-status').classList.remove('is-error');
+}
+
+async function onLoginSuccess(user) {
+    currentUser = user;
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app-shell').classList.remove('hidden');
+    document.getElementById('topbar-email').textContent = user.email;
+
+    const displayName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || user.email.split('@')[0];
+    document.getElementById('greeting-title').textContent = `Bienvenida/o, ${displayName}`;
+
+    await intentarCargarContenidoDesdeSupabase();
+    await cargarProgreso();
+    renderOverview();
+    renderTopics();
+}
+
+/* ============================================================
+   CARGA DE CONTENIDO — intenta traer tópicos/pasos desde Supabase
+   (tablas `onboarding_topics` + `onboarding_steps`, ver
+   SETUP-SUPABASE.md). Si no existen o falla, se usa el arreglo
+   local ONBOARDING_STRUCTURE definido más arriba como respaldo,
+   así la app funciona igual mientras cargás contenido real.
+   ============================================================ */
+async function intentarCargarContenidoDesdeSupabase() {
+    if (DEMO_MODE) return; // en demo siempre se usa ONBOARDING_STRUCTURE local
+    try {
+        const { data: topics, error: topicsErr } = await _supabase
+            .from('onboarding_topics')
+            .select('*')
+            .order('order_index', { ascending: true });
+        if (topicsErr || !topics || !topics.length) return; // se queda con el respaldo local
+
+        const { data: steps, error: stepsErr } = await _supabase
+            .from('onboarding_steps')
+            .select('*')
+            .order('order_index', { ascending: true });
+        if (stepsErr || !steps) return;
+
+        ONBOARDING_STRUCTURE = topics.map(t => ({
+            id: t.id,
+            title: t.title,
+            icon: t.icon || '📘',
+            description: t.description || '',
+            steps: steps.filter(s => s.topic_id === t.id).map(s => ({
+                id: s.id,
+                title: s.title,
+                xp: s.xp || 20,
+                media: { type: s.media_type || null, url: s.media_url || '' },
+                content_md: s.content_md || '',
+                activity: s.quiz_json || generarActividadPlaceholder(s.title)
+            }))
+        }));
+    } catch (err) {
+        console.warn('Usando contenido local — no se pudo leer contenido desde Supabase:', err.message);
+    }
+}
+
+/* ============================================================
+   PROGRESO — tabla `user_progress` (user_id, step_id, completed_at)
+   ============================================================ */
+async function cargarProgreso() {
+    if (DEMO_MODE) {
+        completedSteps = demoCargarProgreso();
+        return;
+    }
+    completedSteps = new Set();
+    try {
+        const { data, error } = await _supabase
+            .from('user_progress')
+            .select('step_id')
+            .eq('user_id', currentUser.id);
+        if (error) {
+            console.warn('No se pudo leer user_progress, revisá el esquema:', error.message);
+            return;
+        }
+        (data || []).forEach(row => completedSteps.add(row.step_id));
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function marcarPasoCompletado(stepId) {
+    completedSteps.add(stepId); // optimista: refleja el cambio ya mismo en la UI
+
+    if (DEMO_MODE) {
+        demoGuardarProgreso();
+        return;
+    }
+
+    try {
+        await _supabase.from('user_progress').upsert(
+            { user_id: currentUser.id, step_id: stepId, completed_at: new Date().toISOString() },
+            { onConflict: 'user_id,step_id' }
+        );
+    } catch (err) {
+        console.error('No se pudo guardar el progreso:', err);
+    }
+}
+
+/* ============================================================
+   LÓGICA DE DESBLOQUEO SECUENCIAL
+   ============================================================ */
+function isStepUnlocked(topic, stepIndex) {
+    if (stepIndex === 0) return true;
+    const prevStep = topic.steps[stepIndex - 1];
+    return completedSteps.has(prevStep.id);
+}
+
+function topicProgress(topic) {
+    const done = topic.steps.filter(s => completedSteps.has(s.id)).length;
+    return { done, total: topic.steps.length, pct: Math.round((done / topic.steps.length) * 100) };
+}
+
+function totalXP() {
+    let xp = 0;
+    ONBOARDING_STRUCTURE.forEach(topic => topic.steps.forEach(s => { if (completedSteps.has(s.id)) xp += s.xp; }));
+    return xp;
+}
+
+/* ============================================================
+   RENDER — panel de avance general (niveles por tópico)
+   ============================================================ */
+function renderOverview() {
+    document.getElementById('xp-total').textContent = totalXP();
+    const panel = document.getElementById('overview-panel');
+    panel.innerHTML = ONBOARDING_STRUCTURE.map(topic => {
+        const p = topicProgress(topic);
+        const circumference = 2 * Math.PI * 22;
+        const offset = circumference - (p.pct / 100) * circumference;
+        return `
+        <div class="overview-item">
+            <div class="overview-ring">
+                <svg width="52" height="52" viewBox="0 0 52 52">
+                    <circle class="ring-track" cx="26" cy="26" r="22"></circle>
+                    <circle class="ring-fill" cx="26" cy="26" r="22"
+                        stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
+                </svg>
+                <div class="ring-label">${p.pct}%</div>
+            </div>
+            <div class="overview-text">
+                <div class="t-title">${escapeHtml(topic.title)}</div>
+                <div class="t-sub">Nivel ${p.done} de ${p.total}</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ============================================================
+   RENDER — tarjetas de tópicos
+   ============================================================ */
+function renderTopics() {
+    const grid = document.getElementById('topics-grid');
+    grid.innerHTML = ONBOARDING_STRUCTURE.map((topic, idx) => {
+        const p = topicProgress(topic);
+        const nodes = topic.steps.map((s, i) => {
+            let cls = '';
+            if (completedSteps.has(s.id)) cls = 'is-done';
+            else if (isStepUnlocked(topic, i)) cls = 'is-current';
+            return `<span class="mini-node ${cls}"></span>`;
+        }).join('');
+        return `
+        <div class="topic-card ${activeTopicIndex === idx ? 'is-active' : ''}" onclick="abrirTopico(${idx})">
+            <div class="topic-icon" aria-hidden="true">${topic.icon}</div>
+            <div>
+                <h3>${escapeHtml(topic.title)}</h3>
+                <p class="topic-desc">${escapeHtml(topic.description)}</p>
+            </div>
+            <div class="mini-trail">${nodes}</div>
+            <div class="topic-card-footer">
+                <span>${p.done}/${p.total} pasos</span>
+                <span class="${p.done === p.total ? 'badge-final' : ''}">${p.done === p.total ? '🏆 Completo' : 'Ver sendero →'}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ============================================================
+   RENDER — sendero de un tópico (5 nodos + panel del paso activo)
+   ============================================================ */
+function abrirTopico(idx) {
+    activeTopicIndex = idx;
+    renderTopics();
+    const topic = ONBOARDING_STRUCTURE[idx];
+    const view = document.getElementById('trail-view');
+    view.classList.remove('hidden');
+
+    // Paso activo por defecto: el primero no completado, o el último si ya está todo hecho
+    let defaultStepIndex = topic.steps.findIndex((s, i) => isStepUnlocked(topic, i) && !completedSteps.has(s.id));
+    if (defaultStepIndex === -1) defaultStepIndex = topic.steps.length - 1;
+
+    renderTrail(topic, defaultStepIndex);
+    view.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderTrail(topic, selectedIndex) {
+    const view = document.getElementById('trail-view');
+
+    const nodesHtml = topic.steps.map((step, i) => {
+        const unlocked = isStepUnlocked(topic, i);
+        const done = completedSteps.has(step.id);
+        let circleClass = '';
+        if (done) circleClass = 'is-done';
+        else if (i === selectedIndex && unlocked) circleClass = 'is-current';
+
+        const connector = i < topic.steps.length - 1
+            ? `<span class="trail-connector ${completedSteps.has(step.id) ? 'is-filled' : ''}"></span>`
+            : '';
+
+        return `
+        <button class="trail-node-btn" ${unlocked ? '' : 'disabled'} onclick="seleccionarPaso(${topic.steps.indexOf(step)})" aria-label="${escapeHtml(step.title)}">
+            <span class="node-circle ${circleClass}">${done ? '✓' : (unlocked ? (i+1) : '🔒')}</span>
+            <span class="node-label">${escapeHtml(step.title)}</span>
+        </button>
+        ${connector}`;
+    }).join('');
+
+    const step = topic.steps[selectedIndex];
+    const unlocked = isStepUnlocked(topic, selectedIndex);
+    const done = completedSteps.has(step.id);
+
+    view.innerHTML = `
+        <div class="trail-header">
+            <div>
+                <button class="back-link" onclick="cerrarTopico()">← Volver a los tópicos</button>
+                <h2>${escapeHtml(topic.title)}</h2>
+            </div>
+        </div>
+        <div class="trail-path-wrap"><div class="trail-path">${nodesHtml}</div></div>
+        <div class="step-panel" id="step-panel"></div>
+    `;
+
+    renderStepPanel(topic, step, selectedIndex, unlocked, done);
+    window._activeTopicRef = topic;
+}
+
+function seleccionarPaso(stepIndexGlobal) {
+    const topic = ONBOARDING_STRUCTURE[activeTopicIndex];
+    renderTrail(topic, stepIndexGlobal);
+}
+
+function cerrarTopico() {
+    activeTopicIndex = null;
+    document.getElementById('trail-view').classList.add('hidden');
+    renderTopics();
+}
+
+function renderStepPanel(topic, step, stepIndex, unlocked, done) {
+    const panel = document.getElementById('step-panel');
+
+    if (!unlocked) {
+        panel.innerHTML = `
+            <div class="locked-note">
+                🔒 Completá el paso anterior para destrabar “${escapeHtml(step.title)}”.
+            </div>`;
+        return;
+    }
+
+    const mdHtml = (typeof marked !== 'undefined' && step.content_md)
+        ? marked.parse(step.content_md)
+        : `<p>${escapeHtml(step.content_md || '')}</p>`;
+
+    panel.innerHTML = `
+        <div class="step-kicker">Paso ${stepIndex + 1} de ${topic.steps.length}</div>
+        <h3>${escapeHtml(step.title)}</h3>
+        <div class="media-slot" id="media-slot"></div>
+        <div class="step-content-md">${mdHtml}</div>
+        <div class="step-footer">
+            <span class="xp-note">⭐ ${step.xp} XP al completar</span>
+            ${done ? `<div class="completion-banner"><span class="trophy">🏅</span> ¡Paso completado!</div>` : ''}
+        </div>
+        ${done ? '' : renderActivity(topic, step)}
+    `;
+
+    document.getElementById('media-slot').innerHTML = renderMedia(step.media);
+}
+
+/* ============================================================
+   ACTIVIDAD DE EVALUACIÓN — mecanismo de avance automático.
+   El paso se completa solo si el usuario responde correctamente
+   (según `passing_score`); no hay ningún botón de "marcar como
+   completado" manual. Pensado para reemplazarse por cuestionarios
+   reales más adelante, sin tocar la lógica de desbloqueo.
+   ============================================================ */
+function renderActivity(topic, step) {
+    const activity = step.activity;
+    if (!activity || activity.type !== 'quiz' || !activity.questions?.length) {
+        return `<div class="locked-note">⚠️ Este paso todavía no tiene una actividad de evaluación cargada.</div>`;
+    }
+
+    const saved = quizAnswers[step.id] || {};
+    const questionsHtml = activity.questions.map((q, qi) => {
+        const optionsHtml = q.options.map((opt, oi) => `
+            <label class="quiz-option">
+                <input type="radio" name="quiz-${step.id}-${q.id}" value="${oi}"
+                    ${saved[q.id] === oi ? 'checked' : ''}
+                    onchange="registrarRespuestaQuiz('${step.id}','${q.id}',${oi})">
+                <span>${escapeHtml(opt)}</span>
+            </label>`).join('');
+        return `
+            <div class="quiz-question">
+                <p class="quiz-question-text">${qi + 1}. ${escapeHtml(q.text)}</p>
+                <div class="quiz-options">${optionsHtml}</div>
+            </div>`;
+    }).join('');
+
+    return `
+        <div class="activity-block">
+            <div class="activity-kicker">📋 Actividad de repaso</div>
+            <p class="activity-hint">Respondé correctamente para desbloquear automáticamente el siguiente paso.</p>
+            ${questionsHtml}
+            <button class="btn btn-primary" id="btn-verificar-quiz" style="width:auto; padding:12px 22px;" onclick="verificarQuiz('${topic.id}','${step.id}')">Verificar respuestas</button>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>`;
+}
+
+function registrarRespuestaQuiz(stepId, questionId, optionIndex) {
+    quizAnswers[stepId] = quizAnswers[stepId] || {};
+    quizAnswers[stepId][questionId] = optionIndex;
+}
+
+async function verificarQuiz(topicId, stepId) {
+    const topic = ONBOARDING_STRUCTURE.find(t => t.id === topicId);
+    const step = topic.steps.find(s => s.id === stepId);
+    const answers = quizAnswers[stepId] || {};
+    const feedback = document.getElementById('quiz-feedback');
+    const total = step.activity.questions.length;
+
+    const respondidas = step.activity.questions.filter(q => answers[q.id] !== undefined).length;
+    if (respondidas < total) {
+        feedback.className = 'quiz-feedback is-warning';
+        feedback.textContent = 'Respondé todas las preguntas antes de verificar.';
+        return;
+    }
+
+    const correctas = step.activity.questions.filter(q => answers[q.id] === q.correct_index).length;
+    const passingScore = activity_passing_score(step);
+
+    if (correctas >= passingScore) {
+        feedback.className = 'quiz-feedback is-success';
+        feedback.textContent = `¡Correcto! ${correctas}/${total}. Guardando avance…`;
+
+        const btn = document.getElementById('btn-verificar-quiz');
+        setBtnLoading(btn, true, 'Guardando…', 'Verificar respuestas');
+        await marcarPasoCompletado(stepId);
+
+        renderOverview();
+        renderTopics();
+        const stepIndex = topic.steps.findIndex(s => s.id === stepId);
+        renderTrail(topic, stepIndex); // re-renderiza; el siguiente nodo queda desbloqueado
+    } else {
+        feedback.className = 'quiz-feedback is-error';
+        feedback.textContent = `Obtuviste ${correctas}/${total}. Revisá tus respuestas e intentá de nuevo.`;
+    }
+}
+
+function activity_passing_score(step) {
+    return step.activity.passing_score || step.activity.questions.length;
+}
+
+/* ============================================================
+   RENDERIZADOR DE MEDIOS — preparado para múltiples plataformas
+   Soporta: YouTube, Vimeo, Google Drive, video/audio directo,
+   imagen, o cualquier iframe embebible genérico.
+   Solo hace falta completar `media.url` en el contenido; el tipo
+   de embed se resuelve automáticamente acá.
+   ============================================================ */
+function extraerYoutubeId(url) {
+    const m = url.match(/(?:youtu\.be\/|v=|embed\/)([a-zA-Z0-9_-]{6,})/);
+    return m ? m[1] : null;
+}
+function extraerVimeoId(url) {
+    const m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    return m ? m[1] : null;
+}
+function extraerDriveId(url) {
+    const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : null;
+}
+
+function renderMedia(media) {
+    if (!media || !media.type || !media.url) {
+        return `<div class="media-slot is-empty">Sin recurso multimedia cargado para este paso todavía.</div>`;
+    }
+
+    switch (media.type) {
+        case 'youtube': {
+            const id = extraerYoutubeId(media.url);
+            if (!id) return mediaError();
+            return `<iframe src="https://www.youtube-nocookie.com/embed/${id}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+        }
+        case 'vimeo': {
+            const id = extraerVimeoId(media.url);
+            if (!id) return mediaError();
+            return `<iframe src="https://player.vimeo.com/video/${id}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+        }
+        case 'drive': {
+            const id = extraerDriveId(media.url);
+            if (!id) return mediaError();
+            return `<iframe src="https://drive.google.com/file/d/${id}/preview" allow="autoplay" loading="lazy"></iframe>`;
+        }
+        case 'video':
+            return `<video controls preload="metadata" src="${escapeHtml(media.url)}"></video>`;
+        case 'audio':
+            return `<audio controls preload="metadata" src="${escapeHtml(media.url)}"></audio>`;
+        case 'image':
+            return `<img src="${escapeHtml(media.url)}" alt="Recurso visual del paso" loading="lazy">`;
+        case 'iframe':
+            return `<iframe src="${escapeHtml(media.url)}" loading="lazy"></iframe>`;
+        default:
+            return `<div class="media-slot is-empty">Tipo de recurso no reconocido: ${escapeHtml(media.type)}.</div>`;
+    }
+}
+function mediaError() {
+    return `<div class="media-slot is-empty">No se pudo interpretar el link cargado para este recurso.</div>`;
+}
+
+/* ============================================================
+   SESIÓN PERSISTENTE AL RECARGAR
+   ============================================================ */
+(async function initSession() {
+    if (DEMO_MODE) return; // en modo demo no se persiste sesión de Supabase
+    if (!SUPABASE_CONFIGURADO) {
+        const status = document.getElementById('login-status');
+        status.classList.add('is-error');
+        status.textContent = 'Faltan configurar SUPABASE_URL y SUPABASE_KEY en el archivo (buscá esas líneas cerca del inicio del <script>). Hasta que las completes, el login no va a poder conectarse.';
+        return;
+    }
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session && session.user) {
+        await onLoginSuccess(session.user);
+    }
+})();
+
+if (!DEMO_MODE && SUPABASE_CONFIGURADO) {
+    _supabase.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_OUT') {
+            document.getElementById('app-shell').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+    });
+}
+</script>
+</body>
+</html>

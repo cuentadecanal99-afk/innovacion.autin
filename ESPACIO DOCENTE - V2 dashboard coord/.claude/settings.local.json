@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(which python *)",
+      "Read(//tmp/**)",
+      "Bash(node -e ' *)",
+      "Bash(disown)",
+      "Bash(timeout 15 bash -c 'until curl -sf http://localhost:8791/index.html >/dev/null; do sleep 1; done')",
+      "Bash(npx --yes playwright install chromium)",
+      "Bash(node check_gate.js)",
+      "Bash(npx playwright *)",
+      "Bash(node check_home.js)",
+      "Bash(node check_logout.js)",
+      "Bash(node check_mobile.js)",
+      "Bash(pkill -f \"http.server\\\\|node -e\")",
+      "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *\")",
+      "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 8791 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess\")",
+      "Bash(powershell -NoProfile -Command \"Stop-Process -Id 14128 -Force\")"
+    ]
+  }
+}
