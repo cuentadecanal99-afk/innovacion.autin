@@ -4,42 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sendero de Bienvenida | Austin Eco Bilingual School</title>
+<link rel="icon" type="image/jpeg" href="austin-eco-bilingual-school-campana-argentina.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    TOKENS DE DISEÑO
-   Paleta extraída directamente del logo de Austin Eco Bilingual
-   School: naranja (#F18636), verde lima (#A9CF44) y azul petróleo
-   (#395968). El azul se usa como color estructural (headers,
-   footer, texto), el verde como acento de acción/éxito y el
-   naranja como acento de logro (XP, paso activo).
+   Paleta y tipografía calcadas de los sitios institucionales de
+   Austin: admisionesaustin.com.ar (naranja #E8621A, verde oliva
+   #7CB518, azul petróleo #2C4A5E / #3A607A, fondo crema #F8F6F0,
+   tipografías Lora + DM Sans) y austinebs-ah.edu.ar (sitio del
+   colegio, mismo espíritu institucional/eco). El azul es el color
+   estructural (headers, footer, texto), el verde el acento de
+   acción/éxito y el naranja el acento de logro (XP, paso activo,
+   CTAs) — igual que en admisionesaustin.com.ar.
    ============================================================ */
 :root {
-    --cream:        #FAF9F4;
-    --cream-deep:    #F0EEE2;
-    --ink:          #26343E;
-    --moss-900:     #26343E;
-    --moss-700:     #35505E;
-    --moss-600:     #6B8A28;
-    --moss-400:     #A9CF44;
-    --moss-100:     #EAF3D2;
-    --moss-50:      #F4F8EA;
-    --amber-600:    #E0701F;
-    --amber-500:    #F18636;
-    --amber-100:    #FDE6D0;
-    --coral-600:    #B84B34;
-    --coral-100:    #F9E1DA;
-    --stone-600:    #5B6459;
-    --stone-400:    #8B9186;
-    --stone-200:    #D8D9CF;
+    --cream:        #F8F6F0;
+    --cream-deep:    #EEE9DF;
+    --ink:          #2C4A5E;
+    --moss-900:     #2C4A5E;
+    --moss-700:     #3A607A;
+    --moss-600:     #7CB518;
+    --moss-400:     #A9D65C;
+    --moss-100:     #EBF7D4;
+    --moss-50:      #F5FAEC;
+    --amber-600:    #C94F0F;
+    --amber-500:    #E8621A;
+    --amber-100:    #FEF0E6;
+    --coral-600:    #DC2626;
+    --coral-100:    #FEF2F2;
+    --stone-600:    #5A5A54;
+    --stone-500:    #767167;
+    --stone-400:    #95958E;
+    --stone-200:    #E3DED3;
     --paper:        #FFFFFF;
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body:    'Inter', system-ui, sans-serif;
-    --radius:       14px;
-    --radius-sm:    8px;
-    --shadow-card:  0 1px 2px rgba(38,52,62,0.06), 0 8px 24px rgba(38,52,62,0.07);
+    --glass:        rgba(255,255,255,0.72);
+    --glass-border: rgba(255,255,255,0.45);
+    --font-display: 'Lora', Georgia, serif;
+    --font-body:    'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --radius:       16px;
+    --radius-lg:    24px;
+    --radius-sm:    10px;
+    --dur:          0.35s;
+    --dur-fast:     0.18s;
+    --dur-slow:     0.6s;
+    --ease-out:     cubic-bezier(.16,1,.3,1);
+    --shadow-card:  0 1px 2px rgba(44,74,94,0.06), 0 10px 30px -8px rgba(44,74,94,0.12);
+    --shadow-lg:    0 20px 50px -18px rgba(44,74,94,0.28);
 }
 
 * { box-sizing: border-box; }
@@ -52,13 +65,22 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--moss-900); }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--moss-900); letter-spacing: -0.01em; }
 
 button { font-family: var(--font-body); }
 
-a { color: var(--moss-600); }
+a { color: var(--moss-600); transition: color var(--dur-fast) var(--ease-out); }
 
 ::selection { background: var(--amber-100); }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes floatBlob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(2%, -3%) scale(1.05); }
+}
 
 /* Foco visible en todo elemento interactivo — accesibilidad */
 a:focus-visible, button:focus-visible, input:focus-visible,
@@ -70,28 +92,94 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 .hidden { display: none !important; }
 
 /* ============================================================
+   MARCA / LOGO
+   Grilla 2x2 de fichas redondeadas con las iniciales A·E·B·S
+   (Austin Eco Bilingual School), leve rotación -3deg — mismo
+   lenguaje visual del logo de admisionesaustin.com.ar.
+   ============================================================ */
+.logo-mark {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    flex: 0 0 auto;
+    transform: rotate(-3deg);
+    transition: transform var(--dur) var(--ease-out);
+}
+.logo-mark:hover { transform: rotate(0deg) scale(1.04); }
+.logo-mark span {
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 600;
+    border-radius: 3px;
+}
+.logo-mark .t-a { background: var(--amber-500); }
+.logo-mark .t-e { background: var(--moss-600); }
+.logo-mark .t-b { background: var(--moss-600); }
+.logo-mark .t-s { background: var(--moss-700); }
+.logo-mark.lg-lg { width: 44px; height: 44px; }
+.logo-mark.lg-lg span { font-size: 10px; }
+.logo-mark.lg-md { width: 34px; height: 34px; }
+.logo-mark.lg-md span { font-size: 8px; }
+
+/* ============================================================
    PANTALLA DE INGRESO
    ============================================================ */
 #login-screen {
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background:
-        radial-gradient(circle at 15% 15%, var(--moss-100) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, var(--amber-100) 0%, transparent 40%),
-        var(--cream);
+    overflow: hidden;
+    background: linear-gradient(150deg, var(--moss-900) 0%, var(--moss-700) 55%, #4A7A5A 100%);
 }
 
+#login-screen::before,
+#login-screen::after,
+#login-screen .blob-3 {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(4px);
+    pointer-events: none;
+    animation: floatBlob 14s var(--ease-out) infinite;
+}
+#login-screen::before {
+    width: 34rem; height: 26rem;
+    top: -8%; left: -10%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(169,214,92,0.35), transparent 70%);
+}
+#login-screen::after {
+    width: 30rem; height: 30rem;
+    bottom: -12%; right: -8%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(232,98,26,0.32), transparent 70%);
+    animation-delay: -7s;
+}
+#login-screen .blob-3 {
+    width: 22rem; height: 22rem;
+    top: 30%; right: 12%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255,255,255,0.18), transparent 70%);
+    animation-delay: -3s;
+}
+
+/* Tarjeta de acceso con efecto vidrio (glassmorphism) flotando
+   sobre los blobs animados — capas transparentes con blur, igual
+   que la pantalla de login de admisionesaustin.com.ar. */
 .login-card {
+    position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 400px;
-    background: var(--paper);
-    border-radius: 20px;
-    box-shadow: var(--shadow-card);
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.28);
     padding: 36px 32px;
-    border: 1px solid var(--cream-deep);
+    border: 1px solid var(--glass-border);
+    animation: fadeInUp var(--dur-slow) var(--ease-out);
 }
 
 .login-brand {
@@ -99,16 +187,6 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     align-items: center;
     gap: 12px;
     margin-bottom: 22px;
-}
-
-.login-brand img {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    background: white;
-    border-radius: 8px;
-    padding: 3px;
-    border: 1px solid var(--stone-200);
 }
 
 .login-brand .eyebrow {
@@ -147,28 +225,34 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     font-size: 0.95rem;
     background: var(--cream);
     color: var(--ink);
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
-.field-group input:focus { border-color: var(--moss-400); background: white; }
+.field-group input:focus { border-color: var(--moss-400); background: white; outline: none; box-shadow: 0 0 0 4px rgba(169,214,92,0.22); }
 
 .btn {
     border: none;
-    border-radius: var(--radius-sm);
-    padding: 12px 16px;
-    font-weight: 600;
+    border-radius: 999px;
+    padding: 13px 18px;
+    font-weight: 700;
     font-size: 0.92rem;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: transform 0.12s ease, opacity 0.12s ease;
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
-.btn:active { transform: scale(0.98); }
+.btn:active { transform: scale(0.97); }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-.btn-primary { background: var(--moss-600); color: white; width: 100%; }
-.btn-primary:hover:not(:disabled) { background: var(--moss-700); }
+.btn-primary {
+    background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+    color: white;
+    width: 100%;
+    box-shadow: 0 10px 24px -10px rgba(232,98,26,0.65);
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 30px -10px rgba(232,98,26,0.75); }
 .btn-ghost { background: transparent; color: var(--moss-700); border: 1.5px solid var(--stone-200); width: 100%; }
-.btn-ghost:hover:not(:disabled) { border-color: var(--moss-400); }
+.btn-ghost:hover:not(:disabled) { border-color: var(--moss-400); background: var(--moss-50); transform: translateY(-1px); }
 
 .login-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
 
@@ -189,16 +273,42 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
 }
-.btn-ghost .spinner { border-color: rgba(47,107,76,0.3); border-top-color: var(--moss-600); }
+.btn-ghost .spinner { border-color: rgba(58,96,122,0.3); border-top-color: var(--moss-600); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ============================================================
    SHELL PRINCIPAL / DASHBOARD
    ============================================================ */
-#app-shell { min-height: 100vh; }
+#app-shell { min-height: 100vh; position: relative; overflow-x: clip; }
+
+/* Capas translúcidas de fondo, quietas y sutiles, que le dan al
+   dashboard la misma sensación de profundidad que las secciones
+   de admisionesaustin.com.ar. */
+#app-shell::before,
+#app-shell::after {
+    content: '';
+    position: fixed;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(6px);
+    pointer-events: none;
+}
+#app-shell::before {
+    width: 30rem; height: 24rem;
+    top: -6%; right: -8%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(124,181,24,0.10), transparent 70%);
+}
+#app-shell::after {
+    width: 26rem; height: 26rem;
+    bottom: 5%; left: -10%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(232,98,26,0.08), transparent 70%);
+}
+.topbar, .shell-body, .site-footer { position: relative; z-index: 1; }
 
 .topbar {
-    background: var(--moss-900);
+    background: linear-gradient(120deg, rgba(44,74,94,0.92) 0%, rgba(58,96,122,0.92) 130%);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
     color: var(--cream);
     padding: 14px 24px;
     display: flex;
@@ -206,26 +316,38 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 6px 20px -10px rgba(44,74,94,0.45);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
-.topbar-brand img { height: 30px; width: 30px; border-radius: 6px; background: white; padding: 2px; }
 .topbar-brand span { font-family: var(--font-display); font-size: 1.05rem; }
 
-.topbar-user { display: flex; align-items: center; gap: 14px; }
+.topbar-user { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; row-gap: 8px; }
 .xp-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(241,134,54,0.18);
-    border: 1px solid rgba(241,134,54,0.4);
+    background: rgba(232,98,26,0.18);
+    border: 1px solid rgba(232,98,26,0.4);
     color: var(--amber-100);
     padding: 6px 12px;
     border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 700;
+    transition: transform var(--dur-fast) var(--ease-out);
 }
-.topbar-user .email { font-size: 0.8rem; opacity: 0.75; }
+.topbar-user .email {
+    font-size: 0.8rem;
+    opacity: 0.75;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .btn-logout {
     background: transparent;
     border: 1px solid rgba(255,255,255,0.25);
@@ -254,19 +376,25 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     font-weight: 700;
     margin-bottom: 6px;
 }
-.hero-block h1 { font-size: 2rem; margin-bottom: 8px; }
+.hero-block { animation: fadeInUp var(--dur-slow) var(--ease-out); }
+.hero-block h1 { font-size: 2.1rem; margin-bottom: 8px; }
 .hero-block p { color: var(--stone-600); max-width: 560px; line-height: 1.55; font-size: 0.95rem; }
+.hero-block .level-status { margin-top: 10px; font-weight: 700; color: var(--amber-600); font-size: 0.9rem; }
 
-/* Resumen de avance general */
+/* Resumen de avance general — panel de vidrio (glassmorphism) */
 .overview-panel {
-    background: var(--paper);
-    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
     padding: 20px 22px;
     margin-bottom: 30px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
+    border: 1px solid var(--glass-border);
+    animation: fadeInUp var(--dur-slow) var(--ease-out);
 }
 @media (max-width: 720px) { .overview-panel { grid-template-columns: 1fr; } }
 
@@ -296,28 +424,71 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 @media (max-width: 860px) { .topics-grid { grid-template-columns: 1fr; } }
 
 .topic-card {
+    position: relative;
     background: var(--paper);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
-    padding: 20px;
+    padding: 22px;
     cursor: pointer;
-    border: 1.5px solid transparent;
-    transition: border-color 0.15s ease, transform 0.15s ease;
+    border: 1.5px solid var(--cream-deep);
+    overflow: hidden;
+    transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), background var(--dur) var(--ease-out);
     display: flex;
     flex-direction: column;
     gap: 14px;
+    animation: fadeInUp var(--dur-slow) var(--ease-out);
 }
-.topic-card:hover { border-color: var(--moss-400); transform: translateY(-2px); }
+/* Capa de brillo translúcida que se desliza al pasar el mouse */
+.topic-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(124,181,24,0.10) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform var(--dur-slow) var(--ease-out);
+    pointer-events: none;
+}
+.topic-card:hover::before { transform: translateX(120%); }
+.topic-card:hover { border-color: var(--moss-400); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .topic-card.is-active { border-color: var(--moss-600); background: var(--moss-50); }
 
+/* Nivel bloqueado: no se puede abrir hasta completar el nivel anterior */
+.topic-card.is-locked {
+    cursor: not-allowed;
+    background: var(--cream-deep);
+    opacity: 0.62;
+}
+.topic-card.is-locked:hover { transform: none; box-shadow: var(--shadow-card); border-color: var(--cream-deep); }
+.topic-card.is-locked:hover::before { transform: translateX(-120%); }
+.topic-card.is-locked .topic-icon { background: var(--stone-200); color: var(--stone-500); }
+
+.level-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--amber-600);
+    background: var(--amber-100);
+    border-radius: 999px;
+    padding: 3px 9px;
+    margin-bottom: 6px;
+}
+.level-badge-free { color: var(--moss-700); background: var(--moss-100); }
+.topic-card.is-locked .level-badge { color: var(--stone-500); background: var(--stone-200); }
+
+.overview-item.is-locked { opacity: 0.55; }
+.overview-item.is-locked .ring-fill { stroke: var(--stone-400); }
+
 .topic-icon {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    background: var(--moss-100);
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--moss-100), var(--moss-50));
     color: var(--moss-700);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    transition: transform var(--dur) var(--ease-out);
 }
+.topic-card:hover .topic-icon { transform: scale(1.08) rotate(-4deg); }
 
 .topic-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
 .topic-card .topic-desc { font-size: 0.8rem; color: var(--stone-500); line-height: 1.4; min-height: 34px; }
@@ -350,10 +521,12 @@ a:focus-visible, button:focus-visible, input:focus-visible,
    ============================================================ */
 #trail-view {
     background: var(--paper);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
     padding: 26px;
     margin-top: 26px;
+    border: 1px solid var(--cream-deep);
+    animation: fadeInUp var(--dur-slow) var(--ease-out);
 }
 
 .trail-header {
@@ -373,8 +546,29 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 .trail-header h2 { font-size: 1.5rem; }
 
 /* Camino SVG con 5 nodos */
-.trail-path-wrap { overflow-x: auto; padding: 6px 2px 18px; margin-bottom: 6px; }
-.trail-path { display: flex; align-items: center; min-width: 460px; }
+.trail-path-wrap { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 6px 2px 18px; margin-bottom: 6px; }
+.trail-path { display: flex; align-items: center; }
+
+/* Pista de que hay más pasos a la derecha: solo se agrega (vía JS, en
+   renderTrail) cuando el sendero realmente no entra en el ancho visible
+   — en mobile, con tópicos de 6 pasos, si no se ve nada indicando que
+   hay que deslizar, el usuario cree que el tópico termina en el 3er paso. */
+.trail-path-wrap.is-scrollable::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 18px;
+    width: 36px;
+    background: linear-gradient(to right, transparent, var(--paper));
+    pointer-events: none;
+}
+.trail-scroll-hint {
+    display: none;
+    font-size: 0.74rem;
+    color: var(--stone-500);
+    font-weight: 600;
+    margin: -2px 0 14px;
+}
+.trail-path-wrap.is-scrollable + .trail-scroll-hint { display: block; }
 .trail-node-btn {
     background: none; border: none; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -389,22 +583,24 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     border: 2.5px solid var(--stone-200);
     background: var(--cream);
     color: var(--stone-400);
-    transition: all 0.15s ease;
+    transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
-.trail-node-btn:not(:disabled):hover .node-circle { border-color: var(--moss-400); }
+.trail-node-btn:not(:disabled):hover .node-circle { border-color: var(--moss-400); transform: translateY(-2px); }
 .node-circle.is-done { background: var(--moss-600); border-color: var(--moss-600); color: white; }
 .node-circle.is-current {
-    background: var(--amber-500); border-color: var(--amber-500); color: white;
-    box-shadow: 0 0 0 5px rgba(241,134,54,0.2);
+    background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+    border-color: var(--amber-500); color: white;
+    box-shadow: 0 0 0 5px rgba(232,98,26,0.22), 0 10px 20px -8px rgba(232,98,26,0.55);
 }
 .node-label { font-size: 0.72rem; text-align: center; color: var(--stone-600); font-weight: 600; line-height: 1.25; }
-.trail-connector { flex: 1; height: 3px; background: var(--stone-200); min-width: 20px; margin: 0 -6px 26px; border-radius: 2px; }
+.trail-connector { flex: 1; height: 3px; background: var(--stone-200); min-width: 20px; margin: 0 -6px 26px; border-radius: 2px; transition: background var(--dur) var(--ease-out); }
 .trail-connector.is-filled { background: var(--moss-600); }
 
 /* Panel del paso activo */
 .step-panel {
     border-top: 1.5px solid var(--cream-deep);
     padding-top: 20px;
+    animation: fadeInUp var(--dur) var(--ease-out);
 }
 .step-panel .step-kicker {
     font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
@@ -451,12 +647,19 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 }
 
 .completion-banner {
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 12px;
     background: var(--moss-100); color: var(--moss-900);
     border-radius: var(--radius-sm); padding: 16px 18px;
     font-size: 0.9rem;
 }
+.completion-banner .completion-text { display: flex; align-items: center; gap: 12px; }
 .completion-banner .trophy { font-size: 1.6rem; }
+.btn-next-step {
+    background: var(--moss-600); color: white;
+    box-shadow: 0 8px 18px -8px rgba(124,181,24,0.55);
+}
+.btn-next-step:hover:not(:disabled) { background: var(--moss-700); transform: translateY(-2px); }
 
 /* ============================================================
    ACTIVIDAD DE EVALUACIÓN (quiz) — mecanismo de avance automático
@@ -481,9 +684,10 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     display: flex; align-items: center; gap: 10px;
     background: var(--paper); border: 1.5px solid var(--stone-200);
     border-radius: var(--radius-sm); padding: 10px 12px;
-    font-size: 0.86rem; cursor: pointer; transition: border-color 0.12s ease;
+    font-size: 0.86rem; cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
-.quiz-option:hover { border-color: var(--moss-400); }
+.quiz-option:hover { border-color: var(--moss-400); background: var(--moss-50); transform: translateX(2px); }
 .quiz-option input { accent-color: var(--moss-600); }
 
 .quiz-feedback { margin-top: 14px; font-size: 0.85rem; font-weight: 600; min-height: 1.2em; }
@@ -495,7 +699,7 @@ a:focus-visible, button:focus-visible, input:focus-visible,
    FOOTER INSTITUCIONAL
    ============================================================ */
 .site-footer {
-    background: var(--moss-900);
+    background: linear-gradient(140deg, var(--moss-900) 0%, var(--moss-700) 55%, #4A7A5A 100%);
     color: var(--cream);
     margin-top: 50px;
 }
@@ -511,11 +715,6 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     margin-bottom: 30px;
     padding-bottom: 26px;
     border-bottom: 1px solid rgba(250,249,244,0.15);
-}
-.footer-logo {
-    height: 44px; width: 44px; object-fit: contain;
-    background: white; border-radius: 10px; padding: 4px;
-    flex: 0 0 auto;
 }
 .footer-brand-name { font-family: var(--font-display); font-size: 1.1rem; }
 .footer-brand-tag { font-size: 0.78rem; color: rgba(250,249,244,0.65); font-style: italic; margin-top: 2px; }
@@ -534,7 +733,9 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     border: 1px solid rgba(250,249,244,0.14);
     border-radius: var(--radius-sm);
     padding: 16px 14px;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
+.value-card:hover { background: rgba(250,249,244,0.11); transform: translateY(-2px); }
 .value-card .value-icon { font-size: 1.3rem; margin-bottom: 8px; display: block; }
 .value-card .value-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; color: var(--cream); }
 .value-card .value-desc { font-size: 0.76rem; line-height: 1.4; color: rgba(250,249,244,0.7); }
@@ -556,6 +757,7 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    transition: opacity var(--dur-fast) var(--ease-out);
 }
 .footer-links a:hover { opacity: 1; text-decoration: underline; }
 
@@ -570,6 +772,134 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     #trail-view { padding: 18px; }
     .btn { min-height: 44px; }
     .footer-inner { padding: 32px 18px 22px; }
+    .topbar { padding: 12px 14px; gap: 8px; }
+    .topbar-user { gap: 8px; }
+    .topbar-user .email { max-width: 96px; }
+}
+
+@media (max-width: 380px) {
+    .topbar-user .email { display: none; }
+}
+
+/* ============================================================
+   CELEBRACIÓN DE NIVEL COMPLETADO (modal)
+   ============================================================ */
+@keyframes levelModalPop {
+    from { opacity: 0; transform: scale(0.86) translateY(14px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes levelTrophyPop {
+    0%   { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+    60%  { transform: scale(1.15) rotate(4deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes confettiFall {
+    from { transform: translateY(-16px) rotate(0deg); opacity: 1; }
+    to   { transform: translateY(340px) rotate(600deg); opacity: 0; }
+}
+
+.level-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(44,74,94,0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: fadeInUp var(--dur) var(--ease-out);
+}
+
+.level-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    padding: 40px 28px 28px;
+    text-align: center;
+    animation: levelModalPop var(--dur) var(--ease-out);
+}
+
+.level-modal-confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.level-modal-confetti span {
+    position: absolute;
+    top: -16px;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+}
+
+.level-modal-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--stone-400);
+    font-size: 1rem;
+    line-height: 1;
+    padding: 8px;
+}
+.level-modal-close:hover { color: var(--stone-600); }
+
+.level-modal-trophy {
+    font-size: 3.6rem;
+    margin-bottom: 6px;
+    animation: levelTrophyPop 0.6s var(--ease-out);
+}
+
+.level-modal-kicker {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber-600);
+    margin-bottom: 6px;
+}
+
+#level-modal-title { font-size: 1.5rem; margin-bottom: 10px; position: relative; }
+
+.level-modal-xp {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--moss-700);
+    background: var(--moss-100);
+    border-radius: 999px;
+    padding: 6px 16px;
+    margin-bottom: 16px;
+}
+
+.level-modal-next {
+    font-size: 0.88rem;
+    color: var(--stone-600);
+    line-height: 1.55;
+    background: var(--cream);
+    border: 1px solid var(--cream-deep);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 20px;
+}
+.level-modal-next strong { color: var(--moss-900); }
+
+.level-modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+@media (max-width: 380px) {
+    .level-modal-card { padding: 34px 20px 22px; }
+    .level-modal-trophy { font-size: 3rem; }
 }
 </style>
 </head>
@@ -577,9 +907,12 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 
 <!-- ================= PANTALLA DE LOGIN ================= -->
 <section id="login-screen">
+    <div class="blob-3" aria-hidden="true"></div>
     <div class="login-card">
         <div class="login-brand">
-            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+            <div class="logo-mark lg-lg" aria-hidden="true">
+                <span class="t-a">A</span><span class="t-e">E</span><span class="t-b">B</span><span class="t-s">S</span>
+            </div>
             <div>
                 <div class="eyebrow">Austin Eco Bilingual School</div>
                 <div class="name">Sendero de Bienvenida</div>
@@ -609,7 +942,9 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 <div id="app-shell" class="hidden">
     <header class="topbar">
         <div class="topbar-brand">
-            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+            <div class="logo-mark lg-md" aria-hidden="true">
+                <span class="t-a">A</span><span class="t-e">E</span><span class="t-b">B</span><span class="t-s">S</span>
+            </div>
             <span>Sendero de Bienvenida</span>
         </div>
         <div class="topbar-user">
@@ -623,30 +958,32 @@ a:focus-visible, button:focus-visible, input:focus-visible,
         <div class="hero-block">
             <div class="eyebrow">Onboarding docente</div>
             <h1 id="greeting-title">Bienvenida/o al equipo</h1>
-            <p>Recorré los tres tópicos a tu ritmo. Cada tópico tiene 5 pasos: completar uno destraba el siguiente. Tu avance se guarda automáticamente.</p>
+            <p>Superá los niveles en orden: completar uno entero destraba el siguiente. "Bienvenida a Austin" y "Este ciclo lectivo" quedan siempre disponibles, fuera de la secuencia. Tu avance se guarda automáticamente.</p>
+            <p class="level-status" id="hero-level-status"></p>
         </div>
 
         <!-- Panel de avance general (conectado a los niveles de cada tópico) -->
         <div class="overview-panel" id="overview-panel"></div>
 
-        <!-- Tarjetas de los 3 tópicos -->
+        <!-- Tarjetas de los tópicos -->
         <div class="topics-grid" id="topics-grid"></div>
 
-        <!-- Vista de sendero de 5 pasos del tópico seleccionado -->
+        <!-- Vista de sendero del tópico seleccionado -->
         <section id="trail-view" class="hidden"></section>
     </main>
 
     <!-- ================= FOOTER INSTITUCIONAL =================
-         Logo: es el archivo real que subiste
-         ("austin-eco-bilingual-school-campana-argentina.jpg"),
-         copiado junto a este index.html — si lo movés a otra carpeta
-         o servidor, llevate la imagen junto con el HTML.
+         Logo: marca de 4 fichas A·E·B·S (.logo-mark), igual a la de
+         admisionesaustin.com.ar — no depende de ningún archivo de
+         imagen externo.
          Los 5 valores y los links de abajo son PLACEHOLDER: texto y
          URLs listos para que edites directamente en este bloque. -->
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-brand">
-                <img class="footer-logo" src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+                <div class="logo-mark lg-lg" aria-hidden="true">
+                    <span class="t-a">A</span><span class="t-e">E</span><span class="t-b">B</span><span class="t-s">S</span>
+                </div>
                 <div>
                     <div class="footer-brand-name">Austin Eco Bilingual School</div>
                     <div class="footer-brand-tag">Developing global citizens for a sustainable future</div>
@@ -682,9 +1019,9 @@ a:focus-visible, button:focus-visible, input:focus-visible,
             </div>
 
             <div class="footer-links">
-                <a href="https://www.austinecobilingual.edu.ar" target="_blank" rel="noopener">🌐 Sitio web del colegio</a>
+                <a href="https://www.austinebs-ah.edu.ar/" target="_blank" rel="noopener">🌐 Sitio web del colegio</a>
                 <a href="mailto:coordinacion@austineco.edu.ar">✉️ Consultas a coordinación</a>
-                <a href="https://herramientadocentes.netlify.app/" target="_blank" rel="noopener">📋 PUD Workspace (docentes)</a>
+                <a href="https://herramientadocentes.netlify.app/" target="_blank" rel="noopener">📋 Espacio Docente (docentes)</a>
                 <a href="#" target="_blank" rel="noopener">📘 Manual de convivencia</a>
                 <a href="#" target="_blank" rel="noopener">💬 Soporte técnico del staff</a>
             </div>
@@ -694,6 +1031,25 @@ a:focus-visible, button:focus-visible, input:focus-visible,
             </div>
         </div>
     </footer>
+</div>
+
+<!-- ================= CELEBRACIÓN DE NIVEL COMPLETADO =================
+     Se muestra una sola vez, en el momento exacto en que se completa el
+     último paso de un nivel de la secuencia (ver esUltimoPasoDeNivel() /
+     mostrarCelebracionNivel() en el script). No aplica a "Este ciclo
+     lectivo" (standalone: true) — ese tópico no forma parte del juego
+     de niveles, así que completarlo no "destraba" nada. -->
+<div class="level-modal-overlay hidden" id="level-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="level-modal-title" onclick="if(event.target===this) cerrarModalNivel();">
+    <div class="level-modal-card">
+        <div class="level-modal-confetti" id="level-modal-confetti" aria-hidden="true"></div>
+        <button class="level-modal-close" onclick="cerrarModalNivel()" aria-label="Cerrar">✕</button>
+        <div class="level-modal-trophy" aria-hidden="true">🏆</div>
+        <div class="level-modal-kicker" id="level-modal-kicker">NIVEL COMPLETADO</div>
+        <h2 id="level-modal-title">—</h2>
+        <p class="level-modal-xp" id="level-modal-xp"></p>
+        <div class="level-modal-next" id="level-modal-next"></div>
+        <div class="level-modal-actions" id="level-modal-actions"></div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -706,8 +1062,8 @@ a:focus-visible, button:focus-visible, input:focus-visible,
    onboarding — el esquema necesario está documentado en
    SETUP-SUPABASE.md (se entrega junto a este archivo).
    ============================================================ */
-const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
-const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_HmbNgu4TXftJoEH6CSM6wQ_TlebMuly';
 
 let _supabase = null;
 try {
@@ -723,7 +1079,7 @@ try {
    Cuando cargues la lista (ver SETUP-SUPABASE.md), volvé a poner
    `true` para reactivar el chequeo contra el colegio.
    ============================================================ */
-const REQUIRE_AUTHORIZED_EMAIL = false;
+const REQUIRE_AUTHORIZED_EMAIL = true;
 const SUPABASE_CONFIGURADO = _supabase !== null && !SUPABASE_URL.includes('TU-PROYECTO') && !SUPABASE_KEY.includes('TU_SUPABASE');
 
 /* ============================================================
@@ -734,7 +1090,7 @@ const SUPABASE_CONFIGURADO = _supabase !== null && !SUPABASE_URL.includes('TU-PR
    Cuando tengas SUPABASE_URL / SUPABASE_KEY reales cargados,
    cambiá esto a `false` para conectar de verdad.
    ============================================================ */
-const DEMO_MODE = true;
+const DEMO_MODE = false;
 const DEMO_STORAGE_KEY = 'onboarding_demo_progress_v1';
 
 function demoCargarProgreso() {
@@ -750,69 +1106,581 @@ function demoGuardarProgreso() {
 }
 
 /* ============================================================
-   ESTRUCTURA DE CONTENIDO (3 tópicos x 5 pasos)
-   Esto es contenido PLACEHOLDER en markdown para que puedas
-   reemplazarlo directamente acá, o (recomendado a futuro) cargarlo
-   desde una tabla `onboarding_steps` en Supabase — ver
-   intentarCargarContenidoDesdeSupabase() más abajo, que ya intenta
-   traerlo del backend y solo usa este arreglo como respaldo.
+   ESTRUCTURA DE CONTENIDO — fuente de verdad CANÓNICA y LOCAL.
+   Este arreglo (títulos, orden, niveles, standalone, pasos) es lo
+   único que define la estructura del onboarding. No se carga ni se
+   reemplaza desde Supabase — ver el comentario "CARGA DE CONTENIDO —
+   DESACTIVADA A PROPÓSITO" más abajo para la razón. Lo que sí viene
+   de Supabase es el PROGRESO de cada usuario (qué pasos completó),
+   que es un dato aparte y no toca esta estructura.
 
    media.type admite: 'youtube' | 'vimeo' | 'drive' | 'video' |
    'audio' | 'image' | 'iframe' | null
+
+   step_type admite: 'quiz' | 'info' (default 'quiz' si se omite).
+   - 'quiz': el paso avanza solo respondiendo correctamente la
+     actividad (ver `activity` más abajo); comportamiento actual.
+   - 'info': paso de solo lectura, sin evaluación (pensado para
+     contenido que cambia cada ciclo lectivo, ej. novedades o fechas
+     importantes). Se completa con un botón manual y no necesita
+     `activity`.
    ============================================================ */
-let ONBOARDING_STRUCTURE = [
+/* ============================================================
+   ONBOARDING_STRUCTURE — contenido real (reemplaza el placeholder)
+
+   Decisiones tomadas para esta versión:
+   - 14 tópicos, de los cuales 12 forman una secuencia de NIVELES
+     gamificados (ver isTopicUnlocked()/sequentialTopics() más abajo,
+     junto a la lógica de desbloqueo secuencial): Nivel 1 Enseñanza
+     para la Comprensión (EpC), Nivel 2 Valoración continua, Nivel 3
+     Cultura de Pensamiento, Nivel 4 Educación Emocional y Social,
+     Nivel 5 Disciplina Positiva y Convivencia, Nivel 6 Agency by
+     Design y Agencia del Estudiante, Nivel 7 Neurodiversidad, Nivel
+     8 STEAM e Innovación, Nivel 9 Bilingüismo, Nivel 10 Eco-Schools
+     y Educación Ambiental, Nivel 11 Tecnología e IA con propósito
+     pedagógico, Nivel 12 Proyecto Institucional — en ESE orden
+     exacto. Hay que completar un nivel entero (todos sus pasos)
+     para destrabar el siguiente; el orden del array ES el orden de
+     los niveles, así que reordenar ONBOARDING_STRUCTURE cambia la
+     secuencia del juego, no es solo estético.
+   - "Bienvenida a Austin" y "Este ciclo lectivo" son los dos únicos
+     tópicos con standalone: true — quedan fuera de la secuencia de
+     niveles (sin número de Nivel ni requisito previo, siempre
+     disponibles). "Bienvenida a Austin" es orientación/información
+     institucional, no un eje pedagógico, así que no cuenta como uno
+     de los 12 niveles aunque siga usando quiz por paso. "Este ciclo
+     lectivo" es además el único con step_type: 'info' (sin quiz):
+     sus fechas/novedades cambian cada año y no tiene contenido
+     conceptual que valga evaluar. "Proyecto Institucional", pese a
+     ser el eje que más cambia ciclo a ciclo, SÍ forma parte de la
+     secuencia de niveles y SÍ lleva quiz — a diferencia de "Este
+     ciclo lectivo", tiene contenido conceptual real que vale la
+     pena evaluar.
+   - PUD y Planificación Anual se enseñan DENTRO del tópico EpC,
+     como práctica aplicada después de la teoría (no como recursos
+     descargables sueltos).
+   - Todo content_md es síntesis propia, corta, para reducir carga
+     cognitiva — no hay texto completo de ninguna fuente.
+   - media queda vacío (type: null, url: '') en todos los pasos:
+     no hay video/imagen real todavía. Se puede completar por paso
+     más adelante (youtube/vimeo/drive/video/audio/image/iframe).
+   - 1-2 preguntas de quiz por paso, todas con passing_score igual
+     al total de preguntas (hay que acertar todas).
+   ============================================================ */
+const ONBOARDING_STRUCTURE = [
     {
         id: 'topic-1',
-        title: 'Nuestra Escuela',
-        icon: '🌱',
-        description: 'Historia, misión EpC y cultura institucional.',
+        title: 'Bienvenida a Austin',
+        icon: '🏫',
+        description: 'Quiénes somos, el equipo de Secundario y cómo trabajamos juntos.',
+        standalone: true,
         steps: [
-            { id: 't1-s1', title: 'Bienvenida y misión', xp: 20, media: { type: null, url: '' },
-              content_md: '## Bienvenida\n\nReemplazá este texto con la introducción institucional. Podés usar **negrita**, *itálica*, listas y [links](https://).\n\n- Historia de Austin Eco\n- Misión y visión\n- Valores del proyecto EpC' },
-            { id: 't1-s2', title: 'Enseñanza para la Comprensión (EpC)', xp: 20, media: { type: 'youtube', url: '' },
-              content_md: '## ¿Qué es EpC?\n\nTexto placeholder sobre el marco de Harvard Project Zero usado en la escuela.' },
-            { id: 't1-s3', title: 'Comunidad bilingüe', xp: 20, media: { type: null, url: '' },
-              content_md: '## Comunidad bilingüe\n\nDescribí cómo funciona la inmersión en inglés/español en el día a día.' },
-            { id: 't1-s4', title: 'Sustentabilidad y proyecto eco', xp: 20, media: { type: 'image', url: '' },
-              content_md: '## Eje de sustentabilidad\n\nExplicá las iniciativas ecológicas del colegio.' },
-            { id: 't1-s5', title: 'Quiz de cierre: Nuestra Escuela', xp: 20, media: { type: null, url: '' },
-              content_md: '## Repaso final\n\nEspacio para preguntas de autoevaluación o un resumen de cierre del tópico.' },
+            {
+                id: 't1-s1', title: 'Quiénes somos', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Austin Eco Bilingual School\n\nSomos una comunidad bilingüe que educa hoy pensando en un mañana mejor. Cinco ejes atraviesan todo lo que hacemos: **sustentabilidad**, **ciudadanía global**, **bilingüismo real**, **comunidad** y la **Enseñanza para la Comprensión (EpC)**, el marco pedagógico de Harvard Project Zero que vas a conocer en el próximo tópico.\n\nA esto se suma nuestro proyecto institucional **"Every Step Matters"** (Building Wellbeing, One Habit at a Time): trabajamos hábitos como puente entre la vida escolar y la vida cotidiana, con registro grupal y visual. Es un proyecto de todos y para todos — también tuyo desde el primer día.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál de estos NO es uno de los cinco ejes institucionales de Austin?', options: ['Bilingüismo real', 'Competencia entre estudiantes', 'Ciudadanía global'] }
+                ]}
+            },
+            {
+                id: 't1-s2', title: 'El equipo de Secundario', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Cómo está organizado el equipo\n\nLa Dirección General y del Nivel Secundario coordina el trabajo junto a las Coordinaciones Pedagógicas (español e inglés, por ciclo) y la Coordinación IB. El **Jefe de Preceptores** organiza al equipo de preceptores, que son tu primer punto de contacto para el día a día del aula.\n\nAdemás contás con un **Equipo de Apoyo**: el EOE (Equipo de Orientación Escolar, con psicóloga y coordinadora) y el Acompañamiento Pedagógico (en inglés y en español), pensados para consultar dudas sobre estudiantes con diagnósticos o perfiles divergentes.\n\nSi tenés dudas sobre a quién recurrir ante una situación puntual, tu Coordinación Pedagógica es siempre el primer paso.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Tenés una duda sobre cómo adecuar una propuesta para un estudiante con un diagnóstico específico. ¿A quién consultás primero?', options: ['Al Jefe de Preceptores', 'A tu Coordinación Pedagógica / EOE', 'Directamente a la familia'] }
+                ]}
+            },
+            {
+                id: 't1-s3', title: 'Cómo nos comunicamos con las familias', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Comunicación con familias\n\nUsamos canales institucionales (Handing y Acadeu) para mantener a las familias informadas, además de entrevistas y reuniones. Antes de comunicar algo a una familia, conviene tener claros tres criterios: **qué** vamos a comunicar, **cuándo** es el momento adecuado, y **cómo** lo vamos a decir.\n\nSi surge información relevante en una reunión individual con una familia, es importante compartirla con tu Coordinación — así el equipo tiene una visión completa de cada estudiante, no solo vos.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Tuviste una reunión con la familia de un estudiante y surgió información importante. ¿Qué corresponde hacer?', options: ['Guardarla para vos, es información de la reunión', 'Compartirla con tu Coordinación Pedagógica', 'Esperar a que la familia la repita en otra reunión'] }
+                ]}
+            },
+            {
+                id: 't1-s4', title: 'Organización del tiempo y del aula', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Puntualidad, espacios y entregas\n\nEl cumplimiento de horarios (sobre todo el ingreso al aula) y el presentismo son parte central de la cultura de trabajo en Austin. Los espacios compartidos se reservan con anticipación, y el material a imprimir también se anticipa — no es algo de último momento.\n\nLa entrega de notas y de PUDs se hace **a término**, y las devoluciones quedan registradas en actas. Pensá esto no como un trámite, sino como parte de darle previsibilidad al trabajo de todo el equipo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué material se recomienda anticipar en vez de resolver a último momento?', options: ['El material a imprimir', 'La corrección de exámenes', 'La lista de útiles'] }
+                ]}
+            },
+            {
+                id: 't1-s5', title: 'Reglamento interno', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Sistema de créditos y dispositivos\n\nEl **sistema de créditos** es una herramienta formativa (no punitiva): promueve responsabilidad y autonomía progresiva. Ante una "quita de créditos", el foco está en la reflexión y la reparación, no solo en la sanción — y siempre se refuerzan también las acciones positivas.\n\nSobre el uso de celular y PCs en el aula: la disposición vigente requiere que el docente pueda supervisar el uso de dispositivos en todo momento. El colegio también cuenta con cámaras instaladas en distintos espacios.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cómo se entiende el sistema de créditos en Austin?', options: ['Como un castigo automático sin margen de reflexión', 'Como una herramienta formativa que también refuerza lo positivo', 'Como algo que solo aplica a los preceptores'] }
+                ]}
+            }
         ]
     },
     {
         id: 'topic-2',
-        title: 'Vida en el Campus',
-        icon: '🏫',
-        description: 'Horarios, espacios, protocolos y convivencia diaria.',
+        title: 'Enseñanza para la Comprensión (EpC)',
+        icon: '🧠',
+        description: 'El gran marco de diseño pedagógico: comprensión, metas, desempeños, transferencia y valoración continua.',
         steps: [
-            { id: 't2-s1', title: 'Horarios y jornada', xp: 20, media: { type: null, url: '' },
-              content_md: '## Horarios\n\nDetallá la jornada escolar, recreos y horarios de entrada/salida.' },
-            { id: 't2-s2', title: 'Mapa del campus', xp: 20, media: { type: 'image', url: '' },
-              content_md: '## Recorrido por el campus\n\nUbicación de aulas, comedor, dirección y espacios comunes.' },
-            { id: 't2-s3', title: 'Protocolos de convivencia', xp: 20, media: { type: null, url: '' },
-              content_md: '## Convivencia\n\nNormas de convivencia y protocolos ante situaciones frecuentes.' },
-            { id: 't2-s4', title: 'Salud y seguridad', xp: 20, media: { type: 'video', url: '' },
-              content_md: '## Salud y seguridad\n\nProtocolos de emergencia, primeros auxilios y contactos clave.' },
-            { id: 't2-s5', title: 'Quiz de cierre: Vida en el Campus', xp: 20, media: { type: null, url: '' },
-              content_md: '## Repaso final\n\nEspacio de autoevaluación del tópico.' },
+            {
+                id: 't2-s1', title: '¿Qué es comprender?', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Conocimiento no es lo mismo que comprensión\n\nSaber datos (fechas, definiciones, fórmulas) es tener **conocimiento**. Poder usar ese conocimiento de forma flexible para resolver un problema nuevo, explicar, argumentar o decidir es **comprender**. Un estudiante puede saber una regla de memoria y aun así no comprenderla — comprender implica poder "jugar con la pelota", no solo tenerla.\n\nPor eso, en Austin no evaluamos solo si un estudiante recuerda información: buscamos evidencia de que puede pensar y actuar con flexibilidad a partir de lo que sabe.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un estudiante recita de memoria la definición de fotosíntesis pero no puede explicar qué pasaría si una planta no recibe luz. ¿Qué le falta?', options: ['Conocimiento', 'Comprensión', 'Nada, ya demostró lo que sabe'] }
+                ]}
+            },
+            {
+                id: 't2-s2', title: 'Los 4 elementos del marco EpC', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Cuatro preguntas, cuatro elementos\n\nEl marco EpC organiza la planificación alrededor de 4 preguntas:\n\n- **¿Qué enseñar?** → Tópicos Generativos (temas centrales, con conexiones ricas)\n- **¿Qué deben comprender?** → Metas de Comprensión (concretas, medibles, ligadas al Tópico)\n- **¿Cómo enseñar para comprender?** → Desempeños de Comprensión (lo que los estudiantes *hacen* para construir y mostrar comprensión)\n- **¿Cómo lo sabemos?** → Valoración Continua (ciclos de retroalimentación a lo largo de toda la unidad, no solo al final)\n\nLos cuatro están conectados: cambiar uno afecta a los demás.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué elemento del marco EpC responde a "¿cómo sabemos que los estudiantes están comprendiendo?"?', options: ['Tópico Generativo', 'Desempeño de Comprensión', 'Valoración Continua'] }
+                ]}
+            },
+            {
+                id: 't2-s3', title: 'EpC vs. enseñanza tradicional', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Confusiones típicas\n\nUna Meta de Comprensión ("los estudiantes comprenderán por qué...") no es lo mismo que un objetivo comportamental ("los estudiantes identificarán..."). El objetivo dice qué *hace* el estudiante; la Meta dice *por qué* lo hace y qué debería comprender al hacerlo.\n\nDe la misma forma, un Tópico Generativo no es simplemente un tema del temario: tiene que ser central a la disciplina, generar curiosidad genuina, ser accesible para los estudiantes, y conectar con otros temas y con el mundo real. Y un Desempeño de Comprensión no es cualquier actividad práctica — tiene que exigir usar lo aprendido en una situación nueva, no repetirlo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué diferencia a una Meta de Comprensión de un objetivo comportamental?', options: ['La Meta dice qué hace el estudiante; el objetivo dice por qué', 'No hay ninguna diferencia real', 'La Meta dice por qué y qué debería comprender el estudiante; el objetivo solo dice qué hace'] }
+                ]}
+            },
+            {
+                id: 't2-s4', title: 'Practicá: armar un PUD (parte 1)', xp: 30, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El Organizador de Unidad (PUD)\n\nEl PUD es tu herramienta de planificación por unidad en Austin. Las primeras secciones son:\n\n- **Hilos Conductores**: las grandes preguntas que guían el aprendizaje disciplinar durante todo el año (no cambian unidad a unidad).\n- **Tópico Generativo**: el tema central de esta unidad puntual.\n- **Metas de Comprensión (MC1 a MC4)**: qué querés que tus estudiantes comprendan profundamente de ese tópico, mirando conocimiento, método, propósito y comunicación. Cada una se puede formular también como pregunta.\n\nEjemplo de una MC bien formulada: *"Los estudiantes comprenderán cómo un texto histórico refleja la perspectiva de quien lo escribió"* — no *"Los estudiantes identificarán las partes de un texto histórico"* (eso es un objetivo comportamental, no una Meta).',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál de estas es una Meta de Comprensión bien formulada para el campo MC1 del PUD?', options: ['Los estudiantes subrayarán las palabras clave del texto', 'Los estudiantes comprenderán por qué un mismo hecho histórico puede contarse desde perspectivas distintas', 'Los estudiantes entregarán el trabajo antes del viernes'] }
+                ]}
+            },
+            {
+                id: 't2-s5', title: 'Practicá: armar un PUD (parte 2)', xp: 30, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Actividades, Desempeños y Valoración\n\nEsta sección del PUD conecta cada actividad con una Meta de Comprensión (columna MC), con un Tipo de Desempeño (**E**: Exploración, **I**: Investigación guiada, **PF**: Proyecto Final) y opcionalmente con Inteligencias Múltiples (IM) y Habilidades de Pensamiento (HP).\n\nUn Desempeño de Exploración suele ir al principio de la unidad (más abierto); uno de Investigación Guiada se enfoca en un aspecto concreto; el Proyecto Final de Síntesis integra todo lo aprendido. Cada actividad lleva también su forma de valoración: ¿va a ser formal o informal? ¿oral, escrita o gestual? ¿docente, entre pares o autovaloración?',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Estás diseñando la actividad de cierre de una unidad, donde los estudiantes integran todo lo trabajado. ¿Qué tipo de desempeño es (E / I / PF)?', options: ['E (Exploración)', 'I (Investigación guiada)', 'PF (Proyecto Final)'] }
+                ]}
+            },
+            {
+                id: 't2-s6', title: 'La Planificación Anual', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El otro documento de planificación\n\nAdemás del PUD (por unidad), cada materia tiene una **Planificación Anual**: expectativas de logro, fundamentación del área, programa de contenidos y bibliografía (del docente y del alumno). Se entrega firmada, junto con la firma del equipo de gestión, y su bibliografía institucional de referencia es el Diseño Curricular de la Provincia de Buenos Aires.\n\nSe entrega el 20/02 según el calendario del ciclo — revisá el tópico "Este ciclo lectivo" para confirmar la fecha exacta de este año.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué diferencia principal hay entre el PUD y la Planificación Anual?', options: ['Son el mismo documento con distinto nombre', 'El PUD es por unidad (Hilos, Tópico, Metas, Desempeños); la Planificación Anual cubre todo el año (contenidos y bibliografía)', 'La Planificación Anual reemplaza al PUD desde este año'] }
+                ]}
+            }
         ]
     },
     {
         id: 'topic-3',
-        title: 'Herramientas y Recursos',
-        icon: '🧰',
-        description: 'Plataformas digitales, materiales y contactos clave.',
+        title: 'Valoración continua',
+        icon: '📊',
+        description: 'Criterios visibles, evidencias de comprensión, feedback, rúbricas, autoevaluación y revisión del propio proceso.',
         steps: [
-            { id: 't3-s1', title: 'Google Workspace institucional', xp: 20, media: { type: 'youtube', url: '' },
-              content_md: '## Google Workspace\n\nCómo acceder al correo, Drive compartido y Calendar del colegio.' },
-            { id: 't3-s2', title: 'PUD Workspace y planificación', xp: 20, media: { type: null, url: '' },
-              content_md: '## Herramientas de planificación\n\nPresentación de PUD Workspace y otras herramientas docentes.' },
-            { id: 't3-s3', title: 'Recursos didácticos compartidos', xp: 20, media: { type: 'drive', url: '' },
-              content_md: '## Biblioteca de recursos\n\nDónde encontrar material didáctico compartido entre docentes.' },
-            { id: 't3-s4', title: 'Contactos y soporte técnico', xp: 20, media: { type: null, url: '' },
-              content_md: '## A quién recurrir\n\nContactos de coordinación, soporte técnico y administración.' },
-            { id: 't3-s5', title: 'Quiz de cierre: Herramientas', xp: 20, media: { type: null, url: '' },
-              content_md: '## Repaso final\n\nCierre del onboarding y próximos pasos.' },
+            {
+                id: 't3-s1', title: 'Cómo evaluamos en Austin', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Evaluación como proceso, no como examen final\n\nLa evaluación en Austin es integral (cognitiva, afectiva y sociocultural), procesal (mira el proceso, no solo el resultado), programática (se piensa desde la planificación) y flexible según los estilos de aprendizaje. No es solo formal: lo informal también cuenta para construir el juicio sobre el desempeño.\n\nHay momentos definidos: evaluación inicial → de proceso → trimestral → anual → de la calidad educativa. Cada docente comparte sus evaluaciones formales con Coordinación con anticipación, y se piden al menos dos instancias formales por cuatrimestre.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuántas evaluaciones formales, como mínimo, se esperan por cuatrimestre?', options: ['Una', 'Dos', 'Cinco'] }
+                ]}
+            },
+            {
+                id: 't3-s2', title: 'Técnicas de evaluación y devolución', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Instrumentos y cómo corregir\n\nEn Austin usamos observación sistemática (checklist, registro anecdótico), situaciones orales, ejercicios prácticos, pruebas tipo test y resolución de problemas, según qué y para qué estemos evaluando.\n\nAl corregir, es clave señalar lo logrado y no solo lo que falta, usando comentarios que ayuden al estudiante a revisar sus propios errores (metacognición), con términos positivos. La devolución — que el estudiante entienda cómo obtuvo su calificación y con qué criterios — es tan importante como la corrección misma.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Al corregir una evaluación escrita, ¿qué enfoque se recomienda en Austin?', options: ['Señalar únicamente los errores, para que quede claro qué mejorar', 'Usar comentarios que ayuden al estudiante a reflexionar y revisar sus propios errores', 'No hace falta explicar los criterios de corrección'] }
+                ]}
+            },
+            {
+                id: 't3-s3', title: 'La Escalera de la Retroalimentación', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Cuatro pasos para dar feedback\n\nCuando das o recibís retroalimentación, conviene seguir esta secuencia:\n\n1. **Clarificar**: primero entender bien lo que la otra persona quiso decir, antes de opinar.\n2. **Valorar**: reconocer lo positivo, las fortalezas, lo que funciona.\n3. **Expresar inquietudes**: como preguntas genuinas ("¿consideraste...?"), nunca como acusación.\n4. **Hacer sugerencias**: conectar las inquietudes con una propuesta concreta y constructiva.\n\nSaltarse el orden (por ejemplo, ir directo a las inquietudes sin clarificar ni valorar) suele generar una retroalimentación que se siente como una crítica, no como una ayuda.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Según la Escalera de la Retroalimentación, ¿qué paso va justo antes de "Expresar inquietudes"?', options: ['Hacer sugerencias', 'Valorar', 'Calificar'] }
+                ]}
+            },
+            {
+                id: 't3-s4', title: 'La Pirámide de la Retroalimentación', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Tipos, formas y fuentes\n\nLa retroalimentación puede ser **formal** (con nota) o **informal** (una charla, un comentario) — y lo informal suele ser más impactante para la comprensión, porque invita a la reflexión en vez de depender de una calificación externa. También puede tomar distintas **formas** (oral, escrita, gestual) y venir de distintas **fuentes**: el docente, los compañeros, o la autovaloración del propio estudiante.\n\nUna buena práctica evaluativa combina los tres ejes en vez de apoyarse siempre en el mismo tipo, la misma forma y la misma fuente.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Por qué la retroalimentación informal puede ser más impactante que la formal?', options: ['Porque no requiere ningún esfuerzo del docente', 'Porque invita al estudiante a reflexionar, en vez de depender solo de una nota', 'Porque siempre es más breve'] }
+                ]}
+            },
+            {
+                id: 't3-s5', title: 'Criterios visibles y autoevaluación', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Que el estudiante sepa, desde antes de empezar, qué se espera\n\nLa Valoración Continua no arranca cuando se corrige un trabajo — arranca cuando el estudiante conoce los criterios *antes* de hacerlo. Una rúbrica bien construida no dice solo "bien" o "mal": describe niveles de desempeño observables ("logrado", "en proceso", "a trabajar") para cada criterio, de forma que el estudiante pueda ubicar su propio trabajo ahí.\n\nCon esos criterios visibles, la autoevaluación deja de ser "¿te parece que te fue bien?" y pasa a ser algo concreto: revisar el propio trabajo contra la rúbrica, antes de entregarlo. La coevaluación (entre pares) usa la misma rúbrica, pero con la mirada de un compañero. Ambas son evidencia tan válida como la corrección docente — y son las que más entrenan la revisión del propio proceso.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuándo conviene compartir la rúbrica de una actividad con los estudiantes?', options: ['Nunca, para no condicionar su trabajo', 'Recién al momento de corregir', 'Antes de que empiecen, para que sepan qué se espera'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-cultura-pensamiento',
+        title: 'Cultura de Pensamiento',
+        icon: '💭',
+        description: 'Pensamiento visible, rutinas de pensamiento, disposiciones y fuerzas culturales.',
+        steps: [
+            {
+                id: 'tcp-s1', title: '¿Qué es una Cultura de Pensamiento?', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El aula como comunidad que piensa\n\nLa Cultura de Pensamiento es el otro gran marco de Project Zero (Harvard), hermano de la EpC que ya conociste. Mientras la EpC organiza *qué* y *cómo* enseñar una unidad, la Cultura de Pensamiento se ocupa de algo más amplio: el clima cotidiano del aula, esté o no en curso una unidad puntual.\n\nSegún Ron Ritchhart, no alcanza con hacer "una actividad de pensamiento" de vez en cuando. Una verdadera cultura de pensamiento se sostiene en tres pilares que conviven todos los días: las **disposiciones de pensamiento** (curiosidad, apertura, búsqueda de evidencia), el **pensamiento visible** (hacer notorio lo que normalmente pasa solo "en la cabeza") y la **cultura del aula** que lo habilita o lo frena.\n\nUna clase puede estar muy ordenada y "tranquila" y aun así no ser una cultura de pensamiento — si nadie pregunta, nadie duda en voz alta y nadie revisa una idea propia.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un docente hace una actividad "creativa" una vez por trimestre, pero el resto de las clases son solo copiar y responder. ¿Tiene una Cultura de Pensamiento?', options: ['Sí, con una actividad alcanza', 'No — se sostiene en el día a día, no en actividades aisladas', 'Sí, siempre que la actividad tenga imágenes'] }
+                ]}
+            },
+            {
+                id: 'tcp-s2', title: 'Las 8 fuerzas culturales', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Lo que moldea la cultura de un aula\n\nRitchhart identifica 8 fuerzas culturales que, juntas, definen si una clase promueve o apaga el pensamiento:\n\n- **Expectativas**: qué se espera lograr, no solo qué tarea cumplir.\n- **Lenguaje**: el vocabulario de pensamiento que usás ("¿qué evidencia tenés?", "¿qué te hace pensar eso?").\n- **Tiempo**: dar tiempo real para pensar, no solo para responder rápido.\n- **Modelado**: mostrarte a vos mismo/a pensando en voz alta, dudas incluidas.\n- **Oportunidades**: actividades que realmente requieren pensar, no solo repetir.\n- **Rutinas**: estructuras simples y repetibles (ver paso siguiente).\n- **Interacciones**: cómo se escuchan y se retoman las ideas entre docente y estudiantes.\n- **Entorno físico**: qué se exhibe en las paredes — ¿trabajos terminados prolijos, o el pensamiento en proceso?\n\nLa más subestimada suele ser el **Modelado**: cuando un docente piensa en voz alta frente a la clase ("no estoy seguro, probemos esto..."), les muestra a los estudiantes que dudar y revisar es parte normal de pensar, no una debilidad.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un docente dice en voz alta: "Yo pensaba que esto era así, pero ahora que lo releo no estoy seguro, vamos a revisarlo juntos". ¿Qué fuerza cultural está usando principalmente?', options: ['Modelado', 'Entorno físico', 'Tiempo'] }
+                ]}
+            },
+            {
+                id: 'tcp-s3', title: 'Rutinas de pensamiento', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Estructuras simples para pensar en voz alta\n\nUna rutina de pensamiento es un protocolo breve y repetible — unos pocos pasos, fáciles de recordar — que cualquier docente puede usar con cualquier contenido para volver visible el pensamiento del grupo. No son actividades "extra": reemplazan al "¿alguna pregunta?" de siempre.\n\nAlgunas de las más usadas:\n\n- **Veo-Pienso-Me pregunto**: frente a una imagen, texto o problema — ¿qué observo?, ¿qué interpreto?, ¿qué me genera curiosidad? Ideal para abrir un tema nuevo.\n- **Antes pensaba… Ahora pienso…**: al cierre de una clase o unidad, para que cada estudiante note cómo cambió su propia comprensión. Muy útil para la Valoración Continua.\n- **Conectar-Extender-Desafiar**: ¿cómo se conecta esto con lo que ya sabía?, ¿qué idea nueva me abre?, ¿qué me sigue resultando difícil o discutible?\n- **Pienso-Me interesa-Investigo**: para lanzar una indagación o proyecto, identificando qué quiere investigar cada estudiante.\n\nUna rutina bien elegida puede ser, en sí misma, un Desempeño de Comprensión dentro de tu PUD.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Querés que cada estudiante note cómo cambió su propia idea sobre un tema después de trabajarlo en clase. ¿Qué rutina conviene usar?', options: ['Veo-Pienso-Me pregunto', 'Antes pensaba… Ahora pienso…', 'Conectar-Extender-Desafiar'] }
+                ]}
+            },
+            {
+                id: 'tcp-s4', title: 'Hacerlo parte de tu aula', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## De la teoría a la práctica cotidiana\n\nNo hace falta un proyecto especial para instalar una cultura de pensamiento — alcanza con sumar, de a poco, hábitos simples:\n\n- Cambiar "¿entendieron?" por preguntas que pidan evidencia: "¿qué te hace pensar eso?", "¿cómo lo sabés?".\n- Dar unos segundos de silencio real antes de pedir una respuesta (tiempo de espera).\n- Documentar el pensamiento del grupo: carteles con ideas en proceso, no solo trabajos terminados.\n- Elegir una rutina fija para abrir o cerrar tus clases, en vez de improvisar cada vez.\n\nEstos hábitos no compiten con la EpC ni con la Valoración Continua — las potencian: una rutina de pensamiento bien elegida puede ser el Desempeño de Comprensión de una clase, y la evidencia que deja (lo que los estudiantes escriben o dicen) es material directo para tu Valoración Continua.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál de estas es una forma simple de empezar a instalar una cultura de pensamiento en tu aula?', options: ['Esperar a tener un proyecto institucional especial', 'Reemplazar "¿entendieron?" por preguntas que pidan evidencia, y dar tiempo real para pensar', 'Solo exhibir trabajos ya terminados y prolijos en las paredes'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-sel',
+        title: 'Educación Emocional y Social',
+        icon: '❤️',
+        description: 'Autoconocimiento, regulación emocional, empatía, vínculos, habilidades sociales y clima para aprender.',
+        steps: [
+            {
+                id: 'tsel-s1', title: '¿Por qué importa lo emocional para aprender?', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Sin regulación emocional, cuesta pensar\n\nUn estudiante que está desbordado, angustiado o a la defensiva no está en condiciones de comprender un tópico generativo ni de sostener una rutina de pensamiento — el cerebro prioriza gestionar la emoción por sobre el razonamiento complejo. Por eso lo emocional no es "un tema aparte" de lo académico: es la base sobre la que se apoya todo lo demás.\n\nEn Austin, el EOE (Equipo de Orientación Escolar) y el Acompañamiento Pedagógico están para sostener esto en los casos que lo requieren — pero el clima emocional cotidiano del aula depende, en primer lugar, de cada docente.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un estudiante llega angustiado por algo que pasó antes de tu clase. ¿Qué es más probable?', options: ['Que pueda concentrarse igual que cualquier otro día', 'Que le cueste más comprender y pensar hasta poder procesar lo que siente', 'Que la angustia no tenga relación con su aprendizaje ese día'] }
+                ]}
+            },
+            {
+                id: 'tsel-s2', title: 'Las 5 competencias socioemocionales', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El modelo CASEL\n\nCASEL (Collaborative for Academic, Social and Emotional Learning) organiza lo socioemocional en 5 competencias:\n\n- **Autoconciencia**: reconocer las propias emociones y cómo influyen en la conducta.\n- **Autogestión**: regular esas emociones e impulsos para actuar con intención.\n- **Conciencia social**: entender y empatizar con la perspectiva de otros.\n- **Habilidades de relación**: construir y sostener vínculos positivos.\n- **Toma de decisiones responsable**: decidir considerando el impacto en uno mismo y en los demás.\n\nNo son "temas" que se dan una vez y ya está — son disposiciones que se entrenan en la interacción diaria, parecido a las disposiciones de pensamiento que ya viste en Cultura de Pensamiento.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un estudiante nota que está por reaccionar mal y decide respirar antes de responder. ¿Qué competencia CASEL está ejercitando principalmente?', options: ['Conciencia social', 'Autogestión', 'Toma de decisiones responsable'] }
+                ]}
+            },
+            {
+                id: 'tsel-s3', title: 'Autorregulación en el aula', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Herramientas simples, sostenidas en el tiempo\n\nAlgunas estrategias concretas para sostener la autorregulación en el día a día: nombrar la emoción en voz alta ("veo que estás frustrado/a con esto"), ofrecer una pausa breve antes de seguir, y tener un espacio o gesto acordado para pedir ese momento sin necesidad de explicar todo en el momento.\n\nEl modelado sigue siendo clave acá también: un docente que nombra sus propias emociones con naturalidad ("estoy un poco apurado/a hoy, vamos a organizarnos así") les muestra a los estudiantes que identificar y manejar emociones es normal, no una señal de debilidad.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál de estas es una estrategia simple de autorregulación para usar en el aula?', options: ['Ignorar la emoción hasta que se le pase sola', 'Nombrar la emoción y ofrecer una pausa breve antes de seguir', 'Pedirle al estudiante que se calme sin dar ninguna herramienta'] }
+                ]}
+            },
+            {
+                id: 'tsel-s4', title: 'Vínculos y clima para aprender', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El vínculo antes que el contenido\n\nUn estudiante que siente que su docente lo conoce y lo tiene en cuenta participa más, se anima a equivocarse en voz alta y sostiene mejor el esfuerzo frente a una tarea difícil. Esto no reemplaza la exigencia académica — la sostiene: es mucho más fácil pedirle a alguien que se esfuerce cuando ya hay un vínculo de confianza construido.\n\nEste eje se conecta directamente con el próximo tópico, Disciplina Positiva y Convivencia: ahí vas a ver cómo intervenir frente a un conflicto sin romper ese vínculo que estuviste construyendo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué efecto tiene un buen vínculo docente-estudiante sobre la exigencia académica?', options: ['La reemplaza, ya no hace falta exigir', 'La sostiene: es más fácil pedir esfuerzo cuando hay confianza construida', 'No tiene ninguna relación con la exigencia académica'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-disciplina-positiva',
+        title: 'Disciplina Positiva y Convivencia',
+        icon: '🧭',
+        description: 'Firmeza y amabilidad, conexión antes que corrección, límites, acuerdos, conflicto, reflexión y reparación.',
+        steps: [
+            {
+                id: 'tdp-s1', title: 'Firmeza y amabilidad, a la vez', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Ni autoritario ni permisivo\n\nLa Disciplina Positiva (Jane Nelsen) no es "dejar hacer" ni "mano dura" — es amabilidad y firmeza *al mismo tiempo*, no una cosa u otra. La amabilidad muestra respeto por el estudiante; la firmeza muestra respeto por vos mismo/a y por lo que la situación necesita.\n\nUn error común es pensar que hay que elegir entre las dos: o sos amable y "aflojás" el límite, o sos firme y perdés la calidez. Sostener ambas a la vez es lo que distingue a la Disciplina Positiva tanto del autoritarismo como del permisivismo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Según la Disciplina Positiva, ¿cómo debería sostenerse un límite?', options: ['Con firmeza, aunque implique perder la amabilidad', 'Con amabilidad, aunque implique aflojar el límite', 'Con amabilidad y firmeza al mismo tiempo'] }
+                ]}
+            },
+            {
+                id: 'tdp-s2', title: 'Conexión antes que corrección', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Primero el vínculo, después la conducta\n\nCuando un estudiante se porta mal, la reacción más instintiva es corregir la conducta de inmediato. Pero corregir sin conectar antes suele generar más resistencia, no menos: el estudiante se pone a la defensiva en vez de escuchar.\n\nConectar antes no significa "dejar pasar" lo que pasó — significa empezar reconociendo lo que el estudiante siente o necesita ("veo que estás muy enojado/a") antes de trabajar sobre la conducta. Recién ahí la corrección tiene chances reales de ser escuchada.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Por qué "conectar antes que corregir" suele funcionar mejor que corregir de entrada?', options: ['Porque evita tener que poner límites', 'Porque un estudiante a la defensiva escucha menos que uno que se siente reconocido', 'Porque hace que el conflicto se resuelva más rápido siempre'] }
+                ]}
+            },
+            {
+                id: 'tdp-s3', title: 'Límites y acuerdos, no solo reglas impuestas', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## De la regla impuesta al acuerdo construido\n\nUna regla que el grupo no ayudó a pensar se sostiene solo mientras hay control externo. Un acuerdo de convivencia construido junto con los estudiantes — aunque termine diciendo lo mismo que la regla — se sostiene mejor, porque hay apropiación de por medio.\n\nEsto no reemplaza el reglamento institucional (ver tópico "Bienvenida a Austin") — lo complementa: dentro de tu aula, hay margen para construir acuerdos puntuales de funcionamiento junto con el grupo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué ventaja tiene un acuerdo de convivencia construido con el grupo, frente a una regla solo impuesta?', options: ['Ninguna, el resultado es el mismo', 'Se sostiene mejor porque el grupo se apropia de él', 'Elimina la necesidad de cualquier límite'] }
+                ]}
+            },
+            {
+                id: 'tdp-s4', title: 'Conflicto: reflexión y reparación', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El foco está en aprender del error, no solo en sancionarlo\n\nEsto conecta directo con el sistema de créditos de Austin que ya viste: una consecuencia bien pensada está relacionada con lo que pasó, es respetuosa y es razonable — no es un castigo desconectado ni desproporcionado. El objetivo no es que el estudiante "pague" por el error, sino que lo repare y aprenda algo de la situación.\n\nEn la práctica, esto significa dejar espacio para que el propio estudiante piense cómo reparar lo que pasó, en vez de que la sanción llegue ya resuelta desde el adulto.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuáles son las tres cualidades de una consecuencia bien pensada, según este enfoque?', options: ['Rápida, dura y ejemplar', 'Relacionada con lo que pasó, respetuosa y razonable', 'Impuesta, inmediata y sin explicación'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-agencia',
+        title: 'Agency by Design y Agencia del Estudiante',
+        icon: '🛠️',
+        description: 'Voz, elección, autonomía, toma de decisiones y capacidad de transformar el entorno — y qué hace (o deja de hacer) el docente para habilitarla.',
+        steps: [
+            {
+                id: 'tag-s1', title: '¿Qué es la agencia?', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Actuar sobre el mundo, no solo recibirlo\n\nLa agencia es la capacidad de un estudiante de actuar con intención sobre su entorno — sentir que sus decisiones importan y que puede transformar lo que lo rodea, en vez de ser un receptor pasivo de contenidos. No es lo mismo que "dar opciones": elegir el color de la carátula de una carpeta no es agencia, aunque técnicamente sea una elección.\n\nEn Austin, la agencia del estudiante es un eje propio, no un capricho: es la forma en que "Voz, elección, autonomía y capacidad de transformar el entorno" dejan de ser una frase y se vuelven algo que pasa todos los días en el aula.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un docente deja que cada estudiante elija el color de la carátula de su carpeta. ¿Eso es agencia del estudiante?', options: ['Sí, cualquier elección cuenta como agencia', 'No — es una elección decorativa, sin impacto real sobre el aprendizaje o el entorno', 'Sí, siempre que se elija en grupo'] }
+                ]}
+            },
+            {
+                id: 'tag-s2', title: 'Las 3 capacidades de Agency by Design', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Mirar, explorar, encontrar oportunidad\n\nAgency by Design es otra línea de Project Zero (Harvard), centrada en cómo se desarrolla la agencia a través del "hacer". Propone tres capacidades que se entrenan juntas:\n\n- **Mirar de cerca**: observar el entorno con atención, notando detalles y decisiones de diseño que normalmente pasan desapercibidas.\n- **Explorar la complejidad**: entender cómo funciona algo — qué partes lo componen, cómo se conectan, por qué está hecho así.\n- **Encontrar oportunidad**: identificar dónde se podría intervenir o rediseñar algo para mejorarlo.\n\nLa idea de fondo es la "sensibilidad al diseño": todo lo que nos rodea —un aula, una consigna, un reglamento— fue diseñado por alguien, en algún momento, y por lo tanto puede volver a diseñarse. Un estudiante que internaliza esto deja de ver su entorno como algo fijo.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un grupo de estudiantes nota que el sistema de turnos para usar un espacio compartido genera peleas, y propone un rediseño. ¿Qué capacidad de Agency by Design están usando principalmente?', options: ['Mirar de cerca', 'Encontrar oportunidad', 'Ninguna, eso no es parte del aprendizaje'] }
+                ]}
+            },
+            {
+                id: 'tag-s3', title: 'Qué hace (o deja de hacer) el docente', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## La agencia se habilita, no se otorga de una vez\n\nHabilitar agencia tiene menos que ver con "soltar todo el control" y más con decisiones puntuales del docente:\n\n- Dar tiempo real de silencio o de trabajo autónomo, sin llenarlo con instrucciones.\n- Dejar que un desempeño de exploración (ver tópico EpC) quede genuinamente abierto, en vez de guiarlo paso a paso hasta la única respuesta esperada.\n- Invitar a los estudiantes a identificar ellos mismos un problema, en vez de darles siempre el problema ya resuelto en consigna.\n- Tolerar el "estancamiento productivo": ese momento incómodo en que un grupo no sabe cómo seguir, pero está pensando.\n\nCuando el docente resuelve cada duda apenas aparece, sin querer, les está sacando a los estudiantes la oportunidad de ejercer agencia.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un grupo se queda trabado unos minutos sin saber cómo avanzar en un proyecto. ¿Qué conviene hacer para sostener su agencia?', options: ['Intervenir enseguida y decirles exactamente qué hacer', 'Tolerar ese momento de estancamiento y dejar que ellos busquen el camino', 'Cambiarles la consigna por una más simple'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-neurodiversidad',
+        title: 'Neurodiversidad: cómo aprende el cerebro',
+        icon: '🧩',
+        description: 'Atención, memoria, funciones ejecutivas, motivación, carga cognitiva, recuperación, consolidación y condiciones que favorecen el aprendizaje.',
+        steps: [
+            {
+                id: 'tnd-s1', title: 'Neurodiversidad: variación, no déficit', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Cerebros distintos, no cerebros "rotos"\n\nLa neurodiversidad plantea que las diferencias en cómo funciona un cerebro (atención, procesamiento, regulación) son parte de la variación humana normal, no únicamente "problemas a corregir". Esto no significa bajar expectativas — significa mirar tanto las fortalezas como las dificultades de cada estudiante, en vez de definirlo solo por lo que le cuesta.\n\nEsta mirada es la que sostiene al Equipo de Apoyo de Austin (ver tópico "Bienvenida a Austin"): no está para "arreglar" a un estudiante, sino para ayudar a diseñar condiciones donde ese cerebro particular pueda aprender mejor.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué plantea el enfoque de neurodiversidad?', options: ['Que hay una única forma "normal" de aprender y el resto son fallas a corregir', 'Que las diferencias en cómo funciona un cerebro son parte de la variación humana, con fortalezas y dificultades propias', 'Que no hace falta adaptar nada porque todos aprenden igual'] }
+                ]}
+            },
+            {
+                id: 'tnd-s2', title: 'Memoria de trabajo y carga cognitiva', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## La mente tiene un límite de "mesa de trabajo"\n\nLa memoria de trabajo es donde sostenemos y manipulamos información mientras pensamos — y tiene una capacidad limitada, para cualquier cerebro. Cuando una consigna trae demasiada información nueva a la vez (instrucciones largas, varios pasos, lenguaje innecesariamente complejo), se satura esa "mesa de trabajo" y cuesta aprender, aunque el contenido en sí no sea tan difícil.\n\nBajar la carga innecesaria —dividir una consigna larga en pasos, sacar información que no aporta al objetivo de la clase— no es "facilitar de más": es sacar obstáculos que no tienen que ver con lo que realmente se quiere enseñar.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Una consigna trae seis instrucciones distintas en un solo párrafo largo. ¿Qué está en riesgo?', options: ['Nada, más información siempre ayuda', 'Saturar la memoria de trabajo con carga que no tiene que ver con el contenido en sí', 'Solo afecta a estudiantes con dificultades de atención'] }
+                ]}
+            },
+            {
+                id: 'tnd-s3', title: 'Funciones ejecutivas', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Lo que parece "desorganización" suele ser otra cosa\n\nLas funciones ejecutivas —inhibición, memoria de trabajo, flexibilidad cognitiva y planificación— son las que permiten arrancar una tarea, sostenerla, cambiar de una actividad a otra y organizar los pasos para llegar a un objetivo. Cuando fallan, se ve como "se olvida todo", "no puede empezar solo/a" o "se traba con cualquier cambio de plan" — y suele leerse como falta de esfuerzo o de interés, cuando no lo es.\n\nApoyos simples ayudan mucho acá: listas de pasos visibles, avisos antes de cambiar de actividad, y desglosar una tarea grande en partes más chicas.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un estudiante se traba cada vez que hay que cambiar de actividad sin aviso previo. ¿Qué es más probable que esté pasando?', options: ['Que simplemente no le interesa la clase', 'Una dificultad en funciones ejecutivas (flexibilidad cognitiva), no falta de esfuerzo', 'Que lo hace a propósito para llamar la atención'] }
+                ]}
+            },
+            {
+                id: 'tnd-s4', title: 'Diseñar para que aprenda cualquier cerebro', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Diseño Universal para el Aprendizaje (UDL)\n\nEn vez de adaptar caso por caso después de que algo falla, el UDL propone diseñar la clase desde el principio pensando en tres redes:\n\n- **El qué** (representación): ofrecer la información de más de una forma (texto, imagen, oral).\n- **El cómo** (acción y expresión): permitir mostrar lo aprendido de más de una forma (escrito, oral, un esquema).\n- **El por qué** (compromiso): sostener el interés y la motivación, por ejemplo dando algo de elección real dentro de la tarea.\n\nA esto se suma algo simple y muy efectivo para la memoria a largo plazo: la **práctica de recuperación** (repasar activamente lo aprendido, no solo releerlo) y el **repaso espaciado** (volver sobre un tema días después, no todo junto) ayudan mucho más a consolidar el aprendizaje que estudiar todo de una sola vez.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué ayuda más a consolidar el aprendizaje en la memoria a largo plazo?', options: ['Releer el material una sola vez, todo junto y de corrido', 'Repasar activamente y volver sobre el tema en distintos momentos (práctica de recuperación y repaso espaciado)', 'Memorizar todo la noche anterior a la evaluación'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-steam',
+        title: 'STEAM e Innovación',
+        icon: '🧪',
+        description: 'Integración de disciplinas, resolución de problemas, creatividad, diseño, experimentación, prototipado y aprendizaje a partir del error.',
+        steps: [
+            {
+                id: 'tsteam-s1', title: 'Qué es STEAM (y qué no es)', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Más que ciencia con arte pegado al lado\n\nSTEAM (Ciencia, Tecnología, Ingeniería, Arte y Matemática) no es "usar una compu" ni "hacer un experimento suelto de vez en cuando" — es integrar disciplinas de verdad alrededor de un problema real, donde cada una aporta algo genuino a la solución.\n\nSi una actividad podría resolverse igual sacando alguna de las disciplinas de en medio, probablemente no sea una integración real sino varias materias trabajando en paralelo sobre el mismo tema.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál de estas describe mejor una integración STEAM real?', options: ['Usar una computadora en cualquier actividad de clase', 'Distintas disciplinas aportando algo genuino a resolver un mismo problema real', 'Hacer un experimento de ciencias una vez al mes'] }
+                ]}
+            },
+            {
+                id: 'tsteam-s2', title: 'El proceso de diseño', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Empatizar, definir, idear, prototipar, evaluar\n\nEl Design Thinking organiza un proyecto STEAM en fases: **empatizar** (entender el problema y a quién afecta), **definir** (precisar qué se va a resolver), **idear** (generar posibles soluciones), **prototipar** (construir una versión concreta, aunque sea simple) y **evaluar** (probarla y ver qué funciona).\n\nNo es un camino lineal de una sola pasada: lo normal es volver de "evaluar" a "idear" o a "prototipar" varias veces antes de llegar a algo que funcione.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un grupo prueba su prototipo, no funciona como esperaban, y vuelve a rediseñarlo. ¿Qué está pasando?', options: ['Algo salió mal y el proyecto fracasó', 'Es parte normal del proceso de diseño — se itera, no es lineal', 'No debería pasar si se planificó bien desde el principio'] }
+                ]}
+            },
+            {
+                id: 'tsteam-s3', title: 'El error como parte del proceso', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Un prototipo que falla también es información\n\nEn un proyecto STEAM, que un prototipo no funcione a la primera no es un fracaso — es información valiosa sobre qué ajustar. Evaluar estos proyectos solo por si "el resultado final funciona perfecto" desalienta justamente la actitud experimental que STEAM busca desarrollar.\n\nPor eso conviene valorar también el proceso: qué se probó, qué se aprendió de cada intento que no funcionó, y cómo se ajustó a partir de eso — no solo el objeto final.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Al evaluar un proyecto STEAM, ¿qué conviene tener en cuenta además del resultado final?', options: ['Nada más, solo importa si el prototipo final funciona perfecto', 'El proceso: qué se probó, qué se aprendió de los intentos fallidos y cómo se ajustó', 'Que no haya habido ningún error en el camino'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-bilinguismo',
+        title: 'Bilingüismo',
+        icon: '🗣️',
+        description: 'Que el idioma se escuche, se use y se respire en la vida cotidiana del colegio — un compromiso de todo el equipo, no solo de los docentes de inglés.',
+        steps: [
+            {
+                id: 'tbil-s1', title: 'Un entorno bilingüe, no solo una materia', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Bilingüismo como cultura cotidiana\n\nEn Austin, el bilingüismo no es "la materia de inglés" — es parte de la experiencia educativa y de la cultura diaria del colegio. La meta es que el idioma se escuche, se use y se respire en los distintos espacios de la escuela, no solo dentro de la clase de inglés.\n\nEsto es lo que distingue a un colegio bilingüe de uno que simplemente enseña inglés como materia.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cómo se entiende el bilingüismo en Austin?', options: ['Como una materia más, separada del resto de la vida escolar', 'Como parte de la cultura cotidiana, presente en distintos espacios del colegio', 'Como algo que solo compete a los docentes de inglés'] }
+                ]}
+            },
+            {
+                id: 'tbil-s2', title: 'El compromiso según tu rol', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## No se espera lo mismo de todos, pero sí algo de todos\n\nLos docentes de inglés usan el idioma de manera habitual y sostenida en sus clases. El resto de los docentes —sin necesidad de dominarlo como lengua materna— se compromete a comprenderlo e ir incorporando progresivamente su uso en situaciones cotidianas del aula.\n\nNo se trata de dar tu materia en inglés si no sos docente de inglés: se trata de sumar, entre todos, a un entorno realmente bilingüe.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Si no sos docente de inglés, ¿qué se espera de vos respecto del bilingüismo?', options: ['Nada, es responsabilidad exclusiva de los docentes de inglés', 'Comprenderlo e ir incorporando progresivamente su uso en situaciones cotidianas', 'Dar tu materia completamente en inglés desde el primer día'] }
+                ]}
+            },
+            {
+                id: 'tbil-s3', title: 'Cómo sumar desde cualquier materia', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Gestos simples, sostenidos en el tiempo\n\nAlgunas formas de sumar bilingüismo sin que sea una carga extra: usar saludos y consignas simples en inglés, incorporar vocabulario clave de tu materia en los dos idiomas, tener carteles bilingües en el aula, y celebrar cuando un estudiante se anima a decir algo en inglés — aunque no sea perfecto.\n\nLo que más suma acá no es el dominio nativo del idioma, sino la actitud sostenida: que los estudiantes vean el inglés circulando también fuera de su clase específica.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué es más importante para construir un entorno bilingüe real?', options: ['Que cada docente tenga un nivel nativo de inglés', 'Que el idioma circule de forma sostenida, aunque sea con gestos simples', 'Que solo se use inglés en la clase de inglés'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-4',
+        title: 'Eco-Schools y Educación Ambiental',
+        icon: '🌱',
+        description: 'Sustentabilidad, conciencia ambiental, participación, acción y coherencia entre lo que se enseña y las prácticas institucionales.',
+        steps: [
+            {
+                id: 't4-s1', title: 'Nuestro Eco Code', xp: 15, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Hábitos ambientales del día a día\n\nAlgunos hábitos clave en Austin: el papel se separa entre reuso y reciclaje (nunca se descarta sin pensar); los residuos se separan en plásticos/botellas, packaging y orgánicos, en los tachos ubicados en espacios compartidos; se apagan luces y dispositivos al salir del aula, y el aire acondicionado se deja en 24°C y apagado al finalizar; no se deja la canilla abierta.\n\nEstos hábitos no son solo institucionales — se espera que el docente los modele y los sostenga frente a los estudiantes, como parte del Eco Code que está exhibido en cada aula.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál es la temperatura recomendada para el aire acondicionado en Austin?', options: ['18°C', '24°C', 'No hay una temperatura recomendada'] }
+                ]}
+            },
+            {
+                id: 't4-s2', title: 'La metodología Eco-Schools', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## De dónde sale nuestro Eco Code\n\nEl Eco Code de Austin no salió de la nada — es la aplicación local de la metodología internacional Eco-Schools (FEE), que organiza el trabajo ambiental de una escuela en pasos concretos:\n\n- **Eco-Comité**: un grupo con participación de estudiantes (en mayoría), docentes y otros actores de la comunidad, que impulsa el trabajo ambiental.\n- **Diagnóstico ambiental**: una auditoría real del estado ambiental del colegio — qué se gasta, qué se descarta, dónde hay margen de mejora.\n- **Plan de acción**: actividades concretas sobre esos temas (residuos, agua, energía), no solo buenas intenciones.\n- **Código ético**: el propio Eco Code — frases y compromisos que traducen todo lo anterior en hábitos que cualquiera puede seguir en el día a día.\n\nEl Eco Code que ya conociste es, ni más ni menos, el resultado visible de ese último paso.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué paso de la metodología Eco-Schools implica revisar qué se gasta y qué se descarta en el colegio?', options: ['Eco-Comité', 'Diagnóstico ambiental', 'Código ético'] }
+                ]}
+            },
+            {
+                id: 't4-s3', title: 'Tu rol en el aula', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## No es solo tema de Ciencias Naturales\n\nLa educación ambiental funciona mejor integrada al currículo de cualquier materia —no solo Biología o Ciencias Naturales— que como una actividad aislada una vez al año. Un problema ambiental real puede ser excusa perfecta para un Tópico Generativo de Matemática (datos y estadística), Lengua (textos de opinión) o Historia (políticas públicas).\n\nY, como en Cultura de Pensamiento, el modelado sigue siendo la herramienta más simple: los estudiantes sostienen mejor un hábito ambiental cuando ven al adulto sosteniéndolo primero, sin necesidad de que se lo recuerden.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál es la forma más efectiva de integrar la educación ambiental al currículo?', options: ['Solo dentro de Ciencias Naturales, una vez al año', 'Integrada a cualquier materia, conectada con su contenido específico', 'Como una charla puntual sin conexión con las materias'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-ia',
+        title: 'Tecnología e IA con propósito pedagógico',
+        icon: '🤖',
+        description: 'Primero la intención pedagógica, después la herramienta — IA para diseñar, crear e investigar, con autoría, pensamiento crítico y criterios de uso.',
+        steps: [
+            {
+                id: 'tia-s1', title: 'La intención antes que la herramienta', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## No empezar por "¿qué herramienta uso?"\n\nLa pregunta de partida nunca es "¿qué app o IA puedo usar en esta clase?" — es "¿qué quiero que mis estudiantes comprendan o puedan hacer?". Recién después de eso tiene sentido preguntarse si alguna herramienta ayuda a lograrlo mejor.\n\nEl modelo SAMR ayuda a pensar el nivel de esa ayuda: **Sustitución** y **Aumento** son cambios menores (la tecnología reemplaza algo analógico, con o sin mejoras); **Modificación** y **Redefinición** son cambios más profundos, donde la tarea en sí se transforma y permite algo que antes no era posible. Conviene apuntar ahí, no quedarse solo en la sustitución por novedad.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál es la primera pregunta antes de sumar tecnología o IA a una clase?', options: ['¿Qué herramienta está de moda?', '¿Qué quiero que mis estudiantes comprendan o puedan hacer?', '¿Qué herramienta usan otros colegios?'] }
+                ]}
+            },
+            {
+                id: 'tia-s2', title: 'IA generativa: qué habilita y qué arriesga', xp: 25, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Una herramienta potente, no un reemplazo del pensamiento\n\nBien usada, la IA generativa puede ayudar a explorar ideas, armar un primer borrador, investigar más rápido, dar feedback inmediato o hacer más accesible una tarea para un estudiante que lo necesita. Mal usada, puede terminar reemplazando el pensamiento del estudiante en vez de potenciarlo — y además puede equivocarse con total seguridad (una "alucinación"), así que nunca conviene aceptar lo que produce sin revisarlo.\n\nEl riesgo no es la herramienta en sí: es que el estudiante deje de pensar porque la IA ya "resolvió" la parte que justamente tenía que pensar él o ella.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Cuál es el principal riesgo de un uso mal pensado de la IA generativa en una tarea?', options: ['Que ahorre tiempo al estudiante', 'Que reemplace el pensamiento del estudiante en la parte que justamente tenía que pensar', 'Que el estudiante aprenda a usar una herramienta nueva'] }
+                ]}
+            },
+            {
+                id: 'tia-s3', title: 'Autoría, pensamiento crítico y criterios de uso', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## El estudiante sigue siendo responsable de lo que entrega\n\nUsar IA como apoyo no exime al estudiante de hacerse responsable de lo que finalmente entrega — igual que citar una fuente no exime de entender lo que se cita. Vale la pena enseñar explícitamente a cuestionar y verificar lo que una IA produce, en vez de pegarlo directo, y a ser transparente sobre cuándo y cómo se usó en un trabajo.\n\nEstos criterios de uso pueden variar según la actividad y la edad del grupo — lo importante es que estén claros de antemano, no que se descubran recién al corregir.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: 'Un estudiante usa IA para redactar parte de un trabajo. ¿Qué sigue siendo su responsabilidad?', options: ['Ninguna, la IA hizo el trabajo', 'Entender, revisar y hacerse responsable de lo que finalmente entrega', 'Solo copiar el resultado tal cual lo generó la IA'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-proyecto-institucional',
+        title: 'Proyecto Institucional',
+        icon: '🎯',
+        description: 'El proyecto que atraviesa este ciclo — se actualiza cada vez que cambia.',
+        steps: [
+            {
+                id: 'tpi-s1', title: '"Every Step Matters"', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## Building Wellbeing, One Habit at a Time\n\nEl proyecto institucional de Austin trabaja hábitos como puente entre la vida escolar y la vida cotidiana: no busca un cambio grande y puntual, sino sostener hábitos chicos en el tiempo, con registro grupal y visual del progreso.\n\nLa idea de fondo conecta directo con Educación Emocional y Social: el bienestar no es un tema aparte de lo académico — es una condición para poder aprender. "Every Step Matters" es la forma en que Austin lo vuelve concreto y visible en el día a día, no solo una frase.',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿Qué busca el proyecto "Every Step Matters"?', options: ['Un cambio grande y puntual en un solo evento', 'Sostener hábitos chicos en el tiempo, con registro grupal y visual', 'Reemplazar el trabajo del EOE'] }
+                ]}
+            },
+            {
+                id: 'tpi-s2', title: 'Tu rol en el proyecto institucional', xp: 20, step_type: 'quiz',
+                media: { type: null, url: '' },
+                content_md: '## No es "un proyecto de otro equipo"\n\nEl proyecto institucional no es responsabilidad exclusiva de un equipo puntual — se sostiene porque cada docente lo hace propio: modelando los hábitos que promueve, sumándolo donde tenga sentido dentro de su materia o espacio de tutoría, y ayudando a sostener el registro visual del grupo.\n\n*Nota para Coordinación: este tópico conviene revisarlo cada vez que cambie el proyecto institucional del ciclo (nombre, eje, hábitos) — de forma similar a como se actualiza el tópico "Este ciclo lectivo" cada año.*',
+                activity: { type: 'quiz', passing_score: 1, questions: [
+                    { id: 'q1', text: '¿De quién es responsabilidad sostener el proyecto institucional en el día a día?', options: ['Solo del equipo que lo diseñó originalmente', 'De cada docente, en su materia o espacio con el grupo', 'De las familias, no del colegio'] }
+                ]}
+            }
+        ]
+    },
+    {
+        id: 'topic-5',
+        title: 'Este ciclo lectivo',
+        icon: '📅',
+        description: 'Novedades y fechas importantes — este contenido se actualiza cada año.',
+        // standalone: no forma parte de la secuencia de niveles (ver
+        // isTopicUnlocked más abajo) — queda siempre disponible, sin
+        // requisito de haber completado el nivel anterior.
+        standalone: true,
+        steps: [
+            {
+                id: 't5-s1', title: 'Novedades y fechas 2026', xp: 10, step_type: 'info',
+                media: { type: null, url: '' },
+                content_md: '## Novedades de este ciclo\n\n- Cambios en infraestructura\n- Asistencia y presentismo\n- Definición de espacios\n- Reuniones bimestrales: Castellano e Inglés (Ciclo Básico) e IB\n\n## Fechas importantes\n\n- **Febrero**: reuniones de departamento y reunión IB\n- **18/02 – 03/03**: período de intensificación\n- **20/02**: entrega de planificación anual\n- **24/02**: inicio de clases 1er año HS\n- **27/02**: reunión general de familias (19 hs)\n- **02/03**: inicio de clases 2do a 5to año HS\n- **03/03**: inicio de clases 6to año HS\n- **06/03**: primer PUD y planificador IB\n- **09 al 13/03**: retroalimentación de las entregas\n- **31/03**: entrega de planillas administrativas\n\n*Nota para Coordinación: este es el único paso que hay que actualizar cada ciclo lectivo — no requiere tocar ningún otro tópico.*'
+                // step_type 'info' → no lleva `activity`, se completa con el botón "Marcar como leído"
+            }
         ]
     }
 ];
@@ -832,10 +1700,20 @@ let ONBOARDING_STRUCTURE = [
        type: 'quiz',
        passing_score: 2,          // cuántas hay que acertar para pasar
        questions: [
-           { id: 'q1', text: '¿Pregunta real?', options: ['A','B','C'], correct_index: 0 },
-           { id: 'q2', text: '¿Otra pregunta?', options: ['A','B','C'], correct_index: 2 }
+           { id: 'q1', text: '¿Pregunta real?', options: ['A','B','C'] },
+           { id: 'q2', text: '¿Otra pregunta?', options: ['A','B','C'] }
        ]
    }
+
+   OJO: acá NO va `correct_index` — la respuesta correcta de cada
+   pregunta se valida server-side (función RPC completar_paso, ver
+   SETUP-SUPABASE.md sección 3) contra la tabla `quiz_answers`, que
+   no tiene ninguna policy de SELECT. Si `correct_index` viajara acá,
+   cualquiera podría leerlo con "Ver código fuente" y saltearse el
+   quiz sin responder nada.
+
+   Los pasos con step_type: 'info' no llevan `activity` — se saltean
+   acá porque se completan con un botón manual, no con un quiz.
    ============================================================ */
 function generarActividadPlaceholder(title) {
     return {
@@ -845,15 +1723,20 @@ function generarActividadPlaceholder(title) {
             {
                 id: 'q1',
                 text: `Pregunta de repaso sobre "${title}" (placeholder — reemplazar por la pregunta real).`,
-                options: ['Opción A (marcá esta por ahora)', 'Opción B', 'Opción C'],
-                correct_index: 0
+                options: ['Opción A', 'Opción B', 'Opción C']
+                // Sin respuesta cargada en quiz_answers, completar_paso()
+                // deja pasar cualquier respuesta (mismo criterio que un
+                // paso 'info'), así el flujo se puede probar de punta a
+                // punta antes de tener el contenido real.
             }
         ]
     };
 }
 ONBOARDING_STRUCTURE.forEach(topic => {
     topic.steps.forEach(step => {
-        if (!step.activity) step.activity = generarActividadPlaceholder(step.title);
+        if ((step.step_type || 'quiz') === 'quiz' && !step.activity) {
+            step.activity = generarActividadPlaceholder(step.title);
+        }
     });
 });
 
@@ -862,6 +1745,15 @@ ONBOARDING_STRUCTURE.forEach(topic => {
    ============================================================ */
 let currentUser = null;
 let completedSteps = new Set();   // guarda step.id de pasos completados
+
+// Cuentas de revisión: acceden a todos los niveles/pasos sin
+// desbloqueo secuencial (por ej., Coordinación revisando el
+// contenido completo sin tener que "jugar" el onboarding entero).
+const EMAILS_ACCESO_LIBRE = ['alejandra.luna@austinebs-ah.edu.ar'];
+
+function tieneAccesoLibre() {
+    return !!currentUser && EMAILS_ACCESO_LIBRE.includes((currentUser.email || '').toLowerCase());
+}
 let activeTopicIndex = null;
 let quizAnswers = {};             // { [stepId]: { [questionId]: opcionSeleccionada } }
 
@@ -893,13 +1785,9 @@ function escapeHtml(str = '') {
    ============================================================ */
 async function correoAutorizado(email) {
     try {
-        const { data, error } = await _supabase
-            .from('allowed_emails')
-            .select('email')
-            .ilike('email', email)
-            .maybeSingle();
+        const { data, error } = await _supabase.rpc('correo_autorizado', { p_email: email });
         if (error) {
-            console.warn('No se pudo validar contra allowed_emails, revisá el esquema:', error.message);
+            console.warn('No se pudo validar el correo (revisá que la función correo_autorizado(text) exista en Supabase):', error.message);
             return { ok: false, reason: 'schema' };
         }
         return { ok: !!data, reason: data ? null : 'not_listed' };
@@ -1026,52 +1914,47 @@ async function onLoginSuccess(user) {
     const displayName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || user.email.split('@')[0];
     document.getElementById('greeting-title').textContent = `Bienvenida/o, ${displayName}`;
 
-    await intentarCargarContenidoDesdeSupabase();
+    // La ESTRUCTURA (títulos, orden, niveles, standalone, pasos) es
+    // siempre ONBOARDING_STRUCTURE, local y canónica — no se carga ni
+    // se pisa desde Supabase (ver comentario junto a su declaración).
+    // Lo único que viene de Supabase es el PROGRESO de este usuario.
     await cargarProgreso();
     renderOverview();
     renderTopics();
 }
 
 /* ============================================================
-   CARGA DE CONTENIDO — intenta traer tópicos/pasos desde Supabase
-   (tablas `onboarding_topics` + `onboarding_steps`, ver
-   SETUP-SUPABASE.md). Si no existen o falla, se usa el arreglo
-   local ONBOARDING_STRUCTURE definido más arriba como respaldo,
-   así la app funciona igual mientras cargás contenido real.
+   CARGA DE CONTENIDO — DESACTIVADA A PROPÓSITO.
+   Antes existía intentarCargarContenidoDesdeSupabase(), que leía
+   las tablas `onboarding_topics` + `onboarding_steps` y hacía
+   ONBOARDING_STRUCTURE = topics.map(...), reemplazando por completo
+   la estructura local en cuanto esas tablas tuvieran filas.
+
+   Eso causó un bug real: esas tablas tenían contenido viejo (una
+   versión anterior de los tópicos, con otros títulos y SIN el campo
+   `standalone` — la tabla `onboarding_topics` ni siquiera tiene esa
+   columna, ver SETUP-SUPABASE.md sección 4), así que cada login
+   pisaba en silencio la estructura nueva por la vieja, y además
+   "Bienvenida a Austin"/"Este ciclo lectivo" volvían a aparecer como
+   niveles numerados (al no tener `standalone`, sequentialTopics() los
+   contaba como parte de la secuencia).
+
+   Decisión: ONBOARDING_STRUCTURE (declarado más arriba) es la única
+   fuente de verdad de la ESTRUCTURA (títulos, orden, niveles,
+   standalone, pasos) y no se vuelve a reasignar en ningún lado del
+   archivo — de hecho está declarado `const` para que reintroducir
+   una reasignación tire error en vez de fallar en silencio. Lo que
+   sí sigue viniendo de Supabase es el PROGRESO de cada usuario (ver
+   cargarProgreso()/completar_paso() más abajo), que es información
+   por-usuario y no tiene nada que ver con la estructura del
+   contenido.
+
+   Las tablas `onboarding_topics`/`onboarding_steps` NO se borraron
+   de Supabase (por si en el futuro se decide migrar la estructura
+   ahí de verdad, con una migración explícita de datos — no con una
+   sustitución silenciosa como la de antes); simplemente el código ya
+   no las consulta para construir la interfaz.
    ============================================================ */
-async function intentarCargarContenidoDesdeSupabase() {
-    if (DEMO_MODE) return; // en demo siempre se usa ONBOARDING_STRUCTURE local
-    try {
-        const { data: topics, error: topicsErr } = await _supabase
-            .from('onboarding_topics')
-            .select('*')
-            .order('order_index', { ascending: true });
-        if (topicsErr || !topics || !topics.length) return; // se queda con el respaldo local
-
-        const { data: steps, error: stepsErr } = await _supabase
-            .from('onboarding_steps')
-            .select('*')
-            .order('order_index', { ascending: true });
-        if (stepsErr || !steps) return;
-
-        ONBOARDING_STRUCTURE = topics.map(t => ({
-            id: t.id,
-            title: t.title,
-            icon: t.icon || '📘',
-            description: t.description || '',
-            steps: steps.filter(s => s.topic_id === t.id).map(s => ({
-                id: s.id,
-                title: s.title,
-                xp: s.xp || 20,
-                media: { type: s.media_type || null, url: s.media_url || '' },
-                content_md: s.content_md || '',
-                activity: s.quiz_json || generarActividadPlaceholder(s.title)
-            }))
-        }));
-    } catch (err) {
-        console.warn('Usando contenido local — no se pudo leer contenido desde Supabase:', err.message);
-    }
-}
 
 /* ============================================================
    PROGRESO — tabla `user_progress` (user_id, step_id, completed_at)
@@ -1097,28 +1980,47 @@ async function cargarProgreso() {
     }
 }
 
-async function marcarPasoCompletado(stepId) {
-    completedSteps.add(stepId); // optimista: refleja el cambio ya mismo en la UI
-
+async function marcarPasoCompletado(stepId, answers = null) {
     if (DEMO_MODE) {
+        // Modo demo: no hay backend que valide, así que se acepta
+        // cualquier respuesta (mismo nivel de confianza documentado
+        // para el resto del modo demo — ver SETUP-SUPABASE.md).
+        completedSteps.add(stepId);
         demoGuardarProgreso();
-        return;
+        return true;
     }
 
+    // La validación del quiz (si corresponde) y el guardado del
+    // progreso ocurren juntos, server-side, en completar_paso() — el
+    // cliente nunca decide por sí mismo si un paso quedó "completado".
+    // Ver SETUP-SUPABASE.md sección 3.
+    // Devuelve true (aprobado y guardado), false (respuestas incorrectas) o
+    // null (no se pudo guardar: red, sesión vencida o paso que no está en
+    // onboarding_steps) — así la UI no confunde un error con "respuesta mal".
     try {
-        await _supabase.from('user_progress').upsert(
-            { user_id: currentUser.id, step_id: stepId, completed_at: new Date().toISOString() },
-            { onConflict: 'user_id,step_id' }
-        );
+        const { data, error } = await _supabase.rpc('completar_paso', {
+            p_step_id: stepId,
+            p_answers: answers || {}
+        });
+        if (error) {
+            console.warn('No se pudo validar/guardar el paso:', error.message);
+            return null;
+        }
+        if (data) completedSteps.add(stepId);
+        return !!data;
     } catch (err) {
         console.error('No se pudo guardar el progreso:', err);
+        return null;
     }
 }
+
+const MENSAJE_ERROR_GUARDADO = 'No se pudo guardar tu avance. Revisá tu conexión y volvé a intentar; si sigue pasando, avisale a coordinación.';
 
 /* ============================================================
    LÓGICA DE DESBLOQUEO SECUENCIAL
    ============================================================ */
 function isStepUnlocked(topic, stepIndex) {
+    if (tieneAccesoLibre()) return true;
     if (stepIndex === 0) return true;
     const prevStep = topic.steps[stepIndex - 1];
     return completedSteps.has(prevStep.id);
@@ -1136,28 +2038,141 @@ function totalXP() {
 }
 
 /* ============================================================
+   NIVELES — los tópicos marcados standalone (hoy, "Bienvenida a
+   Austin" y "Este ciclo lectivo") quedan fuera de la secuencia:
+   siempre disponibles, sin número de nivel. El resto forma una
+   única secuencia gamificada: Nivel 1 (Enseñanza para la
+   Comprensión) hay que completarlo entero para destrabar el Nivel
+   2, y así sucesivamente.
+   ============================================================ */
+function sequentialTopics() {
+    return ONBOARDING_STRUCTURE.filter(t => !t.standalone);
+}
+
+function levelNumberOf(topic) {
+    if (topic.standalone) return null;
+    return sequentialTopics().indexOf(topic) + 1; // 1-indexado, para mostrar "Nivel N"
+}
+
+function isTopicUnlocked(topic) {
+    if (tieneAccesoLibre()) return true;
+    if (topic.standalone) return true;
+    const seq = sequentialTopics();
+    const pos = seq.indexOf(topic);
+    if (pos <= 0) return true; // Nivel 1 siempre destrabado
+    const prev = seq[pos - 1];
+    const p = topicProgress(prev);
+    return p.done === p.total;
+}
+
+// Nivel que el docente tiene actualmente en curso (el primero de la
+// secuencia que todavía no completó), para mostrar "Vas por el Nivel N".
+function currentLevelNumber() {
+    const seq = sequentialTopics();
+    const idx = seq.findIndex(t => topicProgress(t).done < t.steps.length);
+    return idx === -1 ? seq.length : idx + 1;
+}
+
+/* ============================================================
+   CELEBRACIÓN DE NIVEL COMPLETADO
+   Se dispara una sola vez, justo cuando se termina el ÚLTIMO paso de
+   un nivel de la secuencia (no aplica a tópicos standalone, como
+   "Este ciclo lectivo", que no destraban nada al completarse).
+   ============================================================ */
+function esUltimoPasoDeNivel(topic, stepIndex) {
+    return !topic.standalone && stepIndex === topic.steps.length - 1;
+}
+
+const CONFETTI_COLORS = ['var(--amber-500)', 'var(--moss-600)', 'var(--moss-400)', 'var(--amber-600)', 'var(--moss-900)'];
+
+function generarConfettiHtml() {
+    let html = '';
+    for (let i = 0; i < 26; i++) {
+        const left = Math.random() * 100;
+        const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+        const duration = (1.4 + Math.random() * 1.1).toFixed(2);
+        const delay = (Math.random() * 0.35).toFixed(2);
+        const rotate = Math.round(Math.random() * 360);
+        html += `<span style="left:${left}%; background:${color}; animation-duration:${duration}s; animation-delay:${delay}s; transform:rotate(${rotate}deg);"></span>`;
+    }
+    return html;
+}
+
+function mostrarCelebracionNivel(topic) {
+    const seq = sequentialTopics();
+    const levelN = levelNumberOf(topic);
+    const isFinal = levelN === seq.length;
+    const topicXP = topic.steps.reduce((sum, s) => sum + s.xp, 0);
+
+    document.getElementById('level-modal-confetti').innerHTML = generarConfettiHtml();
+    document.getElementById('level-modal-kicker').textContent = `Nivel ${levelN} completado`;
+    document.getElementById('level-modal-title').textContent = topic.title;
+    document.getElementById('level-modal-xp').textContent = `⭐ +${topicXP} XP`;
+
+    const nextEl = document.getElementById('level-modal-next');
+    const actionsEl = document.getElementById('level-modal-actions');
+
+    if (isFinal) {
+        nextEl.innerHTML = `🎉 Completaste los <strong>${seq.length} niveles</strong> del Sendero de Bienvenida. Sos oficialmente parte de Austin.`;
+        actionsEl.innerHTML = `<button class="btn btn-primary" onclick="cerrarModalNivel(); cerrarTopico();">Volver al mapa</button>`;
+    } else {
+        const nextTopic = seq[levelN]; // levelN es 1-indexado, así que seq[levelN] es el siguiente
+        const nextGlobalIdx = ONBOARDING_STRUCTURE.indexOf(nextTopic);
+        nextEl.innerHTML = `🔓 Nivel ${levelN + 1} destrabado: <strong>${escapeHtml(nextTopic.title)}</strong>`;
+        actionsEl.innerHTML = `
+            <button class="btn btn-primary" onclick="cerrarModalNivel(); abrirTopico(${nextGlobalIdx});">Ir al Nivel ${levelN + 1} →</button>
+            <button class="btn btn-ghost" onclick="cerrarModalNivel(); cerrarTopico();">Ver el mapa de niveles</button>`;
+    }
+
+    document.getElementById('level-modal-overlay').classList.remove('hidden');
+}
+
+function cerrarModalNivel() {
+    document.getElementById('level-modal-overlay').classList.add('hidden');
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !document.getElementById('level-modal-overlay').classList.contains('hidden')) {
+        cerrarModalNivel();
+    }
+});
+
+/* ============================================================
    RENDER — panel de avance general (niveles por tópico)
    ============================================================ */
 function renderOverview() {
     document.getElementById('xp-total').textContent = totalXP();
+    const seq = sequentialTopics();
+    const curLevel = currentLevelNumber();
+    const heroStatus = document.getElementById('hero-level-status');
+    if (heroStatus) {
+        heroStatus.textContent = curLevel > seq.length
+            ? `🏆 Completaste los ${seq.length} niveles.`
+            : `📍 Vas por el Nivel ${curLevel} de ${seq.length}: ${seq[curLevel - 1].title}.`;
+    }
     const panel = document.getElementById('overview-panel');
     panel.innerHTML = ONBOARDING_STRUCTURE.map(topic => {
         const p = topicProgress(topic);
+        const unlocked = isTopicUnlocked(topic);
         const circumference = 2 * Math.PI * 22;
         const offset = circumference - (p.pct / 100) * circumference;
+        const levelN = levelNumberOf(topic);
+        const subLabel = topic.standalone
+            ? `${p.done}/${p.total} pasos`
+            : (unlocked ? `Nivel ${levelN} · ${p.done}/${p.total} pasos` : `Nivel ${levelN} · bloqueado`);
         return `
-        <div class="overview-item">
+        <div class="overview-item ${unlocked ? '' : 'is-locked'}">
             <div class="overview-ring">
                 <svg width="52" height="52" viewBox="0 0 52 52">
                     <circle class="ring-track" cx="26" cy="26" r="22"></circle>
                     <circle class="ring-fill" cx="26" cy="26" r="22"
                         stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
                 </svg>
-                <div class="ring-label">${p.pct}%</div>
+                <div class="ring-label">${unlocked ? p.pct + '%' : '🔒'}</div>
             </div>
             <div class="overview-text">
                 <div class="t-title">${escapeHtml(topic.title)}</div>
-                <div class="t-sub">Nivel ${p.done} de ${p.total}</div>
+                <div class="t-sub">${subLabel}</div>
             </div>
         </div>`;
     }).join('');
@@ -1170,37 +2185,65 @@ function renderTopics() {
     const grid = document.getElementById('topics-grid');
     grid.innerHTML = ONBOARDING_STRUCTURE.map((topic, idx) => {
         const p = topicProgress(topic);
+        const unlocked = isTopicUnlocked(topic);
+        const levelN = levelNumberOf(topic);
         const nodes = topic.steps.map((s, i) => {
             let cls = '';
             if (completedSteps.has(s.id)) cls = 'is-done';
-            else if (isStepUnlocked(topic, i)) cls = 'is-current';
+            else if (unlocked && isStepUnlocked(topic, i)) cls = 'is-current';
             return `<span class="mini-node ${cls}"></span>`;
         }).join('');
+
+        const levelBadge = topic.standalone
+            ? `<span class="level-badge level-badge-free">Contenido libre</span>`
+            : `<span class="level-badge">Nivel ${levelN}</span>`;
+
+        let footerRight;
+        if (!unlocked) {
+            footerRight = `<span>🔒 Bloqueado</span>`;
+        } else if (p.done === p.total) {
+            footerRight = `<span class="badge-final">🏆 Completo</span>`;
+        } else {
+            footerRight = `<span>Ver sendero →</span>`;
+        }
+
         return `
-        <div class="topic-card ${activeTopicIndex === idx ? 'is-active' : ''}" onclick="abrirTopico(${idx})">
-            <div class="topic-icon" aria-hidden="true">${topic.icon}</div>
+        <div class="topic-card ${activeTopicIndex === idx ? 'is-active' : ''} ${unlocked ? '' : 'is-locked'}"
+             ${unlocked ? `onclick="abrirTopico(${idx})"` : ''}
+             role="button" tabindex="${unlocked ? '0' : '-1'}"
+             aria-disabled="${unlocked ? 'false' : 'true'}">
+            <div class="topic-icon" aria-hidden="true">${unlocked ? topic.icon : '🔒'}</div>
             <div>
+                ${levelBadge}
                 <h3>${escapeHtml(topic.title)}</h3>
-                <p class="topic-desc">${escapeHtml(topic.description)}</p>
+                <p class="topic-desc">${unlocked ? escapeHtml(topic.description) : `Completá el nivel anterior para destrabar este.`}</p>
             </div>
             <div class="mini-trail">${nodes}</div>
             <div class="topic-card-footer">
                 <span>${p.done}/${p.total} pasos</span>
-                <span class="${p.done === p.total ? 'badge-final' : ''}">${p.done === p.total ? '🏆 Completo' : 'Ver sendero →'}</span>
+                ${footerRight}
             </div>
         </div>`;
     }).join('');
 }
 
 /* ============================================================
-   RENDER — sendero de un tópico (5 nodos + panel del paso activo)
+   RENDER — sendero de un tópico (N nodos + panel del paso activo)
    ============================================================ */
 function abrirTopico(idx) {
+    const topic = ONBOARDING_STRUCTURE[idx];
+    if (!isTopicUnlocked(topic)) return; // defensivo: la tarjeta ya viene sin onclick si está bloqueado
+
     activeTopicIndex = idx;
     renderTopics();
-    const topic = ONBOARDING_STRUCTURE[idx];
     const view = document.getElementById('trail-view');
     view.classList.remove('hidden');
+    // Con muchos tópicos, dejar la grilla completa (14 tarjetas) y el panel
+    // de avance visibles arriba del sendero obligaba a scrollear de más y
+    // se sentía repetido. Mientras se ve un sendero puntual, se ocultan
+    // ambos — cerrarTopico() los vuelve a mostrar.
+    document.getElementById('overview-panel').classList.add('hidden');
+    document.getElementById('topics-grid').classList.add('hidden');
 
     // Paso activo por defecto: el primero no completado, o el último si ya está todo hecho
     let defaultStepIndex = topic.steps.findIndex((s, i) => isStepUnlocked(topic, i) && !completedSteps.has(s.id));
@@ -1244,8 +2287,16 @@ function renderTrail(topic, selectedIndex) {
             </div>
         </div>
         <div class="trail-path-wrap"><div class="trail-path">${nodesHtml}</div></div>
+        <p class="trail-scroll-hint">→ Deslizá para ver los pasos siguientes</p>
         <div class="step-panel" id="step-panel"></div>
     `;
+
+    // Pista de scroll horizontal: solo se muestra si el sendero no entra
+    // completo en el ancho visible (ver .trail-scroll-hint más arriba).
+    const trailWrap = view.querySelector('.trail-path-wrap');
+    if (trailWrap.scrollWidth > trailWrap.clientWidth) {
+        trailWrap.classList.add('is-scrollable');
+    }
 
     renderStepPanel(topic, step, selectedIndex, unlocked, done);
     window._activeTopicRef = topic;
@@ -1259,7 +2310,11 @@ function seleccionarPaso(stepIndexGlobal) {
 function cerrarTopico() {
     activeTopicIndex = null;
     document.getElementById('trail-view').classList.add('hidden');
+    document.getElementById('overview-panel').classList.remove('hidden');
+    document.getElementById('topics-grid').classList.remove('hidden');
     renderTopics();
+    renderOverview();
+    document.getElementById('overview-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function renderStepPanel(topic, step, stepIndex, unlocked, done) {
@@ -1277,6 +2332,16 @@ function renderStepPanel(topic, step, stepIndex, unlocked, done) {
         ? marked.parse(step.content_md)
         : `<p>${escapeHtml(step.content_md || '')}</p>`;
 
+    const stepType = step.step_type || 'quiz';
+    const accionHtml = done
+        ? ''
+        : (stepType === 'info' ? renderAccionInfo(topic, step) : renderActivity(topic, step));
+
+    const isLastStep = stepIndex === topic.steps.length - 1;
+    const nextActionHtml = !done ? '' : (isLastStep
+        ? `<button class="btn btn-next-step" style="width:auto; padding:10px 20px;" onclick="cerrarTopico()">Volver a los tópicos</button>`
+        : `<button class="btn btn-next-step" style="width:auto; padding:10px 20px;" onclick="seleccionarPaso(${stepIndex + 1})">Ir al paso ${stepIndex + 2} →</button>`);
+
     panel.innerHTML = `
         <div class="step-kicker">Paso ${stepIndex + 1} de ${topic.steps.length}</div>
         <h3>${escapeHtml(step.title)}</h3>
@@ -1284,9 +2349,9 @@ function renderStepPanel(topic, step, stepIndex, unlocked, done) {
         <div class="step-content-md">${mdHtml}</div>
         <div class="step-footer">
             <span class="xp-note">⭐ ${step.xp} XP al completar</span>
-            ${done ? `<div class="completion-banner"><span class="trophy">🏅</span> ¡Paso completado!</div>` : ''}
+            ${done ? `<div class="completion-banner"><span class="completion-text"><span class="trophy">🏅</span> ¡Paso completado!</span>${nextActionHtml}</div>` : ''}
         </div>
-        ${done ? '' : renderActivity(topic, step)}
+        ${accionHtml}
     `;
 
     document.getElementById('media-slot').innerHTML = renderMedia(step.media);
@@ -1350,29 +2415,67 @@ async function verificarQuiz(topicId, stepId) {
         return;
     }
 
-    const correctas = step.activity.questions.filter(q => answers[q.id] === q.correct_index).length;
-    const passingScore = activity_passing_score(step);
+    // La corrección no se calcula acá: el cliente no conoce la respuesta
+    // correcta de ninguna pregunta (ver comentario en generarActividadPlaceholder
+    // y SETUP-SUPABASE.md). completar_paso() valida y guarda en un solo paso.
+    const btn = document.getElementById('btn-verificar-quiz');
+    setBtnLoading(btn, true, 'Verificando…', 'Verificar respuestas');
+    const aprobado = await marcarPasoCompletado(stepId, answers);
+    setBtnLoading(btn, false, 'Verificando…', 'Verificar respuestas');
 
-    if (correctas >= passingScore) {
+    if (aprobado) {
         feedback.className = 'quiz-feedback is-success';
-        feedback.textContent = `¡Correcto! ${correctas}/${total}. Guardando avance…`;
-
-        const btn = document.getElementById('btn-verificar-quiz');
-        setBtnLoading(btn, true, 'Guardando…', 'Verificar respuestas');
-        await marcarPasoCompletado(stepId);
+        feedback.textContent = '¡Correcto! Guardando avance…';
 
         renderOverview();
         renderTopics();
         const stepIndex = topic.steps.findIndex(s => s.id === stepId);
         renderTrail(topic, stepIndex); // re-renderiza; el siguiente nodo queda desbloqueado
+        // El panel de completado es más corto que el quiz que reemplaza —
+        // sin este ajuste, el scroll queda apuntando más abajo de lo que
+        // mide el nuevo contenido y se ve el footer. Reubicamos la vista
+        // en el sendero, igual que al abrir un tópico (ver abrirTopico()).
+        document.getElementById('trail-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (esUltimoPasoDeNivel(topic, stepIndex)) mostrarCelebracionNivel(topic);
     } else {
         feedback.className = 'quiz-feedback is-error';
-        feedback.textContent = `Obtuviste ${correctas}/${total}. Revisá tus respuestas e intentá de nuevo.`;
+        feedback.textContent = aprobado === null
+            ? MENSAJE_ERROR_GUARDADO
+            : 'Alguna respuesta no es correcta. Revisá y volvé a intentar.';
     }
 }
 
-function activity_passing_score(step) {
-    return step.activity.passing_score || step.activity.questions.length;
+/* ============================================================
+   PASO INFORMATIVO (step_type: 'info') — mecanismo de avance manual.
+   No hay quiz: el paso se completa con un botón simple una vez
+   leído el contenido. Pensado para material que cambia cada ciclo
+   lectivo (novedades, fechas importantes) donde evaluar con
+   preguntas no tiene sentido.
+   ============================================================ */
+function renderAccionInfo(topic, step) {
+    return `
+        <button class="btn btn-primary" id="btn-marcar-leido" style="width:auto; padding:12px 22px;" onclick="marcarPasoLeido('${topic.id}','${step.id}')">Marcar como leído</button>`;
+}
+
+async function marcarPasoLeido(topicId, stepId) {
+    const topic = ONBOARDING_STRUCTURE.find(t => t.id === topicId);
+    const btn = document.getElementById('btn-marcar-leido');
+    setBtnLoading(btn, true, 'Guardando…', 'Marcar como leído');
+    const guardado = await marcarPasoCompletado(stepId);
+    if (!guardado) {
+        setBtnLoading(btn, false, '', 'Marcar como leído');
+        alert(MENSAJE_ERROR_GUARDADO);
+        return;
+    }
+
+    renderOverview();
+    renderTopics();
+    const stepIndex = topic.steps.findIndex(s => s.id === stepId);
+    renderTrail(topic, stepIndex); // re-renderiza; el siguiente nodo queda desbloqueado
+    document.getElementById('trail-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (esUltimoPasoDeNivel(topic, stepIndex)) mostrarCelebracionNivel(topic);
 }
 
 /* ============================================================

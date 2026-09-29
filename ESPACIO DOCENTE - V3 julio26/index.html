@@ -3,22 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUD Workspace | Austin Eco Bilingual School</title>
+    <title>Espacio Docente | Austin Eco Bilingual School</title>
+    <link rel="icon" type="image/jpeg" href="austin-eco-bilingual-school-campana-argentina.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #2c3e50;
-            --panel-bg: #ecf0f1;
-            --accent-green: #27ae60;
-            --accent-blue: #2563eb;
-            --border-color: #cbd5e1;
-            --text-main: #334155;
+            /* Identidad Austin · Al Día */
+            --primary-bg: #26343E;
+            --panel-bg: #F4F6F5;
+            --accent-orange: #F18636;
+            --accent-orange-light: #FDB273;
+            --accent-orange-dark: #E5731F;
+            --accent-lime: #A9CF44;
+            --accent-lime-dark: #8FB534;
+            --accent-green: #A9CF44;
+            --accent-blue: #26343E;
+            --accent-blue-light: #EAF0F3;
+            --border-color: #DFE5E5;
+            --petroleo-medio: #35505E;
+            --text-main: #26343E;
         }
 
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            background: #f8fafc; 
-            min-height: 100vh; 
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            margin: 0;
+            background: var(--panel-bg);
+            min-height: 100vh;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
@@ -26,16 +38,30 @@
             overflow-y: auto;
         }
 
-        header { 
-            background: var(--primary-bg); 
-            color: white; 
-            padding: 10px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        header {
+            background: #FFFFFF;
+            color: var(--primary-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .header-inner {
+            max-width: 1090px;
+            margin: 0 auto;
+            padding: 13px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             min-height: 50px;
             gap: 12px;
+            box-sizing: border-box;
         }
+
+        .logo{display:flex;align-items:center;gap:12px}
+        .logo b{font-size:18px;font-weight:800;display:block;line-height:1.1;letter-spacing:-.03em;color:var(--primary-bg)}
+        .logo span{font-size:10.5px;color:#93A1A9;letter-spacing:.13em;font-weight:600}
 
         .header-actions {
             display: flex;
@@ -84,7 +110,7 @@
         }
 
         .history-section {
-            background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+            background: linear-gradient(180deg, #F4F6F5 0%, #EDF1F0 100%);
             border-left: 1px solid rgba(148, 163, 184, 0.35);
             border-radius: 18px 0 0 18px;
             padding: 20px;
@@ -98,7 +124,7 @@
         .history-header {
             padding: 14px 16px;
             border-radius: 14px;
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(39, 174, 96, 0.12));
+            background: linear-gradient(135deg, rgba(241, 134, 54, 0.12), rgba(169, 207, 68, 0.12));
             border: 1px solid rgba(148, 163, 184, 0.2);
         }
 
@@ -114,27 +140,27 @@
         .history-header p {
             margin: 4px 0 0;
             font-size: 0.8rem;
-            color: #64748b;
+            color: #5A6B75;
         }
 
         .history-search-input {
             width: 100%;
             padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border: 1px solid #DFE5E5;
+            border-radius: 10px;
             font-size: 0.9rem;
             margin-top: 8px;
             box-sizing: border-box;
         }
 
         .history-search-input::placeholder {
-            color: #94a3b8;
+            color: #93A1A9;
         }
 
         .history-search-input:focus {
             outline: none;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 2px rgba(38, 52, 62, 0.12);
         }
 
         .history-toggle {
@@ -157,27 +183,30 @@
         }
 
         .field-group { display: flex; flex-direction: column; gap: 5px; }
-        label { font-weight: bold; font-size: 0.9rem; color: #555; }
-        .required { color: #e74c3c; font-weight: bold; }
-        input, textarea { 
-            border: 1px solid var(--border-color); 
-            border-radius: 4px; 
-            padding: 10px; 
+        label { font-weight: bold; font-size: 0.9rem; color: #5A6B75; }
+        .required { color: #C0503B; font-weight: bold; }
+        input, textarea {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
             font-size: 14px;
+            font-family: inherit;
         }
         .style-orientation { height: 80px; resize: vertical; }
         .content-area { height: 180px; resize: vertical; }
 
         .btn-primary {
-            background: var(--accent-green);
+            background: var(--accent-blue);
             color: white;
             border: none;
             padding: 12px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 10px;
             text-transform: uppercase;
+            transition: filter .15s;
         }
+        .btn-primary:hover { filter: brightness(1.08); }
 
         .history-card {
             background: white;
@@ -191,11 +220,11 @@
         }
         .history-card:hover {
             transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
-            border-color: var(--accent-green);
+            box-shadow: 0 10px 24px rgba(241, 134, 54, 0.18);
+            border-color: var(--accent-orange-light);
         }
         .history-card h4 { margin: 0 0 6px 0; font-size: 0.95rem; color: var(--primary-bg); line-height: 1.3; }
-        .history-card p { margin: 0; font-size: 0.8rem; color: #64748b; }
+        .history-card p { margin: 0; font-size: 0.8rem; color: #5A6B75; }
         .history-card-top {
             display: flex;
             justify-content: space-between;
@@ -208,20 +237,37 @@
             align-items: center;
             padding: 4px 8px;
             border-radius: 999px;
-            background: #eff6ff;
-            color: #2563eb;
+            background: #EDF1F0;
+            color: var(--petroleo-medio);
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
         .history-badge.is-presented {
-            background: #ecfdf5;
-            color: #059669;
+            background: #F1F7E2;
+            color: #8FB534;
+        }
+        .history-badge.is-approved {
+            background: #F1F7E2;
+            color: #8FB534;
+        }
+        .history-badge.is-changes {
+            background: #FEF1E6;
+            color: #B45E12;
+        }
+        .history-review-comment {
+            margin: 8px 0 0;
+            padding: 6px 8px;
+            background: #FEF1E6;
+            border: 1px solid rgba(241, 134, 54, 0.25);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #B45E12;
         }
         .history-date {
             font-size: 0.72rem;
-            color: #64748b;
+            color: #5A6B75;
         }
         .history-empty-state {
             padding: 16px;
@@ -229,7 +275,7 @@
             border: 1px dashed rgba(148, 163, 184, 0.45);
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.6);
-            color: #64748b;
+            color: #5A6B75;
             font-size: 0.9rem;
             line-height: 1.5;
         }
@@ -247,9 +293,9 @@
             padding: 24px;
             overflow-y: auto;
             background:
-                radial-gradient(circle at 12% 15%, rgba(39, 174, 96, 0.28), transparent 42%),
-                radial-gradient(circle at 88% 10%, rgba(37, 99, 235, 0.28), transparent 45%),
-                linear-gradient(160deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);
+                radial-gradient(circle at 12% 15%, rgba(169, 207, 68, 0.28), transparent 42%),
+                radial-gradient(circle at 88% 10%, rgba(143, 181, 52, 0.30), transparent 45%),
+                linear-gradient(160deg, #141F26 0%, #26343E 55%, #141F26 100%);
         }
 
         .auth-gate-card {
@@ -292,7 +338,7 @@
 
         .auth-gate-brand span {
             font-size: 0.76rem;
-            color: #64748b;
+            color: #5A6B75;
         }
 
         .auth-gate-header h1 {
@@ -305,7 +351,7 @@
         .auth-gate-header p {
             margin: 0 0 22px;
             font-size: 0.85rem;
-            color: #64748b;
+            color: #5A6B75;
             line-height: 1.5;
         }
 
@@ -319,7 +365,7 @@
         .auth-field label {
             font-size: 0.78rem;
             font-weight: 700;
-            color: #475569;
+            color: #5A6B75;
         }
 
         .auth-field input {
@@ -335,7 +381,7 @@
         .auth-field input:focus {
             outline: none;
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+            box-shadow: 0 0 0 3px rgba(38, 52, 62, 0.14);
         }
 
         .auth-gate-primary {
@@ -344,18 +390,37 @@
             margin-top: 4px;
             border: none;
             border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            background: linear-gradient(135deg, var(--accent-blue), #1B252C);
             color: white;
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 10px 20px rgba(38, 52, 62, 0.35);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         .auth-gate-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 14px 26px rgba(37, 99, 235, 0.32);
+            box-shadow: 0 14px 26px rgba(38, 52, 62, 0.32);
+        }
+
+        .auth-forgot-link {
+            display: block;
+            width: 100%;
+            text-align: right;
+            margin-top: -6px;
+            margin-bottom: 14px;
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--accent-blue);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .auth-forgot-link:hover {
+            text-decoration: underline;
         }
 
         .auth-gate-divider {
@@ -363,7 +428,7 @@
             align-items: center;
             gap: 10px;
             margin: 18px 0 14px;
-            color: #94a3b8;
+            color: #93A1A9;
             font-size: 0.75rem;
         }
 
@@ -389,14 +454,14 @@
         }
 
         .auth-gate-secondary:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
+            background: #EDF1F0;
+            border-color: #93A1A9;
         }
 
         .auth-status {
             margin-top: 16px;
             font-size: 0.78rem;
-            color: #64748b;
+            color: #5A6B75;
             line-height: 1.4;
             text-align: center;
         }
@@ -405,12 +470,12 @@
             display: none;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
             padding: 5px 6px 5px 12px;
             border-radius: 999px;
             font-size: 0.78rem;
-            color: white;
+            color: var(--primary-bg);
         }
 
         .header-user-pill span {
@@ -421,18 +486,19 @@
         }
 
         .header-user-pill button {
-            border: none;
-            background: rgba(239, 68, 68, 0.85);
-            color: white;
+            border: 1px solid var(--border-color);
+            background: none;
+            color: #5A6B75;
             padding: 5px 11px;
             border-radius: 999px;
             font-size: 0.72rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
         }
 
         .header-user-pill button:hover {
-            background: #ef4444;
+            border-color: #5A6B75;
+            color: var(--primary-bg);
         }
 
         @media (max-width: 480px) {
@@ -451,9 +517,9 @@
             min-height: calc(100vh - 50px);
             padding: 40px 24px;
             background:
-                radial-gradient(circle at 10% 10%, rgba(39, 174, 96, 0.10), transparent 40%),
-                radial-gradient(circle at 90% 0%, rgba(37, 99, 235, 0.10), transparent 40%),
-                #f8fafc;
+                radial-gradient(circle at 10% 10%, rgba(169, 207, 68, 0.10), transparent 40%),
+                radial-gradient(circle at 90% 0%, rgba(241, 134, 54, 0.10), transparent 40%),
+                #F4F6F5;
         }
 
         .welcome-card {
@@ -497,14 +563,14 @@
 
         .welcome-edit-hint {
             font-size: 0.72rem;
-            color: #94a3b8;
+            color: #93A1A9;
             font-style: italic;
         }
 
         .welcome-subtitle {
             margin: 8px 0 28px;
             font-size: 0.92rem;
-            color: #64748b;
+            color: #5A6B75;
         }
 
         .welcome-grid {
@@ -521,7 +587,7 @@
             padding: 20px;
             border-radius: 16px;
             border: 1px solid rgba(148, 163, 184, 0.25);
-            background: #f8fafc;
+            background: #F4F6F5;
             text-decoration: none;
             cursor: pointer;
             text-align: left;
@@ -531,7 +597,7 @@
 
         .welcome-tile:hover {
             transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.14);
+            box-shadow: 0 14px 28px rgba(38, 52, 62, 0.14);
             border-color: var(--accent-blue);
         }
 
@@ -547,7 +613,7 @@
 
         .welcome-tile-desc {
             font-size: 0.78rem;
-            color: #64748b;
+            color: #5A6B75;
             line-height: 1.4;
         }
 
@@ -558,12 +624,12 @@
             background: transparent;
             border-style: dashed;
             border-color: rgba(148, 163, 184, 0.4);
-            color: #64748b;
+            color: #5A6B75;
         }
 
         .welcome-tile-add:hover {
             border-color: var(--accent-blue);
-            background: rgba(37, 99, 235, 0.04);
+            background: rgba(38, 52, 62, 0.04);
         }
 
         .welcome-tile-add .welcome-tile-icon {
@@ -573,6 +639,32 @@
 
         .welcome-tile-custom {
             position: relative;
+        }
+
+        .welcome-tile-notify {
+            position: relative;
+        }
+
+        .welcome-tile-badge {
+            display: none;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: var(--accent-orange);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .welcome-tile-badge.is-visible {
+            display: flex;
         }
 
         .welcome-tile-remove {
@@ -587,7 +679,7 @@
             border-radius: 50%;
             border: none;
             background: rgba(15, 23, 42, 0.08);
-            color: #475569;
+            color: #5A6B75;
             font-size: 0.7rem;
             line-height: 1;
             cursor: pointer;
@@ -598,7 +690,7 @@
         }
 
         .welcome-tile-remove:hover {
-            background: #ef4444;
+            background: #C0503B;
             color: white;
         }
 
@@ -643,6 +735,334 @@
             flex: 1;
         }
 
+        /* ---------- Calendario anual (panel de bienvenida) ---------- */
+        .calendar-section {
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .calendar-section-title {
+            margin: 0 0 4px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+        }
+
+        .calendar-section-sub {
+            margin: 0 0 18px;
+            font-size: 0.78rem;
+            color: #5A6B75;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .calendar-year {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary-bg);
+            min-width: 54px;
+            text-align: center;
+        }
+
+        .calendar-nav {
+            border: none;
+            background: #F4F6F5;
+            color: var(--primary-bg);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+
+        .calendar-nav:hover {
+            background: var(--accent-blue-light);
+        }
+
+        .calendar-months-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-month {
+            grid-column: span 1;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 14px;
+            padding: 10px;
+            background: #F4F6F5;
+            transition: box-shadow 0.15s, border-color 0.15s;
+        }
+
+        .calendar-month.expanded {
+            grid-column: 1 / -1;
+            background: white;
+            box-shadow: 0 14px 30px rgba(38, 52, 62, 0.12);
+        }
+
+        .calendar-month-name {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+            text-transform: capitalize;
+            margin-bottom: 8px;
+            user-select: none;
+        }
+
+        .calendar-month-name .badge {
+            font-size: 0.62rem;
+            font-weight: 700;
+            background: var(--accent-orange);
+            color: #fff;
+            border-radius: 999px;
+            padding: 1px 6px;
+            line-height: 1.5;
+        }
+
+        .calendar-weekdays,
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .calendar-weekdays span {
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: #93A1A9;
+            text-align: center;
+        }
+
+        .calendar-day {
+            font-size: 0.64rem;
+            text-align: center;
+            padding: 3px 0;
+            border-radius: 5px;
+            color: #5A6B75;
+        }
+
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+
+        .calendar-day.today {
+            box-shadow: inset 0 0 0 1.5px var(--primary-bg);
+            font-weight: 700;
+        }
+
+        .calendar-day.has-event {
+            background: var(--accent-lime);
+            color: #1A1006;
+            font-weight: 700;
+            cursor: default;
+        }
+
+        .calendar-day.has-event.tipo-reunion {
+            background: var(--accent-orange-light);
+        }
+
+        .calendar-day.has-event.tipo-feriado {
+            background: #DCE3E5;
+            color: var(--primary-bg);
+        }
+
+        .calendar-month.expanded .calendar-day {
+            font-size: 0.8rem;
+            padding: 7px 0;
+        }
+
+        .calendar-events-list {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px dashed rgba(148, 163, 184, 0.35);
+        }
+
+        .calendar-event-item {
+            display: flex;
+            gap: 12px;
+            padding: 8px 2px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+            font-size: 0.82rem;
+        }
+
+        .calendar-event-item:last-child {
+            border-bottom: none;
+        }
+
+        .calendar-event-date {
+            flex-shrink: 0;
+            min-width: 78px;
+            font-weight: 700;
+            color: var(--primary-bg);
+        }
+
+        .calendar-event-info .title {
+            font-weight: 600;
+            color: var(--primary-bg);
+        }
+
+        .calendar-event-info .desc {
+            color: #5A6B75;
+            font-size: 0.76rem;
+            margin-top: 2px;
+        }
+
+        .calendar-empty-note {
+            text-align: center;
+            color: #93A1A9;
+            font-size: 0.78rem;
+            padding: 16px 0;
+        }
+
+        /* ---------- Reserva de espacios (panel de bienvenida) ---------- */
+        .reservas-section {
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .reservas-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .reservas-toggle-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+        }
+
+        .reservas-toggle-hint {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            white-space: nowrap;
+        }
+
+        .reservas-body {
+            margin-top: 14px;
+        }
+
+        .reservas-body[hidden] {
+            display: none;
+        }
+
+        .reservas-body-sub {
+            margin: 0 0 16px;
+            font-size: 0.78rem;
+            color: #5A6B75;
+        }
+
+        .reservas-grid-wrap {
+            overflow-x: auto;
+        }
+
+        .reservas-table {
+            width: 100%;
+            min-width: 460px;
+            border-collapse: collapse;
+        }
+
+        .reservas-table th {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--primary-bg);
+            text-align: center;
+            padding: 6px 4px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .reservas-hora-col {
+            width: 56px;
+        }
+
+        .reserva-hora {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #93A1A9;
+            text-align: right;
+            padding: 6px 8px 6px 2px;
+            white-space: nowrap;
+        }
+
+        .reserva-cell {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.7rem;
+            border-radius: 6px;
+        }
+
+        .reserva-cell.free {
+            color: #93A1A9;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .reserva-cell.free:hover {
+            background: var(--accent-blue-light);
+            color: var(--primary-bg);
+            font-weight: 600;
+        }
+
+        .reserva-cell.occupied {
+            background: #F4F6F5;
+            color: var(--primary-bg);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .reserva-cell.occupied.mine {
+            background: rgba(169, 207, 68, 0.28);
+        }
+
+        .reserva-nombre {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .reserva-cancel {
+            border: none;
+            background: none;
+            color: #C0503B;
+            font-size: 0.68rem;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 1px;
+        }
+
+        .reserva-cancel:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 560px) {
             .welcome-card {
                 padding: 28px 22px;
@@ -650,6 +1070,10 @@
 
             .welcome-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .calendar-months-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .welcome-greeting-label,
@@ -672,7 +1096,7 @@
             max-width: 620px;
             padding: 14px 16px;
             border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-green), #16a34a);
+            background: linear-gradient(135deg, var(--accent-green), #8FB534);
             color: white;
             box-shadow: 0 14px 32px rgba(15, 23, 42, 0.18);
         }
@@ -692,10 +1116,10 @@
         }
 
         .action-banner {
-            background: #e0f2fe;
-            border: 1px solid #bae6fd;
+            background: #F1F7E2;
+            border: 1px solid #A9CF44;
             padding: 15px;
-            border-radius: 6px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -716,7 +1140,7 @@
         }
         .capture-box label {
             font-size: 0.8rem;
-            color: #475569;
+            color: #5A6B75;
         }
         .capture-box-actions {
             display: flex;
@@ -725,23 +1149,58 @@
             flex-wrap: wrap;
             min-height: 26px;
         }
+        .paste-json-label {
+            display: block;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: var(--accent-blue);
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 2px;
+        }
+        .paste-json-arrow {
+            text-align: center;
+            font-size: 1.4rem;
+            line-height: 1;
+            margin: 2px 0 -6px;
+            animation: paste-json-bounce 1.2s infinite;
+        }
+        @keyframes paste-json-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+        .json-paster-highlight {
+            width: 100%;
+            height: 120px;
+            border: 2px dashed var(--accent-blue);
+            font-family: monospace;
+            font-size: 11px;
+            padding: 10px;
+            background: var(--accent-blue-light);
+        }
+        .json-paster-highlight::placeholder {
+            color: #93A1A9;
+            font-style: italic;
+        }
         .prompt-preview-area {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
+            background: #F4F6F5;
+            border: 1px solid #DFE5E5;
             font-family: monospace;
             font-size: 11px;
             height: 120px;
             resize: none;
-            color: #475569;
+            color: #5A6B75;
         }
         .btn-secondary-sm {
-            background: #64748b;
+            background: #5A6B75;
             color: white;
             border: none;
             padding: 4px 8px;
             font-size: 0.75rem;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 8px;
             align-self: flex-start;
         }
 
@@ -772,13 +1231,13 @@
         }
 
         .btn-secondary {
-            background: #2563eb;
-            color: white;
+            background: var(--accent-lime);
+            color: var(--primary-bg);
             border: none;
             padding: 12px;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 10px;
             text-transform: uppercase;
         }
 
@@ -793,48 +1252,142 @@
             width: 100%;
         }
 
-        body[data-view="workspace"][data-mode="libre"] .panel-pud-fijo {
-            display: none;
-        }
-
-        body[data-view="workspace"][data-mode="libre"] .workspace-layout {
-            grid-template-columns: 1fr;
-        }
-
-        body[data-view="workspace"][data-mode="libre"] .panel-herramientas-dinamico {
-            border-left: none;
-        }
-
         /* ==========================================
            2. LAYOUT MESA DE TRABAJO (WORKSPACE)
+           Arriba, la barra de herramientas a todo el ancho. Debajo:
+           PUD | divisor | herramienta activa. El ancho del PUD sale de
+           --ancho-pud (lo mueve el divisor) acotado entre 280px y 50%.
            ========================================== */
         .workspace-layout {
-            grid-template-columns: 45% 55%;
-            height: calc(100vh - 50px);
+            grid-template-columns: clamp(280px, var(--ancho-pud, 30%), 50%) 8px minmax(0, 1fr);
+            grid-template-rows: auto minmax(0, 1fr);
+            height: calc(100vh - var(--alto-header, 77px));
         }
 
-        .panel-pud-fijo {
-            border-right: 2px solid var(--border-color);
+        /* ---- Barra de herramientas ---- */
+        .tools-toolbar {
+            grid-column: 1 / -1;
+            grid-row: 1;
             display: flex;
-            flex-direction: column;
-            background: #f8fafc;
-            overflow: hidden;
-        }
-        .panel-pud-header {
-            padding: 12px 20px;
-            background: white;
+            align-items: flex-end;
+            gap: 2px;
+            padding: 8px 12px 0;
+            background: var(--panel-bg);
             border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
+            overflow-x: auto;
+            overflow-y: visible;
+        }
+        .tool-tab {
+            position: relative;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            padding: 10px 16px;
+            margin-bottom: -1px;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            background: transparent;
+            color: var(--petroleo-medio);
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background .15s ease, color .15s ease;
         }
-        .panel-pud-header h3 {
-            text-align: center;
+        .tool-tab:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--primary-bg);
         }
-        .panel-pud-header > div {
-            justify-content: center;
+        /* La pestaña activa se funde con el panel blanco y lleva la línea naranja arriba */
+        .tool-tab[aria-current="page"] {
+            background: #FFFFFF;
+            color: var(--primary-bg);
+            border-color: var(--border-color);
+            box-shadow: inset 0 3px 0 var(--accent-orange);
+        }
+        .tool-tab:disabled {
+            color: #93A1A9;
+            cursor: not-allowed;
+        }
+        .tool-tab:focus-visible,
+        .ws-divisor:focus-visible,
+        .tools-menu button:focus-visible,
+        .pud-tipo-menu button:focus-visible {
+            outline: 2px solid var(--petroleo-medio);
+            outline-offset: 2px;
+        }
+        .tool-badge {
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: #EDF1F0;
+            color: #5A6B75;
+        }
+        .tool-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            flex: 0 0 8px;
+        }
+        .tools-mas {
+            margin-left: auto;
+            position: relative;
+            align-self: center;
+            padding-bottom: 6px;
+        }
+        .tools-mas > .tool-tab {
+            border-radius: 10px;
+            margin-bottom: 0;
+        }
+        .tools-menu {
+            position: fixed;
+            z-index: 1400;
+            min-width: 220px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+            padding: 6px;
+        }
+        .tools-menu[hidden] { display: none; }
+        .tools-menu button {
+            display: flex;
             width: 100%;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 10px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font: inherit;
+            font-size: 0.88rem;
+            color: var(--primary-bg);
+            cursor: pointer;
+            text-align: left;
+        }
+        .tools-menu button:hover:not(:disabled) { background: var(--panel-bg); }
+        .tools-menu button:disabled { color: #93A1A9; cursor: not-allowed; }
+        .tools-menu-vacio {
+            padding: 9px 10px;
+            font-size: 0.82rem;
+            color: #5A6B75;
+        }
+
+        /* ---- PUD ---- */
+        .panel-pud-fijo {
+            grid-column: 1;
+            grid-row: 2;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: #F4F6F5;
+            overflow: hidden;
         }
         .pud-scroll-container {
             flex: 1;
@@ -842,105 +1395,198 @@
             padding: 20px;
         }
 
+        /* Tipo de desempeño sin clasificar: se marca en pantalla (no al imprimir)
+           y al tocarlo se elige E, I o PF. */
+        .pud-upt-sin-clasificar {
+            outline: 2px dashed var(--accent-orange);
+            outline-offset: -4px;
+            cursor: pointer;
+        }
+        .pud-tipo-menu {
+            position: fixed;
+            z-index: 1400;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .pud-tipo-menu[hidden] { display: none; }
+        .pud-tipo-menu p {
+            margin: 4px 8px 6px;
+            font-size: 0.74rem;
+            color: #5A6B75;
+        }
+        .pud-tipo-menu button {
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font: inherit;
+            font-size: 0.86rem;
+            color: var(--primary-bg);
+            text-align: left;
+            cursor: pointer;
+        }
+        .pud-tipo-menu button:hover { background: var(--panel-bg); }
+        .pud-tipo-menu button strong { color: var(--accent-orange-dark); margin-right: 6px; }
+
+        /* ---- Divisor arrastrable ---- */
+        .ws-divisor {
+            grid-column: 2;
+            grid-row: 2;
+            position: relative;
+            background: var(--border-color);
+            cursor: col-resize;
+            touch-action: none;
+            transition: background .15s ease;
+        }
+        .ws-divisor::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 36px;
+            transform: translate(-50%, -50%);
+            border-radius: 2px;
+            background: #93A1A9;
+            box-shadow: -3px 0 0 #93A1A9;
+            margin-left: 1.5px;
+        }
+        .ws-divisor:hover,
+        body.ws-arrastrando .ws-divisor {
+            background: var(--accent-lime);
+        }
+        body.ws-arrastrando {
+            cursor: col-resize;
+            user-select: none;
+        }
+        /* Mientras se arrastra, los iframes no se quedan con el mouse */
+        body.ws-arrastrando iframe {
+            pointer-events: none;
+        }
+
+        /* ---- Herramientas ---- */
         .panel-herramientas-dinamico {
+            grid-column: 3;
+            grid-row: 2;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             background: white;
             overflow: hidden;
         }
-
-        .tabs-bar {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            background: #f1f5f9;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .tab-btn {
-            padding: 15px 16px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-weight: bold;
-            color: #64748b;
-            font-size: 0.9rem;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            min-height: 56px;
-        }
-        .tab-btn:last-child {
-            border-right: none;
-        }
-        .tab-btn.active {
-            background: white;
-            color: var(--accent-blue);
-            border-bottom: 3px solid var(--accent-blue);
-        }
-
-        .tab-content {
-            display: none;
-            padding: 25px;
+        .tool-panel {
             flex: 1;
-            overflow-y: auto;
+            min-height: 0;
+            display: flex;
         }
-        .tab-content.active { display: block; }
-
-        /* Evitar doble scroll en los tabs de carga HTML mediante iframe */
-        #tab-adaptaciones,
-        #tab-secuencias,
-        #tab-tareas {
-            overflow: hidden;
-            padding: 22px;
-        }
-        #tab-adaptaciones > .output-placeholder,
-        #tab-secuencias > .output-placeholder,
-        #tab-tareas > .output-placeholder {
+        .tool-panel[hidden] { display: none; }
+        .tool-panel iframe {
+            flex: 1;
+            width: 100%;
             height: 100%;
-            overflow: hidden;
-            padding: 0;
-            border: none;
-        }
-        #tab-adaptaciones #display-dinamico,
-        #tab-secuencias #display-secuencias,
-        #tab-tareas #display-tareas {
-            min-height: 520px;
-            padding: 12px;
-            box-sizing: border-box;
-            overflow: auto;
+            border: 0;
         }
 
-        @media (max-width: 680px) {
-            #tab-adaptaciones #display-dinamico,
-            #tab-secuencias #display-secuencias,
-            #tab-tareas #display-tareas {
-                min-height: 420px;
+        /* Pestaña PUD: el PUD a pantalla completa, con un ancho de lectura cómodo */
+        body[data-ws-vista="pud"] .panel-pud-fijo { grid-column: 1 / -1; }
+        body[data-ws-vista="pud"] .ws-divisor,
+        body[data-ws-vista="pud"] .panel-herramientas-dinamico { display: none; }
+        body[data-ws-vista="pud"] .pud-scroll-container { padding: 28px 24px; }
+        body[data-ws-vista="pud"] .pud-scroll-container > * {
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Lateral: los títulos de sección pliegan y despliegan su contenido */
+        body[data-ws-vista="herramienta"] .pud-section-title[data-seccion] {
+            cursor: pointer;
+            user-select: none;
+        }
+        body[data-ws-vista="herramienta"] .pud-section-title[data-seccion]::before {
+            content: "▾ ";
+            color: var(--accent-orange);
+        }
+        body[data-ws-vista="herramienta"] .pud-section-title[aria-expanded="false"]::before { content: "▸ "; }
+        body[data-ws-vista="herramienta"] .pud-section-title[data-seccion]:focus-visible {
+            outline: 2px solid var(--petroleo-medio);
+            outline-offset: -2px;
+        }
+        body[data-ws-vista="herramienta"] #output-preview.plegada-throughlines [data-seccion="throughlines"] + *,
+        body[data-ws-vista="herramienta"] #output-preview.plegada-topic [data-seccion="topic"] + *,
+        body[data-ws-vista="herramienta"] #output-preview.plegada-metas [data-seccion="metas"] + *,
+        body[data-ws-vista="herramienta"] #output-preview.plegada-desempenos [data-seccion="desempenos"] + * {
+            display: none;
+        }
+
+        /* Sin PUD (Mesa de Trabajo libre): la herramienta ocupa todo el ancho */
+        body[data-view="workspace"][data-mode="libre"] .panel-pud-fijo,
+        body[data-view="workspace"][data-mode="libre"] .ws-divisor { display: none; }
+        body[data-view="workspace"][data-mode="libre"] .panel-herramientas-dinamico { grid-column: 1 / -1; }
+
+        /* Pantallas angostas: PUD arriba, herramienta abajo, sin divisor */
+        @media (max-width: 900px) {
+            .workspace-layout {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: auto auto auto;
+                height: auto;
             }
-        }
-
-        .output-placeholder {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8fafc;
-            border: 2px dashed var(--border-color);
-            border-radius: 6px;
-            min-height: 250px;
+            .panel-pud-fijo {
+                grid-column: 1;
+                max-height: 75vh;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .ws-divisor { display: none; }
+            .panel-herramientas-dinamico {
+                grid-column: 1;
+                grid-row: 3;
+                min-height: 85vh;
+            }
+            body[data-ws-vista="pud"] .panel-pud-fijo { max-height: none; }
+            .tool-tab { padding: 10px 12px; font-size: 0.84rem; }
         }
 
         .btn-back-home {
-            background: #64748b;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
+            background: #fff;
+            color: var(--primary-bg);
+            border: 1.5px solid var(--border-color);
+            padding: 7px 14px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 0.8rem;
+            font-weight: 700;
+            transition: border-color .2s ease, color .2s ease;
         }
 
-        /* Los 3 botones de acción del PUD activo (Descargar/Guardar/Presentar)
-           deben verse parejos entre sí, sin afectar otros usos de .btn-back-home */
-        .panel-pud-header .btn-back-home {
+        .btn-back-home:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-back-home[style*="background"] {
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .btn-back-home[style*="background"]:hover {
+            filter: brightness(1.08);
+        }
+
+        /* Acciones del PUD (Descargar/Guardar/Presentar), debajo del PUD.
+           Parejas entre sí, sin afectar otros usos de .btn-back-home */
+        .pud-acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 18px 0 8px;
+        }
+        .pud-acciones .btn-back-home {
             flex: 1 1 0;
             display: flex;
             align-items: center;
@@ -948,19 +1594,18 @@
             text-align: center;
             white-space: nowrap;
         }
+        /* Sin PUD cargado no hay nada que descargar, guardar ni presentar */
+        #output-preview:not(:has(#render-year)) + .pud-acciones { display: none; }
 
         /* REGLAS DE IMPRESIÓN */
         @media (max-width: 1000px) {
-            .home-layout,
-            .workspace-layout {
+            .home-layout {
                 grid-template-columns: 1fr;
                 height: auto;
             }
 
             .creator-section,
-            .history-section,
-            .panel-pud-fijo,
-            .panel-herramientas-dinamico {
+            .history-section {
                 min-height: auto;
             }
 
@@ -968,33 +1613,10 @@
                 border-left: none;
                 border-top: 1px solid var(--border-color);
             }
-
-            .panel-pud-fijo {
-                border-right: none;
-            }
-
-            .tabs-bar {
-                flex-wrap: wrap;
-            }
-
-            .tab-btn {
-                flex: 1 1 50%;
-                min-width: 0;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .tab-btn.active {
-                border-bottom: 3px solid var(--accent-blue);
-            }
-
-            .output-placeholder {
-                min-height: 320px;
-            }
         }
 
         @media (max-width: 680px) {
-            header {
+            .header-inner {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
@@ -1006,41 +1628,18 @@
                 justify-content: space-between;
             }
 
-            .home-layout,
-            .workspace-layout {
+            .home-layout {
                 gap: 0;
                 height: auto;
             }
 
             .creator-section,
-            .history-section,
-            .panel-herramientas-dinamico,
-            .panel-pud-fijo {
+            .history-section {
                 padding: 16px;
             }
 
             .home-layout {
                 grid-template-columns: 1fr;
-            }
-
-            .workspace-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .panel-pud-fijo {
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .panel-pud-header {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .panel-pud-header > div {
-                width: 100%;
-                justify-content: flex-start;
-                flex-wrap: wrap;
             }
 
             .split-capture-container {
@@ -1091,21 +1690,14 @@
             .btn-back-home {
                 width: auto;
             }
-
-            .tab-btn {
-                font-size: 0.82rem;
-                padding: 12px 10px;
-            }
-
-            .pud-scroll-container,
-            .panel-herramientas-dinamico,
-            .panel-pud-fijo {
-                min-height: auto;
-            }
         }
 
         @media print {
-            header, .tabs-bar, .tab-content, .btn-back-home, .panel-pud-header h3 { display: none !important; }
+            header, .tools-toolbar, .ws-divisor, .panel-herramientas-dinamico, .tools-menu, .pud-tipo-menu, .btn-back-home, .pud-acciones { display: none !important; }
+            .pud-upt-sin-clasificar { outline: none !important; }
+            /* Al imprimir sale el PUD completo, aunque haya secciones plegadas */
+            #output-preview [data-seccion] + * { display: revert !important; }
+            .pud-section-title::before { content: none !important; }
             .workspace-layout { display: block !important; }
             .panel-pud-fijo { border: none !important; width: 100% !important; overflow: visible !important; }
             .pud-scroll-container { overflow: visible !important; padding: 0 !important; }
@@ -1119,10 +1711,14 @@
     <div id="auth-gate">
         <div class="auth-gate-card">
             <div class="auth-gate-brand">
-                <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School">
+                <svg width="44" height="44" viewBox="0 0 38 38" fill="none" aria-hidden="true" style="border-radius:10px;flex-shrink:0;">
+                    <rect width="38" height="38" rx="12" fill="#26343E"/>
+                    <path d="M19 9c-4.5 2-7 5.5-7 9.5 0 3.9 3.1 7 7 7s7-3.1 7-7c0-4-2.5-7.5-7-9.5Z" fill="#A9CF44"/>
+                    <path d="M19 29V16" stroke="#F18636" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
                 <div>
                     <strong>Austin Eco Bilingual School</strong>
-                    <span>PUD Workspace · EpC &amp; L&amp;D Tech</span>
+                    <span>Espacio Docente · EpC &amp; L&amp;D Tech</span>
                 </div>
             </div>
             <div class="auth-gate-header">
@@ -1138,6 +1734,7 @@
                     <label for="auth-password">Contraseña</label>
                     <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter'){iniciarSesionAuth();}">
                 </div>
+                <button type="button" class="auth-forgot-link" onclick="recuperarPasswordAuth()">¿Olvidaste tu contraseña?</button>
                 <button class="auth-gate-primary" type="button" onclick="iniciarSesionAuth()">Iniciar sesión</button>
                 <div class="auth-gate-divider"><span>¿No tenés cuenta?</span></div>
                 <button class="auth-gate-secondary" type="button" onclick="registrarAuth()">Crear cuenta nueva</button>
@@ -1147,18 +1744,24 @@
     </div>
 
     <header>
-        <div style="display:flex; align-items:center; gap:12px;">
-            <img src="austin-eco-bilingual-school-campana-argentina.jpg" alt="Austin Eco Bilingual School" style="height:32px; width:auto; border-radius:6px; background:white; padding:2px;">
-            <div>PUD Workspace | EpC & L&D Tech</div>
-        </div>
-        <div class="header-actions">
-            <div id="header-user-pill" class="header-user-pill">
-                <span id="header-user-email"></span>
-                <button type="button" onclick="cerrarSesionAuth()">Cerrar sesión</button>
+        <div class="header-inner">
+            <div class="logo">
+                <svg width="36" height="36" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+                    <rect width="38" height="38" rx="12" fill="#26343E"/>
+                    <path d="M19 9c-4.5 2-7 5.5-7 9.5 0 3.9 3.1 7 7 7s7-3.1 7-7c0-4-2.5-7.5-7-9.5Z" fill="#A9CF44"/>
+                    <path d="M19 29V16" stroke="#F18636" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+                <div><b>Espacio Docente</b><span>AUSTIN ECO BILINGUAL SCHOOL</span></div>
             </div>
-            <button class="btn-back-home" id="btn-ir-bienvenida" onclick="irABienvenida()" style="background:#0f172a;">🏠 Inicio</button>
-            <button class="btn-back-home" onclick="volverAlHome()" style="background:#2563eb;">◀ Volver al Inicio</button>
-            <div id="view-indicator" style="font-size: 0.8rem; opacity: 0.7;">Entorno de Carga</div>
+            <div class="header-actions">
+                <div id="header-user-pill" class="header-user-pill">
+                    <span id="header-user-email"></span>
+                    <button type="button" onclick="cerrarSesionAuth()">Cerrar sesión</button>
+                </div>
+                <button class="btn-back-home" id="btn-ir-bienvenida" onclick="irABienvenida()" style="background:var(--petroleo-medio);">🏠 Inicio</button>
+                <button class="btn-back-home" onclick="volverAlHome()" style="background:var(--petroleo-medio);">◀ Volver al Inicio</button>
+                <div id="view-indicator" style="font-size: 0.8rem; opacity: 0.7;">Entorno de Carga</div>
+            </div>
         </div>
     </header>
 
@@ -1196,12 +1799,63 @@
                     <span class="welcome-tile-title">Gmail</span>
                     <span class="welcome-tile-desc">Iniciar sesión en tu correo institucional. Organiza tus archivos y más.</span>
                 </a>
+                <a class="welcome-tile welcome-tile-notify" href="al-dia/index.html" target="_blank" rel="noopener">
+                    <span class="welcome-tile-icon">🌳</span>
+                    <span id="al-dia-badge" class="welcome-tile-badge"></span>
+                    <span class="welcome-tile-title">Al Día</span>
+                    <span class="welcome-tile-desc">Formación continua: cápsulas mensuales, tu onboarding y las encuestas del equipo.</span>
+                </a>
                 <div id="welcome-custom-shortcuts" style="display:contents;"></div>
                 <button class="welcome-tile welcome-tile-add" type="button" onclick="abrirModalShortcut()">
                     <span class="welcome-tile-icon">➕</span>
                     <span class="welcome-tile-title">Agregar acceso</span>
                     <span class="welcome-tile-desc">Creá tu propio atajo a cualquier sitio.</span>
                 </button>
+            </div>
+
+            <div class="calendar-section">
+                <h3 class="calendar-section-title">📅 Calendario institucional</h3>
+                <p class="calendar-section-sub">Reuniones y eventos cargados por Dirección General. Tocá un mes para verlo en detalle.</p>
+                <div class="calendar-header">
+                    <button type="button" class="calendar-nav" onclick="cambiarAnioCalendario(-1)" aria-label="Año anterior">◀</button>
+                    <span class="calendar-year" id="calendar-year-label">—</span>
+                    <button type="button" class="calendar-nav" onclick="cambiarAnioCalendario(1)" aria-label="Año siguiente">▶</button>
+                </div>
+                <div class="calendar-months-grid" id="calendar-months-grid"></div>
+            </div>
+
+            <div class="reservas-section">
+                <button type="button" class="reservas-toggle" onclick="toggleReservasEspacios()">
+                    <span class="reservas-toggle-title">🏛️ Reserva de espacios</span>
+                    <span class="reservas-toggle-hint" id="reservas-toggle-hint">▸ Ver disponibilidad</span>
+                </button>
+                <div class="reservas-body" id="reservas-body" hidden>
+                    <p class="reservas-body-sub">Reservá un salón especial para tu clase. Todo el equipo ve la disponibilidad en tiempo real.</p>
+                    <div class="calendar-header">
+                        <button type="button" class="calendar-nav" onclick="cambiarDiaReserva(-1)" aria-label="Día anterior">◀</button>
+                        <span class="calendar-year" id="reserva-fecha-label">—</span>
+                        <button type="button" class="calendar-nav" onclick="cambiarDiaReserva(1)" aria-label="Día siguiente">▶</button>
+                    </div>
+                    <div class="reservas-grid-wrap">
+                        <table class="reservas-table" id="reservas-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reserva-modal" class="shortcut-modal" onclick="if(event.target===this){cerrarModalReserva();}">
+        <div class="shortcut-modal-card">
+            <h3>Reservar salón</h3>
+            <p id="reserva-modal-info" style="font-size:0.85rem;color:#5A6B75;margin:-10px 0 16px;"></p>
+            <div class="auth-field">
+                <label for="reserva-motivo">Motivo (opcional)</label>
+                <input type="text" id="reserva-motivo" placeholder="Ej: Clase de Ciencias Naturales" onkeydown="if(event.key==='Enter'){confirmarReserva();}">
+            </div>
+            <div id="reserva-modal-msg" class="auth-status" style="display:none;"></div>
+            <div class="shortcut-modal-actions">
+                <button class="auth-gate-secondary" type="button" onclick="cerrarModalReserva()">Cancelar</button>
+                <button class="auth-gate-primary" type="button" id="reserva-confirmar-btn" onclick="confirmarReserva()">Reservar</button>
             </div>
         </div>
     </div>
@@ -1244,8 +1898,9 @@
             <div class="field-group">
                 <label>Año <span class="required">*</span></label>
                 <select id="unit_year">
-                    <option value="">Seleccioná un grado...</option>
+                    <option value="">Seleccioná una sala o grado...</option>
                 </select>
+                <small id="nota-nivel-inicial" style="display:none; color:#5A6B75; font-size:0.85rem; line-height:1.4;">Nivel Inicial: el nivel de castellano y de inglés queda fijo según la edad de la sala, y la propuesta se arma lúdica y sin actividades escolares.</small>
             </div>
             <div class="field-group">
                 <label>Nombre de la Unidad</label>
@@ -1257,10 +1912,16 @@
                     <option value="">Seleccioná un área...</option>
                 </select>
             </div>
+            <div class="field-group" id="field-english-level" style="display:none;">
+                <label>Nivel de inglés (CEFR) <span style="color:#93A1A9; font-weight:400;">(opcional)</span></label>
+                <select id="english_level">
+                    <option value="">Sin especificar</option>
+                </select>
+            </div>
             <div class="field-group">
                 <label>Orientación Pedagógica</label>
                 <textarea id="orientation" class="style-orientation" placeholder="Ej: grupo con nivel de alfabetización inicial, alumnos con dificultades de lectura, enfoque inclusivo con apoyos visuales..."></textarea>
-                <small style="color:#64748b; font-size:0.85rem; line-height:1.4;">Sugiere nivel de alfabetización, fortalezas o debilidades del grupo, estilo de enseñanza y adaptaciones necesarias. Esta información se usa para ajustar la propuesta pedagógica del prompt.</small>
+                <small style="color:#5A6B75; font-size:0.85rem; line-height:1.4;">Sugiere nivel de alfabetización, fortalezas o debilidades del grupo, estilo de enseñanza y adaptaciones necesarias. Esta información se usa para ajustar la propuesta pedagógica del prompt.</small>
             </div>
             <div class="field-group">
                 <label>Contenido de la Unidad <span class="required">*</span></label>
@@ -1276,7 +1937,7 @@
             <div id="banner-exito" class="action-banner" style="display: none;">
                 <div>
                     <strong>Prompt generado y copiado.</strong>
-                    <p style="margin:2px 0 0 0; font-size:0.85rem; color:#0369a1;">Procesalo en Gemini y pegá el JSON devuelto a la derecha para activar la mesa de trabajo.</p>
+                    <p style="margin:2px 0 0 0; font-size:0.85rem; color:#8FB534;">Procesalo en Gemini y pegá el JSON devuelto a la derecha para activar la mesa de trabajo.</p>
                 </div>
                 <button class="btn-primary" onclick="entrarAMesaDeTrabajo()">Esperando render de PUD...</button>
             </div>
@@ -1290,12 +1951,13 @@
                     <textarea id="prompt-visual-viewer" class="prompt-preview-area" readonly></textarea>
                 </div>
                 <div class="capture-box">
-                    <label>📥 Pegá el JSON devuelto por Gemini acá:</label>
+                    <label class="paste-json-label">📥 Pegá acá el resultado de tu IA</label>
                     <div class="capture-box-actions">
                         <a class="ai-quick-link ai-quick-link-gemini" href="https://gemini.google.com/app" target="_blank" rel="noopener">✨ Abrir Gemini</a>
                         <a class="ai-quick-link ai-quick-link-chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener">🤖 Abrir ChatGPT</a>
                     </div>
-                    <textarea id="json-paster" style="width:100%; height:120px; border:1px dashed var(--accent-blue); font-family: monospace; font-size: 11px; padding: 10px;" placeholder="[{ ... }]"></textarea>
+                    <div class="paste-json-arrow" aria-hidden="true">⬇️</div>
+                    <textarea id="json-paster" class="json-paster-highlight" placeholder="Pegá aquí el resultado de tu IA"></textarea>
                 </div>
             </div>
         </section>
@@ -1311,45 +1973,55 @@
         </aside>
     </div>
 
-    <div class="workspace-layout">
-        
-        <aside class="panel-pud-fijo">
-            <div class="panel-pud-header">
-                <h3 style="margin:0; font-size:1rem;" id="w-pud-title">PUD Activo</h3>
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <button class="btn-back-home" style="background:#27ae60;" onclick="window.print()">🖨 Descargar PUD</button>
-                    <button class="btn-back-home" onclick="guardarPUD()">💾 Guardar en historial</button>
-                    <button class="btn-back-home" style="background:#d97706;" onclick="presentarPUD()">📤 Presentar</button>
+    <div class="workspace-layout" id="workspace-layout">
+
+        <!-- Pestañas: se dibujan desde HERRAMIENTAS (ver script) -->
+        <nav class="tools-toolbar" id="tools-toolbar" aria-label="Herramientas de la mesa de trabajo"></nav>
+
+        <aside class="panel-pud-fijo" id="panel-pud">
+            <!-- Zona con scroll: el PUD editable y, debajo, sus acciones. Las
+                 acciones quedan fuera de #output-preview para no guardarse con el PUD. -->
+            <div class="pud-scroll-container" id="pud-scroll">
+                <div id="output-preview" contenteditable="true">
+                    <p style="color:#93A1A9; text-align:center; margin-top:100px;">Ninguna grilla cargada. Volvé al inicio, generá el prompt o seleccioná un registro histórico.</p>
                 </div>
-            </div>
-            <div id="output-preview" class="pud-scroll-container" contenteditable="true">
-                <p style="color:#94a3b8; text-align:center; margin-top:100px;">Ninguna grilla cargada. Volvé al inicio, generá el prompt o seleccioná un registro histórico.</p>
+                <div class="pud-acciones" id="pud-acciones">
+                    <button type="button" class="btn-back-home" style="background:#A9CF44;color:#26343E;" onclick="window.print()">🖨 Descargar PUD</button>
+                    <button type="button" class="btn-back-home" onclick="guardarPUD()">💾 Guardar en historial</button>
+                    <button type="button" class="btn-back-home" style="background:#26343E;" onclick="presentarPUD()">📤 Presentar</button>
+                </div>
             </div>
         </aside>
 
-        <main class="panel-herramientas-dinamico">
-            <nav class="tabs-bar">
-                <button class="tab-btn active" onclick="cambiarPestaña(event, 'secuencias')">📑 1. Secuencias</button>
-                <button class="tab-btn" onclick="cambiarPestaña(event, 'tareas')">📝 2. Tareas de Práctica</button>
-            </nav>
+        <div class="ws-divisor" id="ws-divisor" role="separator" tabindex="0"
+             aria-orientation="vertical" aria-controls="panel-pud" aria-valuemin="0" aria-valuemax="50"
+             aria-label="Ancho del PUD. Arrastrá o usá las flechas; doble clic alterna entre 30/70 y 50/50."
+             title="Arrastrá para cambiar el ancho · Doble clic: 30/70 ↔ 50/50"></div>
 
-            <section id="tab-secuencias" class="tab-content active">
-                <div class="output-placeholder">
-                    <div id="display-secuencias" style="min-height:360px; padding:12px; color:#475569;"></div>
-                </div>
-            </section>
-
-            <section id="tab-tareas" class="tab-content">
-                <div class="output-placeholder">
-                    <div id="display-tareas" style="min-height:360px; padding:12px; color:#475569;"></div>
-                </div>
-            </section>
-        </main>
+        <!-- Un panel por herramienta, creado la primera vez que se abre -->
+        <main class="panel-herramientas-dinamico" id="panel-herramientas"></main>
 
     </div>
 
+    <div class="tools-menu" id="tools-menu" role="menu" aria-label="Más herramientas" hidden></div>
+    <div class="pud-tipo-menu" id="pud-tipo-menu" role="menu" aria-label="Tipo de desempeño" hidden></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script src="nivel-inicial.js"></script>
     <script>
+        // HTML de un PUD guardado (pud_history.content_html) antes de meterlo
+        // en la página: saca scripts, handlers on* y URLs javascript:. Si
+        // DOMPurify no cargó, se muestra como texto plano (nunca sin filtrar).
+        function limpiarHtmlPUD(html) {
+            if (window.DOMPurify) {
+                return DOMPurify.sanitize(html || '', { ADD_ATTR: ['contenteditable'] });
+            }
+            const div = document.createElement('div');
+            div.textContent = html || '';
+            return div.innerHTML;
+        }
+
         const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co'; 
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXRmbmJkZGhib3NhY2ZnZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mjk3MTcsImV4cCI6MjA4NzAwNTcxN30.P0HLqGab3tB5WdsVGYKXEyK572JvthHYFg7iu3MJpgo';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1357,19 +2029,32 @@
         window.pudActivoJson = null;
         window.authUser = null;
 
-        const GRADOS_PRIMARIA = [
-            '1° Grado Primaria', '2° Grado Primaria', '3° Grado Primaria',
-            '4° Grado Primaria', '5° Grado Primaria', '6° Grado Primaria'
+        // Los nombres son los que se guardan en pud_history.year y en la tabla
+        // grados: no cambiarlos sin migrar esos datos.
+        const GRUPOS_GRADOS = [
+            { nivel: 'Jardín (Nivel Inicial)', grados: ['Sala de 3 años', 'Sala de 4 años', 'Sala de 5 años'] },
+            { nivel: 'Primaria', grados: [
+                '1° Grado Primaria', '2° Grado Primaria', '3° Grado Primaria',
+                '4° Grado Primaria', '5° Grado Primaria', '6° Grado Primaria'] },
+            { nivel: 'Secundaria', grados: [
+                '1° Año Secundaria', '2° Año Secundaria', '3° Año Secundaria',
+                '4° Año Secundaria', '5° Año Secundaria', '6° Año Secundaria'] }
         ];
+        const GRADOS_DISPONIBLES = GRUPOS_GRADOS.flatMap(g => g.grados);
 
         function poblarSelectGrados() {
             const select = document.getElementById('unit_year');
             if (!select) return;
-            GRADOS_PRIMARIA.forEach(grado => {
-                const opt = document.createElement('option');
-                opt.value = grado;
-                opt.textContent = grado;
-                select.appendChild(opt);
+            GRUPOS_GRADOS.forEach(grupo => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = grupo.nivel;
+                grupo.grados.forEach(grado => {
+                    const opt = document.createElement('option');
+                    opt.value = grado;
+                    opt.textContent = grado;
+                    optgroup.appendChild(opt);
+                });
+                select.appendChild(optgroup);
             });
         }
 
@@ -1408,6 +2093,7 @@
                 return;
             }
             select.dataset.previousValue = select.value;
+            sincronizarCampoNivelIngles();
         }
 
         function abrirModalArea() {
@@ -1420,19 +2106,51 @@
             document.getElementById('area-modal').classList.remove('open');
         }
 
+        // Sin tildes ni mayúsculas: para comparar "Matemática" contra
+        // "matematica" o "MATEMATICA" como si fueran la misma materia.
+        function normalizarNombreArea(texto) {
+            return (texto || '')
+                .trim()
+                .normalize('NFD')
+                .replace(/[̀-ͯ]/g, '')
+                .toLowerCase();
+        }
+
         async function guardarAreaNueva() {
             const nombre = document.getElementById('area-nombre').value.trim();
             if (!nombre) return alert('Ingresá un nombre para la nueva área.');
 
-            const { error } = await _supabase.from('areas').insert([{ name: nombre }]);
-            if (error && error.code !== '23505') {
-                return alert('No se pudo guardar el área: ' + (error.message || JSON.stringify(error)));
+            const normalizado = normalizarNombreArea(nombre);
+            const { data: existentes } = await _supabase.from('areas').select('name');
+
+            // Prevención: si ya existe una materia equivalente (may/min o
+            // tildes aparte), se reusa esa en vez de crear un duplicado por
+            // sintaxis — eso rompía el agrupado de los gráficos del panel de
+            // coordinadores (contaban "Matemática" y "matematica" aparte).
+            let nombreFinal = (existentes || []).find(item => normalizarNombreArea(item.name) === normalizado)?.name;
+
+            if (!nombreFinal) {
+                const { error } = await _supabase.from('areas').insert([{ name: nombre }]);
+                if (error && error.code !== '23505') {
+                    return alert('No se pudo guardar el área: ' + (error.message || JSON.stringify(error)));
+                }
+                if (error && error.code === '23505') {
+                    // Choque contra el índice normalizado (otro docente creó una
+                    // variante equivalente casi al mismo tiempo): releer y usar
+                    // la que efectivamente quedó guardada.
+                    const { data: actualizadas } = await _supabase.from('areas').select('name');
+                    nombreFinal = (actualizadas || []).find(item => normalizarNombreArea(item.name) === normalizado)?.name || nombre;
+                } else {
+                    nombreFinal = nombre;
+                }
+            } else if (nombreFinal !== nombre) {
+                alert(`Ya existe una materia equivalente: "${nombreFinal}". Se seleccionó esa en vez de crear una nueva.`);
             }
 
             await cargarAreasEnSelect();
             const select = document.getElementById('subject');
-            select.value = nombre;
-            select.dataset.previousValue = nombre;
+            select.value = nombreFinal;
+            select.dataset.previousValue = nombreFinal;
             cerrarModalArea();
         }
 
@@ -1464,13 +2182,307 @@
             history.replaceState(null, '', window.location.pathname + window.location.search);
         }
 
+        // Id del usuario para el que ya se cargaron badge y calendario: el
+        // login, getSession() y onAuthStateChange llaman a mostrarApp() casi
+        // a la vez, y sin esto se repetían todas las consultas.
+        let appCargadaParaUserId = null;
+
         function mostrarApp() {
             if (document.body.getAttribute('data-view') === 'gate') {
                 document.body.setAttribute('data-view', 'welcome');
             }
+            const userId = window.authUser?.id || null;
+            if (!userId || appCargadaParaUserId === userId) return;
+            appCargadaParaUserId = userId;
+            actualizarNotificacionAlDia();
+            cargarCalendarioAnual();
+        }
+
+        async function actualizarNotificacionAlDia() {
+            const badge = document.getElementById('al-dia-badge');
+            if (!badge || !window.authUser) return;
+            try {
+                const uid = window.authUser.id;
+                const [capsulasRes, encuestasRes, confRes, respRes] = await Promise.all([
+                    _supabase.from('capsulas').select('id, futura'),
+                    _supabase.from('encuestas').select('id, abierta, cierra_en'),
+                    _supabase.from('capsula_confirmaciones').select('capsula_id').eq('user_id', uid),
+                    _supabase.from('encuesta_respuestas').select('encuesta_id').eq('user_id', uid)
+                ]);
+                const confirmadas = new Set((confRes.data || []).map(r => r.capsula_id));
+                const respondidas = new Set((respRes.data || []).map(r => r.encuesta_id));
+                const pendCapsulas = (capsulasRes.data || []).filter(c => !c.futura && !confirmadas.has(c.id)).length;
+                // Misma regla que Al Día: una encuesta con fecha de cierre vencida
+                // cuenta como cerrada aunque nadie haya destildado "abierta".
+                const ahora = Date.now();
+                const pendEncuestas = (encuestasRes.data || [])
+                    .filter(e => e.abierta && (!e.cierra_en || new Date(e.cierra_en).getTime() > ahora) && !respondidas.has(e.id))
+                    .length;
+                const total = pendCapsulas + pendEncuestas;
+
+                badge.textContent = total > 9 ? '9+' : String(total);
+                badge.classList.toggle('is-visible', total > 0);
+            } catch (err) {
+                console.error('No se pudo consultar pendientes de Al Día:', err);
+            }
+        }
+
+        // ---------- Calendario institucional (panel de bienvenida) ----------
+        const MESES_CALENDARIO = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const DIAS_SEMANA_CALENDARIO = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+
+        let calendarEventos = null;
+        let calendarAnio = new Date().getFullYear();
+        let calendarMesExpandido = null;
+
+        async function cargarCalendarioAnual() {
+            if (calendarEventos === null) {
+                try {
+                    const { data, error } = await _supabase
+                        .from('eventos_calendario')
+                        .select('id,titulo,descripcion,fecha,hora,tipo')
+                        .order('fecha');
+                    if (error) throw error;
+                    calendarEventos = data || [];
+                } catch (err) {
+                    console.error('No se pudo cargar el calendario institucional:', err);
+                    calendarEventos = [];
+                }
+            }
+            renderCalendarioAnual();
+        }
+
+        function cambiarAnioCalendario(delta) {
+            calendarAnio += delta;
+            calendarMesExpandido = null;
+            renderCalendarioAnual();
+        }
+
+        function toggleMesCalendario(mesIndex) {
+            calendarMesExpandido = calendarMesExpandido === mesIndex ? null : mesIndex;
+            renderCalendarioAnual();
+        }
+
+        function eventosDelMesCalendario(mesIndex) {
+            return (calendarEventos || [])
+                .filter(e => {
+                    const d = new Date(e.fecha + 'T00:00:00');
+                    return d.getFullYear() === calendarAnio && d.getMonth() === mesIndex;
+                })
+                .sort((a, b) => a.fecha.localeCompare(b.fecha));
+        }
+
+        function renderCalendarioAnual() {
+            const yearLabel = document.getElementById('calendar-year-label');
+            const grid = document.getElementById('calendar-months-grid');
+            if (!grid) return;
+            if (yearLabel) yearLabel.textContent = calendarAnio;
+
+            const hoy = new Date();
+
+            grid.innerHTML = MESES_CALENDARIO.map((nombreMes, mesIndex) => {
+                const eventosMes = eventosDelMesCalendario(mesIndex);
+                const expandido = calendarMesExpandido === mesIndex;
+
+                const primerDiaSemana = new Date(calendarAnio, mesIndex, 1).getDay();
+                const offset = (primerDiaSemana + 6) % 7; // semana arranca en lunes
+                const diasEnMes = new Date(calendarAnio, mesIndex + 1, 0).getDate();
+
+                const eventosPorDia = {};
+                eventosMes.forEach(e => {
+                    const dia = parseInt(e.fecha.slice(8, 10), 10);
+                    (eventosPorDia[dia] = eventosPorDia[dia] || []).push(e);
+                });
+
+                let celdas = '';
+                for (let i = 0; i < offset; i++) celdas += '<span class="calendar-day empty"></span>';
+                for (let dia = 1; dia <= diasEnMes; dia++) {
+                    const eventosDia = eventosPorDia[dia];
+                    const esHoy = hoy.getFullYear() === calendarAnio && hoy.getMonth() === mesIndex && hoy.getDate() === dia;
+                    let clases = 'calendar-day';
+                    let atributos = '';
+                    if (eventosDia) {
+                        clases += ' has-event tipo-' + escapeHtml(eventosDia[0].tipo || 'evento');
+                        atributos = ` title="${escapeHtml(eventosDia.map(e => e.titulo).join(' · '))}"`;
+                    }
+                    if (esHoy) clases += ' today';
+                    celdas += `<span class="${clases}"${atributos}>${dia}</span>`;
+                }
+
+                const listaEventos = expandido ? `
+                    <div class="calendar-events-list">
+                        ${eventosMes.length ? eventosMes.map(e => `
+                            <div class="calendar-event-item">
+                                <div class="calendar-event-date">${e.fecha.slice(8, 10)}/${e.fecha.slice(5, 7)}${e.hora ? ' · ' + e.hora.slice(0, 5) : ''}</div>
+                                <div class="calendar-event-info">
+                                    <div class="title">${escapeHtml(e.titulo)}</div>
+                                    ${e.descripcion ? `<div class="desc">${escapeHtml(e.descripcion)}</div>` : ''}
+                                </div>
+                            </div>`).join('') : '<div class="calendar-empty-note">Sin reuniones ni eventos cargados para este mes.</div>'}
+                    </div>` : '';
+
+                return `
+                    <div class="calendar-month${expandido ? ' expanded' : ''}">
+                        <div class="calendar-month-name" onclick="toggleMesCalendario(${mesIndex})">
+                            <span>${nombreMes}</span>
+                            ${eventosMes.length ? `<span class="badge">${eventosMes.length}</span>` : ''}
+                        </div>
+                        <div class="calendar-weekdays">${DIAS_SEMANA_CALENDARIO.map(d => `<span>${d}</span>`).join('')}</div>
+                        <div class="calendar-days">${celdas}</div>
+                        ${listaEventos}
+                    </div>`;
+            }).join('');
+        }
+
+        // ---------- Reserva de espacios (panel de bienvenida) ----------
+        const SALONES_RESERVA = ['Biblioteca', 'Art Room', 'Design Lab', 'Arena'];
+        const HORARIOS_RESERVA = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+
+        let reservasAbierto = false;
+        let reservasFecha = new Date();
+        let reservasData = [];
+        let reservaSeleccionada = null;
+
+        function fechaISOLocal(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const dia = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${dia}`;
+        }
+
+        function obtenerNombreDocenteActual() {
+            const nameEl = document.getElementById('welcome-name');
+            const desdeUi = nameEl?.textContent?.trim();
+            return desdeUi || derivarNombreDesdeEmail(window.authUser?.email || '');
+        }
+
+        async function toggleReservasEspacios() {
+            const body = document.getElementById('reservas-body');
+            const hint = document.getElementById('reservas-toggle-hint');
+            if (!body) return;
+            reservasAbierto = !reservasAbierto;
+            body.hidden = !reservasAbierto;
+            if (hint) hint.textContent = reservasAbierto ? '▾ Ocultar' : '▸ Ver disponibilidad';
+            if (reservasAbierto) {
+                await cargarReservasDelDia();
+            }
+        }
+
+        function cambiarDiaReserva(delta) {
+            reservasFecha.setDate(reservasFecha.getDate() + delta);
+            cargarReservasDelDia();
+        }
+
+        async function cargarReservasDelDia() {
+            const label = document.getElementById('reserva-fecha-label');
+            if (label) {
+                const texto = reservasFecha.toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' });
+                label.textContent = texto.charAt(0).toUpperCase() + texto.slice(1);
+            }
+            try {
+                const { data, error } = await _supabase
+                    .from('reservas_espacios')
+                    .select('id,salon,fecha,hora_inicio,motivo,docente_nombre,user_id')
+                    .eq('fecha', fechaISOLocal(reservasFecha));
+                if (error) throw error;
+                reservasData = data || [];
+            } catch (err) {
+                console.error('No se pudieron cargar las reservas de espacios:', err);
+                reservasData = [];
+            }
+            renderReservasTabla();
+        }
+
+        function renderReservasTabla() {
+            const table = document.getElementById('reservas-table');
+            if (!table) return;
+
+            const thead = `<thead><tr><th class="reservas-hora-col"></th>${SALONES_RESERVA.map(s => `<th>${escapeHtml(s)}</th>`).join('')}</tr></thead>`;
+
+            const filas = HORARIOS_RESERVA.map(hora => {
+                const celdas = SALONES_RESERVA.map(salon => {
+                    const reserva = reservasData.find(r => r.salon === salon && r.hora_inicio.slice(0, 5) === hora);
+                    if (!reserva) {
+                        return `<td class="reserva-cell free" onclick="abrirModalReserva('${escapeHtml(salon)}','${hora}')">Libre</td>`;
+                    }
+                    const esMia = !!window.authUser && reserva.user_id === window.authUser.id;
+                    const nombre = reserva.docente_nombre || 'Reservado';
+                    return `
+                        <td class="reserva-cell occupied${esMia ? ' mine' : ''}" title="${escapeHtml(reserva.motivo || '')}">
+                            <span class="reserva-nombre">${escapeHtml(nombre)}</span>
+                            ${esMia ? `<button type="button" class="reserva-cancel" onclick="event.stopPropagation();cancelarReserva('${reserva.id}')">Cancelar</button>` : ''}
+                        </td>`;
+                }).join('');
+                return `<tr><td class="reserva-hora">${hora}</td>${celdas}</tr>`;
+            }).join('');
+
+            table.innerHTML = thead + `<tbody>${filas}</tbody>`;
+        }
+
+        function abrirModalReserva(salon, hora) {
+            if (!window.authUser) return alert('Iniciá sesión para reservar un salón.');
+            reservaSeleccionada = { salon, hora };
+            const info = document.getElementById('reserva-modal-info');
+            const label = document.getElementById('reserva-fecha-label')?.textContent || '';
+            if (info) info.textContent = `${salon} · ${label} · ${hora} hs`;
+            const msg = document.getElementById('reserva-modal-msg');
+            if (msg) { msg.style.display = 'none'; msg.textContent = ''; }
+            document.getElementById('reserva-motivo').value = '';
+            document.getElementById('reserva-modal').classList.add('open');
+            document.getElementById('reserva-motivo').focus();
+        }
+
+        function cerrarModalReserva() {
+            document.getElementById('reserva-modal').classList.remove('open');
+            reservaSeleccionada = null;
+        }
+
+        async function confirmarReserva() {
+            if (!reservaSeleccionada || !window.authUser) return;
+            const msg = document.getElementById('reserva-modal-msg');
+            const btn = document.getElementById('reserva-confirmar-btn');
+            const motivo = document.getElementById('reserva-motivo').value.trim();
+
+            btn.disabled = true; btn.textContent = 'Reservando…';
+            const { error } = await _supabase.from('reservas_espacios').insert([{
+                salon: reservaSeleccionada.salon,
+                fecha: fechaISOLocal(reservasFecha),
+                hora_inicio: reservaSeleccionada.hora + ':00',
+                motivo: motivo || null,
+                user_id: window.authUser.id,
+                docente_email: window.authUser.email,
+                docente_nombre: obtenerNombreDocenteActual(),
+            }]);
+            btn.disabled = false; btn.textContent = 'Reservar';
+
+            if (error) {
+                if (msg) {
+                    msg.style.display = 'block';
+                    msg.style.color = '#C0503B';
+                    msg.textContent = error.code === '23505'
+                        ? 'Ese horario ya se acaba de reservar. Elegí otro.'
+                        : 'No se pudo reservar: ' + (error.message || 'error desconocido.');
+                }
+                await cargarReservasDelDia();
+                return;
+            }
+
+            cerrarModalReserva();
+            await cargarReservasDelDia();
+        }
+
+        async function cancelarReserva(id) {
+            if (!confirm('¿Cancelar esta reserva?')) return;
+            const { error } = await _supabase.from('reservas_espacios').delete().eq('id', id);
+            if (error) {
+                alert('No se pudo cancelar la reserva: ' + (error.message || 'error desconocido.'));
+                return;
+            }
+            await cargarReservasDelDia();
         }
 
         function mostrarGate() {
+            appCargadaParaUserId = null;
             document.body.removeAttribute('data-mode');
             document.body.setAttribute('data-view', 'gate');
         }
@@ -1628,6 +2640,26 @@
             }
         }
 
+        // Supabase, a propósito, NO distingue "contraseña incorrecta" de "el
+        // usuario no existe" en signInWithPassword (las dos vienen con el
+        // mismo código 'invalid_credentials'): si lo hiciera, cualquiera
+        // podría usar este formulario para averiguar qué emails tienen
+        // cuenta (user enumeration). Ese caso se deja genérico a propósito.
+        // 'email_not_confirmed' sí es un código aparte -- no depende de la
+        // contraseña -- así que ese lo podemos mostrar sin ese riesgo.
+        function mensajeErrorLogin(error) {
+            switch (error.code) {
+                case 'email_not_confirmed':
+                    return 'Todavía no confirmaste la cuenta: revisá tu casilla de correo y tocá el enlace de confirmación antes de iniciar sesión.';
+                case 'over_email_send_rate_limit':
+                    return 'Se enviaron demasiados correos en poco tiempo. Esperá unos minutos y volvé a intentar.';
+                case 'invalid_credentials':
+                    return 'Correo o contraseña incorrectos.';
+                default:
+                    return 'No se pudo iniciar sesión: ' + (error.message || 'error desconocido.');
+            }
+        }
+
         async function iniciarSesionAuth() {
             const email = document.getElementById('auth-email')?.value?.trim();
             const password = document.getElementById('auth-password')?.value;
@@ -1639,14 +2671,14 @@
             const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
             if (error) {
                 console.error(error);
-                if (status) status.textContent = 'No se pudo iniciar sesión. Revisá tus datos o confirmá tu cuenta.';
-                return alert('No se pudo iniciar sesión: ' + error.message);
+                if (status) status.textContent = mensajeErrorLogin(error);
+                return;
             }
 
+            // El historial lo carga onAuthStateChange (SIGNED_IN).
             window.authUser = data.user;
             actualizarUIAuth();
             mostrarApp();
-            await recuperarHistorialReal();
         }
 
         async function registrarAuth() {
@@ -1655,6 +2687,17 @@
             if (!email || !password) return alert('Ingresá tu correo y contraseña.');
 
             const status = document.getElementById('auth-status');
+            if (status) status.textContent = 'Verificando que tu correo esté autorizado…';
+
+            // Solo los correos de allowed_emails pueden crear cuenta (la base lo
+            // exige igual con un trigger); se chequea antes para dar un mensaje
+            // claro en vez de "Database error saving new user".
+            const { data: autorizado, error: errorAutorizado } = await _supabase.rpc('correo_autorizado', { p_email: email });
+            if (!errorAutorizado && !autorizado) {
+                if (status) status.textContent = 'Este correo no está autorizado por el colegio. Pedile a coordinación que lo agregue.';
+                return;
+            }
+
             if (status) status.textContent = 'Creando cuenta…';
 
             const { data, error } = await _supabase.auth.signUp({ email, password });
@@ -1671,7 +2714,6 @@
                 window.authUser = data.user;
                 actualizarUIAuth();
                 mostrarApp();
-                await recuperarHistorialReal();
             }
         }
 
@@ -1682,33 +2724,83 @@
             window.authUser = null;
             actualizarUIAuth();
             mostrarGate();
-            await recuperarHistorialReal();
         }
 
-        const renderAustinPUD = (data) => {
-            const hilosHtml = data.throughlines.map(h => `${h}<br>`).join('');
-            const metasHtml = data.understanding_goals.map(ug => `
-                <tr>
-                    <td style="border: 1pt solid #000; padding: 10px; width: 55%;"><strong>${ug.id}:</strong> ${ug.text}</td>
-                    <td style="border: 1pt solid #000; padding: 10px; width: 15%; text-align: center; font-weight: bold; background-color: #f1f8e9;">${ug.dimension}</td>
-                    <td style="border: 1pt solid #000; padding: 10px;">${ug.question}</td>
+        async function recuperarPasswordAuth() {
+            const email = document.getElementById('auth-email')?.value?.trim();
+            if (!email) return alert('Ingresá tu correo electrónico en el campo de arriba y volvé a tocar el enlace.');
+
+            const status = document.getElementById('auth-status');
+            if (status) status.textContent = 'Enviando correo de recuperación…';
+
+            const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + window.location.pathname,
+            });
+
+            if (error) {
+                console.error(error);
+                if (status) status.textContent = 'No se pudo enviar el correo de recuperación.';
+                return alert('No se pudo enviar el correo de recuperación: ' + error.message);
+            }
+
+            if (status) status.textContent = 'Te enviamos un correo con un enlace para restablecer tu contraseña.';
+            alert('Revisá tu correo: te enviamos un enlace para restablecer tu contraseña.');
+        }
+
+        async function manejarRecuperacionPassword() {
+            const nuevaPassword = prompt('Ingresá tu nueva contraseña (mínimo 6 caracteres):');
+            if (!nuevaPassword) return;
+            if (nuevaPassword.length < 6) {
+                alert('La contraseña debe tener al menos 6 caracteres.');
+                return manejarRecuperacionPassword();
+            }
+
+            const { error } = await _supabase.auth.updateUser({ password: nuevaPassword });
+            if (error) {
+                console.error(error);
+                return alert('No se pudo actualizar la contraseña: ' + error.message);
+            }
+
+            alert('Contraseña actualizada correctamente. Ya podés usar la app.');
+        }
+
+        // Todo lo que viene del JSON de la IA se escapa: ese HTML se guarda en
+        // pud_history y después lo abren coordinadores y dirección, así que un
+        // texto con <script>/<img onerror> no puede terminar ejecutándose allá.
+        const renderAustinPUD = (raw) => {
+            const e = escapeHtml;
+            const lista = (v) => Array.isArray(v) ? v : [];
+            const data = {
+                meta: raw.meta || {},
+                topic: raw.topic || '',
+                throughlines: lista(raw.throughlines),
+                understanding_goals: lista(raw.understanding_goals),
+                performances: lista(raw.performances),
+                final_project: raw.final_project || {}
+            };
+            const hilosHtml = data.throughlines.map((h, i) => `<strong>${i + 1}.</strong> ${e(h)}<br>`).join('');
+            const metasHtml = data.understanding_goals.map((ug, i) => `
+                <tr data-meta-id="${e(ug.uid || 'm' + (i + 1))}">
+                    <td style="border: 1pt solid #000; padding: 10px; width: 55%;"><strong>${e(ug.id)}:</strong> ${e(ug.text)}</td>
+                    <td style="border: 1pt solid #000; padding: 10px; width: 15%; text-align: center; font-weight: bold; background-color: #f1f8e9;">${e(ug.dimension)}</td>
+                    <td style="border: 1pt solid #000; padding: 10px;">${e(ug.question)}</td>
                 </tr>
             `).join('');
 
-            const desempenosHtml = data.performances.map(p => `
-                <tr>
+            const desempenosHtml = data.performances.map((p, i) => `
+                <tr data-desempeno-id="${e(p.uid || 'd' + (i + 1))}">
                     <td style="border: 1pt solid #000; padding: 10px;">
-                        <strong>${p.title}:</strong> ${p.description}<br><strong>Assessment:</strong> ${p.assessment}
+                        <strong>${e(p.title)}:</strong> ${e(p.description)}<br><strong>Assessment:</strong> ${e(p.assessment)}
                     </td>
-                    <td style="border: 1pt solid #000; text-align: center;">${p.ug}</td>
-                    <td style="border: 1pt solid #000; text-align: center;">${p.upt}</td>
-                    <td style="border: 1pt solid #000; text-align: center;">${p.mi}</td>
-                    <td style="border: 1pt solid #000; text-align: center;">${p.td}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${e(p.ug)}</td>
+                    <td class="pud-desempeno-upt" style="border: 1pt solid #000; text-align: center;">${e(p.upt)}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${e(p.mi)}</td>
+                    <td style="border: 1pt solid #000; text-align: center;">${e(p.td)}</td>
                 </tr>
             `).join('');
 
             return `
-            <div style="font-family: 'Arial', sans-serif; max-width: 850px; margin: auto; border: 1.5pt solid #000; padding: 0; background-color: white; color: black; text-align: left;">
+            <div${raw.pud_uid ? ` data-pud-uid="${e(raw.pud_uid)}"` : ''} style="font-family: 'Arial', sans-serif; max-width: 850px; margin: auto; border: 1.5pt solid #000; padding: 0; background-color: white; color: black; text-align: left;">
                 <table style="width: 100%; border-collapse: collapse; border-bottom: 2pt solid #000;">
                     <tr>
                         <td style="width: 20%; padding: 15px; text-align: center;">
@@ -1727,13 +2819,13 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr style="font-size: 10pt;">
                         <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>AÑO :</strong></td>
-                        <td id="render-year" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${data.meta.year || ''}</td>
+                        <td id="render-year" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${e(data.meta.year)}</td>
                         <td style="padding: 8px; border: 1pt solid #000; width: 15%;"><strong>SECCIÓN :</strong></td>
-                        <td id="render-section" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${data.meta.section || ''}</td>
+                        <td id="render-section" style="padding: 8px; border: 1pt solid #000; width: 35%;" contenteditable="true">${e(data.meta.section)}</td>
                     </tr>
                     <tr style="font-size: 10pt;">
                         <td style="padding: 8px; border: 1pt solid #000;"><strong>MATERIA :</strong></td>
-                        <td id="render-subject" style="padding: 8px; border: 1pt solid #000;">${data.meta.subject || ''}</td>
+                        <td id="render-subject" style="padding: 8px; border: 1pt solid #000;">${e(data.meta.subject)}</td>
                         <td style="padding: 8px; border: 1pt solid #000;"><strong>DOCENTE :</strong></td>
                         <td id="render-docente" style="padding: 8px; border: 1pt solid #000;" contenteditable="true" placeholder="Escriba su nombre..."></td>
                     </tr>
@@ -1743,7 +2835,7 @@
                 <div style="padding: 15px; border-bottom: 1pt solid #000; font-size: 10.5pt; line-height: 1.6;">${hilosHtml}</div>
 
                 <div class="pud-section-title" style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">TOPIC:</div>
-                <div style="padding: 20px; border-bottom: 1pt solid #000; text-align: center; font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">"${data.topic}"</div>
+                <div style="padding: 20px; border-bottom: 1pt solid #000; text-align: center; font-size: 14pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">"${e(data.topic)}"</div>
 
                 <div class="pud-section-title" style="background-color: #e8f5e9; padding: 10px; font-weight: bold; border-bottom: 1pt solid #000; font-size: 11pt; color: #2e7d32;">UNDERSTANDING GOALS:</div>
                 <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">${metasHtml}</table>
@@ -1758,14 +2850,14 @@
                         <td style="border: 1pt solid #000; width: 60px;">TD</td>
                     </tr>
                     ${desempenosHtml}
-                    <tr style="background-color: #fff9c4;">
+                    <tr data-desempeno-id="pf" style="background-color: #fff9c4;">
                         <td style="border: 1pt solid #000; padding: 10px;">
-                            <strong>FINAL PROJECT: ${data.final_project.title}</strong><br>${data.final_project.description}
+                            <strong>FINAL PROJECT: ${e(data.final_project.title)}</strong><br>${e(data.final_project.description)}
                         </td>
                         <td style="border: 1pt solid #000; text-align: center;">All</td>
                         <td style="border: 1pt solid #000; text-align: center;">PF</td>
-                        <td style="border: 1pt solid #000; text-align: center;">${data.final_project.mi}</td>
-                        <td style="border: 1pt solid #000; text-align: center;">${data.final_project.td}</td>
+                        <td style="border: 1pt solid #000; text-align: center;">${e(data.final_project.mi)}</td>
+                        <td style="border: 1pt solid #000; text-align: center;">${e(data.final_project.td)}</td>
                     </tr>
                 </table>
                 <div style="padding: 15px; border-top: 1.5pt solid #000; font-size: 8.5pt; color: #444; text-align: center;">
@@ -1774,11 +2866,88 @@
             </div>`;
         };
 
+        // Niveles de calibración de vocabulario/gramática. Para inglés: CEFR
+        // (A1-C2), elegido a mano en "english_level". Para castellano: los 6
+        // grados de primaria, tomados directamente del campo "Año" (unit_year),
+        // que ya es obligatorio. Mismas tablas que generador-tareas.html y
+        // secuencias-epc.html para que la calibración sea consistente en toda la app.
+        const NIVELES_EN = {
+            A1: { label: 'A1 - Beginner', vocabulario: 'High-frequency, everyday words only (colors, family, routines, concrete objects). Avoid abstract terms.', gramatica: 'Present simple, regular plurals, sentences of 3-6 words. No compound tenses, no subordinate clauses.' },
+            A2: { label: 'A2 - Elementary', vocabulario: 'Everyday vocabulary plus basic academic terms of the topic, always introduced with a concrete example.', gramatica: 'Past simple and "going to" future. Sentences of 6-9 words with simple connectors (and, but, because).' },
+            B1: { label: 'B1 - Intermediate', vocabulario: 'Academic vocabulary of the topic, always introduced in context before being used freely.', gramatica: 'Present perfect, simple subordinate clauses, comparatives/superlatives. Sentences up to 12 words.' },
+            B2: { label: 'B2 - Upper Intermediate', vocabulario: 'Academic and abstract vocabulary, including technical terms of the topic without needing translation.', gramatica: 'Passive voice, cause-effect connectors, conditional clauses. Sentences up to 15-18 words with subordination.' },
+            C1: { label: 'C1 - Advanced', vocabulario: 'Advanced academic vocabulary, nuanced meaning, idiomatic collocations specific to the topic.', gramatica: 'Complex structures (mixed conditionals, passive voice across tenses), extended argumentation with contrast/qualification connectors.' },
+            C2: { label: 'C2 - Proficient', vocabulario: 'Near-native register vocabulary, including connotative nuance and specialized terminology without simplification.', gramatica: 'Full command of complex, varied structures, sophisticated textual cohesion, precise rhetorical argumentation on abstract topics.' }
+        };
+
+        const NIVELES_ES = {
+            '1° Grado Primaria': { label: '1° Grado Primaria', vocabulario: 'Cotidiano y muy concreto; evitar términos abstractos sin explicarlos primero.', gramatica: 'Oraciones de 4 a 6 palabras, una idea por oración, sin subordinadas.' },
+            '2° Grado Primaria': { label: '2° Grado Primaria', vocabulario: 'Cotidiano, con primeras palabras específicas del área siempre acompañadas de un ejemplo concreto.', gramatica: 'Oraciones de 5 a 8 palabras, con conectores simples (y, pero, porque).' },
+            '3° Grado Primaria': { label: '3° Grado Primaria', vocabulario: 'Específico del área, siempre explicado en contexto la primera vez que aparece.', gramatica: 'Oraciones de hasta 10 palabras, primeras subordinadas simples.' },
+            '4° Grado Primaria': { label: '4° Grado Primaria', vocabulario: 'Específico del área con mayor variedad; se pueden introducir sinónimos y familias de palabras.', gramatica: 'Oraciones de hasta 12 palabras, subordinadas simples y conectores de secuencia (primero, luego, finalmente).' },
+            '5° Grado Primaria': { label: '5° Grado Primaria', vocabulario: 'Técnico del área, con primeras nociones de argumentación y comparación.', gramatica: 'Oraciones de hasta 15 palabras, conectores de causa-consecuencia, subordinadas variadas.' },
+            '6° Grado Primaria': { label: '6° Grado Primaria', vocabulario: 'Técnico del área y vocabulario académico de transición a secundaria, con nociones de argumentación.', gramatica: 'Oraciones más complejas, conectores de causa-consecuencia y contraste, primeras estructuras de análisis crítico.' },
+            '1° Año Secundaria': { label: '1° Año Secundaria', vocabulario: 'Técnico del área, introducido en contexto pero ya sin simplificaciones excesivas; primeras nociones de terminología disciplinar.', gramatica: 'Oraciones de hasta 18 palabras, subordinadas variadas, conectores de causa-consecuencia y contraste.' },
+            '2° Año Secundaria': { label: '2° Año Secundaria', vocabulario: 'Técnico consolidado del área, con primeros términos abstractos propios de la disciplina.', gramatica: 'Subordinadas múltiples, voz pasiva, conectores de consecuencia y concesión; inicio de argumentación con evidencia.' },
+            '3° Año Secundaria': { label: '3° Año Secundaria', vocabulario: 'Académico y técnico específico, con matices de significado entre términos relacionados.', gramatica: 'Estructuras complejas con varias cláusulas, nexos de contraste y condición; argumentación con postura propia.' },
+            '4° Año Secundaria': { label: '4° Año Secundaria', vocabulario: 'Especializado del área, incluyendo terminología de uso profesional o académico.', gramatica: 'Registro formal sostenido, estructuras condicionales y comparativas complejas, síntesis de múltiples fuentes.' },
+            '5° Año Secundaria': { label: '5° Año Secundaria', vocabulario: 'Técnico-académico de nivel preuniversitario, con precisión terminológica exigida.', gramatica: 'Argumentación compleja y sostenida, con matización, contraargumentación y uso de evidencia para sustentar posturas.' },
+            '6° Año Secundaria': { label: '6° Año Secundaria', vocabulario: 'Académico de transición a nivel universitario, con manejo autónomo de terminología especializada.', gramatica: 'Pensamiento crítico expresado con estructuras sofisticadas, argumentación multicausal y análisis con autonomía total.' }
+        };
+
+        // Salas de Jardín: nivel fijo por edad, sin CEFR (ver nivel-inicial.js).
+        // Por eso en las salas el selector CEFR se oculta y se ignora aunque
+        // tenga un valor.
+        function bloqueCalibracionNivel(idioma, datosUsuario) {
+            if (esSalaInicial(datosUsuario.year)) {
+                return `\n\n${bloqueCalibracionInicial(datosUsuario.year, idioma === 'en')}\nToda la redacción del PUD (topic, throughlines, understanding_goals, performances y final_project) tiene que respetar este nivel.`;
+            }
+            const info = idioma === 'en' ? NIVELES_EN[datosUsuario.english_level] : NIVELES_ES[datosUsuario.year];
+            if (!info) return '';
+            return `\n\nCALIBRACIÓN POR NIVEL (${info.label}):\n- VOCABULARIO: ${info.vocabulario}\n- GRAMÁTICA/SINTAXIS: ${info.gramatica}\nAjustá la complejidad de topic, throughlines, understanding_goals y performances a este nivel.`;
+        }
+
+        // Muestra el selector de nivel CEFR solo cuando el contenido tipeado de
+        // la PUD está en inglés; el grado (unit_year) sigue siendo el mismo
+        // campo para todos los idiomas, así que castellano no necesita nada extra.
+        function sincronizarCampoNivelIngles() {
+            const campo = document.getElementById('field-english-level');
+            const select = document.getElementById('english_level');
+            if (!campo || !select) return;
+
+            if (select.options.length <= 1) {
+                Object.entries(NIVELES_EN).forEach(([valor, info]) => {
+                    const opt = document.createElement('option');
+                    opt.value = valor;
+                    opt.textContent = info.label;
+                    select.appendChild(opt);
+                });
+            }
+
+            const datosUsuario = {
+                subject: document.getElementById('subject')?.value || "",
+                unit_name: document.getElementById('unit_name')?.value || "",
+                orientation: document.getElementById('orientation')?.value || "",
+                raw_input: document.getElementById('raw_input')?.value || ""
+            };
+            const sala = esSalaInicial(document.getElementById('unit_year')?.value);
+            if (sala) select.value = '';
+            campo.style.display = !sala && detectarIdioma(datosUsuario) === 'en' ? 'flex' : 'none';
+
+            const nota = document.getElementById('nota-nivel-inicial');
+            if (nota) nota.style.display = sala ? 'block' : 'none';
+        }
+
         function detectarIdioma(datosUsuario) {
-            const texto = `${datosUsuario.subject || ''} ${datosUsuario.unit_name || ''} ${datosUsuario.orientation || ''} ${datosUsuario.raw_input || ''}`.toLowerCase();
-            if (!texto.trim()) {
+            const textoOriginal = `${datosUsuario.subject || ''} ${datosUsuario.unit_name || ''} ${datosUsuario.orientation || ''} ${datosUsuario.raw_input || ''}`.toLowerCase();
+            if (!textoOriginal.trim()) {
                 return 'es';
             }
+            // Espacios al inicio/final para que las señales " el ", " la ", etc.
+            // también matcheen cuando esa palabra es la primera o la última del
+            // texto combinado (si no, un texto que arranca con "El..." no
+            // matcheaba " el " por faltarle el espacio previo).
+            const texto = ' ' + textoOriginal + ' ';
 
             const spanishSignals = [
                 ' y ', ' de ', ' la ', ' el ', ' los ', ' las ', ' que ', ' para ', ' por ',
@@ -1804,24 +2973,62 @@
             return texto.includes(' the ') || texto.includes(' and ') || texto.includes(' is ') ? 'en' : 'es';
         }
 
+        // Orden fijo de las 4 dimensiones EpC. Es el mismo orden en el que
+        // prepararPromptParaIA() siempre pide los 4 'understanding_goals',
+        // así el hilo conductor #1 de una materia corresponde siempre al UG 1,
+        // el #2 al UG 2, etc. — coincide con la numeración por índice que ya
+        // usa renderAustinPUD() para 'throughlines'.
+        const ORDEN_DIMENSIONES = ['KNOWLEDGE', 'METHOD', 'PURPOSE', 'COMMUNICATION'];
+
+        // Los hilos conductores son fijos por materia (no cambian por unidad,
+        // grado ni año — ver supabase-migration-hilos-conductores.sql). Se
+        // cargan desde Supabase por nombre de área para que el prompt los use
+        // como referencia en vez de inventar throughlines nuevos cada vez.
+        async function obtenerHilosConductores(subjectName) {
+            if (typeof _supabase === 'undefined' || !subjectName) return [];
+            try {
+                const { data: area } = await _supabase.from('areas').select('id').eq('name', subjectName).maybeSingle();
+                if (!area) return [];
+
+                const { data: hilos, error } = await _supabase.from('hilos_conductores').select('dimension, hilo').eq('area_id', area.id);
+                if (error || !hilos) return [];
+
+                return hilos
+                    .slice()
+                    .sort((a, b) => ORDEN_DIMENSIONES.indexOf(a.dimension) - ORDEN_DIMENSIONES.indexOf(b.dimension));
+            } catch (err) {
+                console.warn("No se pudieron cargar los hilos conductores de la materia:", err);
+                return [];
+            }
+        }
+
         function prepararPromptParaIA(datosUsuario) {
             const idioma = detectarIdioma(datosUsuario);
             const esIngles = idioma === 'en';
+            const sala = esSalaInicial(datosUsuario.year);
 
-            const idiomaInstruccion = esIngles 
-                ? `CRITERIO DE IDIOMA Y REDACCIÓN OBLIGATORIO:
-Todas las variables de texto didáctico (topic, throughlines, text, question, title, description, assessment) DEBEN ser redactadas exclusivamente en INGLÉS.
-Todas las metas de comprensión ('text' dentro de 'understanding_goals') DEBEN comenzar obligatoriamente con: "Students will develop understanding about..."`
-                : `CRITERIO DE IDIOMA Y REDACCIÓN OBLIGATORIO:
-Todas las variables de texto didáctico (topic, throughlines, text, question, title, description, assessment) DEBEN ser redactadas exclusivamente en ESPAÑOL.
-Todas las metas de comprensión ('text' dentro de 'understanding_goals') DEBEN comenzar obligatoriamente con: "Los estudiantes desarrollarán comprensión sobre..."`;
+            const ejemploMeta = sala
+                ? metaInicial(esIngles)
+                : (esIngles ? "Students will develop understanding about..." : "Los estudiantes desarrollarán comprensión sobre...");
 
-            const ejemploMeta = esIngles ? "Students will develop understanding about..." : "Los estudiantes desarrollarán comprensión sobre...";
-            
-            return `Actúa como experto en EpC (Harvard Project Zero) para Austin Eco Bilingual School.
+            const idiomaInstruccion = `CRITERIO DE IDIOMA Y REDACCIÓN OBLIGATORIO:
+Todas las variables de texto didáctico (topic, throughlines, text, question, title, description, assessment) DEBEN ser redactadas exclusivamente en ${esIngles ? 'INGLÉS' : 'ESPAÑOL'}.
+Todas las metas de comprensión ('text' dentro de 'understanding_goals') DEBEN comenzar obligatoriamente con: "${ejemploMeta}"`;
+            const calibracionNivel = bloqueCalibracionNivel(idioma, datosUsuario);
+            const hilos = datosUsuario.hilos_conductores || [];
+
+            const bloqueHilosConductores = hilos.length > 0
+                ? `\n\nHILOS CONDUCTORES FIJOS DEL ÁREA "${datosUsuario.subject}" (NO INVENTAR OTROS):
+Estos hilos conductores son permanentes de esta materia: no cambian por unidad, grado ni año. Lo único que varía es cómo se aplican y se redactan según el tema, la edad y el contenido de ESTA unidad puntual.
+${hilos.map((h, i) => `${i + 1}. [${h.dimension}] ${h.hilo}`).join('\n')}
+
+INSTRUCCIÓN PARA 'throughlines': generá exactamente ${hilos.length} throughlines, uno por cada hilo conductor listado arriba y EN EL MISMO ORDEN. Cada throughline debe conservar la idea central y la dimensión del hilo correspondiente, pero redactado/adaptado al tema, la edad y el nivel de ESTA unidad. No cambies el sentido de ningún hilo ni agregues hilos que no estén en la lista.`
+                : `\n\nEsta materia todavía no tiene hilos conductores fijos cargados: generá 4 'throughlines' relevantes para esta unidad.`;
+
+            return `Actúa como experto en EpC (Harvard Project Zero)${sala ? ' y en Educación Inicial (juego, exploración y rutinas para niños de 3 a 5 años)' : ''} para Austin Eco Bilingual School.
 Genera la planificación solicitada siguiendo estrictamente el siguiente esquema de datos en formato JSON puro. No agregues explicaciones, markdown ni bloques de código redundantes, solo el objeto JSON estructurado.
 
-${idiomaInstruccion}
+${idiomaInstruccion}${calibracionNivel}${bloqueHilosConductores}${sala ? bloqueNivelInicial(datosUsuario.year, esIngles, hilos.length > 0) : ''}
 
 IMPORTANTE: Usa la información de "Enfoque Pedagógico" para ajustar el diseño educativo y las recomendaciones metodológicas. Si el texto incluye nivel de alfabetización, fortalezas o debilidades del grupo, apoyos necesarios, ritmo de lectura u otras características del alumnado, incorpora esos detalles en la orientación del output.
 
@@ -1835,7 +3042,7 @@ DATOS DE ENTRADA:
 ESTRUCTURA JSON REQUERIDA DE SALIDA:
 {
   "meta": { "year": "${datosUsuario.year}", "section": "", "subject": "${datosUsuario.subject}" },
-  "topic": "Título optimizado",
+  "topic": "${sala ? 'Tópico con tono de juego o de cuento (máx. 4 palabras)' : 'Tópico generativo corto y llamativo (máx. 6 palabras)'}",
   "throughlines": [ "Pregunta 1?", "Pregunta 2?", "Pregunta 3?", "Pregunta 4?" ],
   "understanding_goals": [
     { "id": "UG 1", "text": "${ejemploMeta}", "dimension": "KNOWLEDGE", "question": "Pregunta guía" },
@@ -1844,20 +3051,78 @@ ESTRUCTURA JSON REQUERIDA DE SALIDA:
     { "id": "UG 4", "text": "${ejemploMeta}", "dimension": "COMMUNICATION", "question": "Pregunta guía" }
   ],
   "performances": [
-    { "title": "Actividad 1", "description": "Detalle", "assessment": "Evaluación", "ug": "1", "upt": "GI", "mi": "L", "td": "3" }
+    { "title": "Actividad 1", "description": "Detalle", "assessment": "${sala ? 'Observación directa / Pequeño grupo / Docente' : 'Formal / Escrita / Docente'}", "ug": "1", "upt": "I", "mi": "L", "td": "3" }
   ],
   "final_project": { "title": "Proyecto Final", "description": "Detalle", "mi": "L", "td": "7" }
 }
-Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el input sea limitado. Genera exactamente 4 'understanding_goals' (repartiendo dimensiones) y al menos 4 'performances' articuladas.`;
+El campo 'upt' de cada performance indica su etapa y SOLO puede ser uno de estos códigos: "E" (exploración), "I" (investigación guiada) o "PF" (proyecto final de síntesis). No uses otros códigos ni texto adicional en ese campo.
+${sala ? reglasPUDInicial() : reglasPUDGenerales()}`;
         }
 
-        function generarPromptEstructurado() {
+        // Reglas de salida para Primaria y Secundaria.
+        function reglasPUDGenerales() {
+            return `Genera exactamente 4 'understanding_goals' (repartiendo dimensiones) y al menos 4 'performances' articuladas.
+El 'topic' (tópico generativo) debe ser un título breve y llamativo, tipo titular: máximo 6 palabras, sin puntos ni subordinadas. Nada de oraciones descriptivas extensas ni explicativas.
+El campo 'assessment' de cada performance NO debe redactarse como explicación. Debe responder únicamente combinando estas categorías fijas, separadas por " / ", eligiendo una opción de cada grupo:
+- Formal / Informal
+- Oral / Escrita / Gestual
+- Docente / Co-valoración / Autovaloración
+Ejemplo válido: "Formal / Escrita / Docente". No agregues texto adicional, justificación ni descripción del instrumento.
+
+CRITERIOS PARA EL 'final_project' (Proyecto Final):
+El objetivo es la CALIDAD del proyecto, no una reformulación decorativa. Mantené el tema central, los objetivos de aprendizaje, las habilidades a desarrollar y la relación con la unidad trabajada. Aplicá estos lineamientos al redactar 'title' y 'description':
+1. Propósito auténtico: el estudiante debe hacer algo con una razón real, no solo demostrar que leyó o responder preguntas.
+2. Pensamiento visible: el resultado debe mostrar cómo el estudiante interpreta, compara, decide, resuelve, justifica o conecta ideas. Si una rutina de Visible Thinking (Project Zero) aporta valor real, incorporala de forma natural, sin nombrarla explícitamente como "rutina".
+3. Inquiry: partí de una pregunta, problema, desafío o decisión que invite a pensar, en vez de reproducir información.
+4. Producto final claro: un solo resultado concreto y realizable, no múltiples entregables ni un proyecto excesivamente abierto.
+5. Coherencia: relacionado directamente con lo enseñado en la unidad, sin agregar habilidades sin conexión clara.
+6. Edad y nivel: realista para la edad y el nivel lingüístico del grupo. La complejidad debe estar en el pensamiento, no en la cantidad de pasos, materiales o lenguaje académico.
+7. Low-prep: realizable con recursos habituales del aula (el texto trabajado, cuaderno, pizarrón, materiales simples), sin preparación docente extensa.
+8. Simplicidad: sin etapas, fases ni componentes innecesarios.
+9. Lenguaje natural, claro y profesional, sin vocabulario pedagógico técnico ni tono de documento universitario o de Instructional Design.
+EVITÁ que el proyecto se convierta automáticamente en portfolio, exposición, campaña, dossier, producto multimodal, presentación, producto digital o con múltiples entregables: elegí el formato que mejor responda a los objetivos de ESTE proyecto puntual.
+El 'description' debe ser un párrafo breve que indique qué harán los estudiantes, cuál es el resultado final concreto, y cómo se hace visible su pensamiento en el proceso. No es necesaria una sección aparte para esto: integralo en el mismo párrafo.`;
+        }
+
+        // ---------- Nivel Inicial (Sala de 3, 4 y 5) ----------
+        // Las tablas y reglas generales de Jardín viven en nivel-inicial.js
+        // (compartido con los generadores de secuencias y tareas); acá solo
+        // se suman las reglas propias de los campos del PUD.
+        function bloqueNivelInicial(year, esIngles, tieneHilos) {
+            return `\n\n${bloqueReglasInicial(year, esIngles)}
+- 'throughlines' y cada 'question' siguen la regla de preguntas de arriba.
+- 'understanding_goals': un descubrimiento concreto y observable, no un concepto de la disciplina.${tieneHilos ? `
+- Hilos conductores: mantené la idea central de cada hilo del área, pero reescribilo como una pregunta simple y cercana para esta edad.` : ''}`;
+        }
+
+        // Reglas de salida para Nivel Inicial (reemplazan a las de Primaria/Secundaria).
+        function reglasPUDInicial() {
+            return `Genera exactamente 4 'understanding_goals' (una por dimensión, redactadas como descubrimientos concretos) y entre 4 y 6 'performances' que sean experiencias de juego distintas entre sí (no repitas el mismo formato).
+El 'topic' tiene como máximo 4 palabras, con tono de juego, de cuento o de invitación (por ejemplo: "¿Quién vive en el patio?" o "Exploradores del agua"), sin términos técnicos.
+Cada 'description' de una performance tiene 2 a 4 oraciones: qué juego o experiencia se propone, con qué materiales, cómo arranca y qué hacen los niños. Sin fundamentación teórica.
+El campo 'assessment' se responde únicamente combinando estas categorías fijas, separadas por " / ", una de cada grupo:
+- Observación directa / Documentación (foto, video, audio o producción del niño)
+- Individual / Pequeño grupo / Grupo total
+- Docente / Conversación con el niño
+Ejemplo válido: "Observación directa / Pequeño grupo / Docente". En Nivel Inicial no hay evaluaciones escritas, notas ni calificaciones.
+
+CRITERIOS PARA EL 'final_project' (cierre de la unidad):
+1. Es un cierre lúdico y compartido: una muestra para las familias, un gran juego entre todos, una dramatización, una construcción o un mural colectivo, una canción, un paseo.
+2. Los protagonistas son los niños y participan jugando: sin exigencia de hablar en público ni de "exponer".
+3. Un solo momento o producto, simple y realizable en la sala con materiales habituales, sin preparación docente extensa.
+4. Recupera lo que se exploró en la unidad; nada que no se haya vivido antes.
+5. Nada de producciones escritas, carpetas, presentaciones digitales, maquetas complejas ni tareas en casa.
+El 'description' es un párrafo breve: qué se hace, con qué, y qué se puede observar de lo que los niños descubrieron.`;
+        }
+
+        async function generarPromptEstructurado() {
             const payload = {
                 unit_name: document.getElementById('unit_name').value || "",
                 subject: document.getElementById('subject').value || "",
                 year: document.getElementById('unit_year').value || "",
                 orientation: document.getElementById('orientation').value,
-                raw_input: document.getElementById('raw_input').value
+                raw_input: document.getElementById('raw_input').value,
+                english_level: document.getElementById('english_level')?.value || ""
             };
 
             if(!payload.year || !payload.subject || !payload.raw_input) {
@@ -1869,6 +3134,7 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
             btn.disabled = true;
 
             try {
+                payload.hilos_conductores = await obtenerHilosConductores(payload.subject);
                 const promptFinal = prepararPromptParaIA(payload);
                 
                 // 1. Mostrar de forma persistente en el Front
@@ -1929,13 +3195,18 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
         const preview = document.getElementById('output-preview');
         const pasteZone = document.getElementById('json-paster');
 
-        const procesarTextoYRenderizar = (textoJson) => {
+        const procesarTextoYRenderizar = (textoJson, avisarError = true) => {
             try {
                 const cleanJson = textoJson.replace(/```json|```html|```/g, '').trim();
                 const jsonData = JSON.parse(cleanJson);
-                window.pudActivoJson = jsonData; 
-                
+                if (!jsonData || typeof jsonData !== 'object' || Array.isArray(jsonData)) {
+                    throw new Error('El JSON no es un objeto PUD.');
+                }
+                window.pudActivoJson = asegurarIdsJson(jsonData);
+
                 preview.innerHTML = renderAustinPUD(jsonData);
+                anotarPud(jsonData);
+                programarPudChanged();
 
                 // CONTROL HUMANO: Desbloqueo tras validación exitosa
                 const btnMesa = document.querySelector('#banner-exito button');
@@ -1948,29 +3219,56 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
                 }
                 return true;
             } catch (err) {
-                console.error(err);
-                alert("El texto no contiene un objeto JSON válido. Revisá la copia.");
+                if (avisarError) alert("El texto no contiene un objeto JSON válido. Revisá la copia.");
                 return false;
             }
         };
 
+        // El preview es editable (correcciones manuales sobre el PUD ya
+        // renderizado): pegar ahí debe insertar texto plano en el cursor, no
+        // intentar reinterpretar todo el contenido como un JSON nuevo. El
+        // pegado de JSON para generar el PUD tiene su propio cuadro dedicado
+        // (#json-paster) más abajo.
         preview.addEventListener('paste', (e) => {
             e.preventDefault();
             const text = e.clipboardData.getData('text/plain');
-            procesarTextoYRenderizar(text);
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+            const range = selection.getRangeAt(0);
+            range.deleteContents();
+            const nodo = document.createTextNode(text);
+            range.insertNode(nodo);
+            range.setStartAfter(nodo);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            programarPudChanged();
         });
 
+        // Al pegar se valida enseguida y se avisa si no es JSON. Si el docente
+        // tipea o corrige a mano, se reintenta en silencio al dejar de escribir
+        // (antes saltaba un alert de "JSON inválido" con cada tecla).
+        let pasteZoneTimer = null;
+        pasteZone.addEventListener('paste', () => {
+            setTimeout(() => {
+                if (pasteZone.value.trim() !== "") procesarTextoYRenderizar(pasteZone.value);
+            }, 0);
+        });
         pasteZone.addEventListener('input', (e) => {
-            if(pasteZone.value.trim() !== "") {
-                procesarTextoYRenderizar(pasteZone.value);
-            }
+            if (e.inputType === 'insertFromPaste') return;
+            clearTimeout(pasteZoneTimer);
+            pasteZoneTimer = setTimeout(() => {
+                if (pasteZone.value.trim() !== "") procesarTextoYRenderizar(pasteZone.value, false);
+            }, 600);
         });
 
         function entrarAMesaDeTrabajo() {
             const unitTitle = document.getElementById('unit_name').value || window.pudActivoJson?.topic || 'Unidad Activa';
-            document.getElementById('w-pud-title').innerText = "PUD: " + unitTitle;
+            document.body.removeAttribute('data-mode');
             document.body.setAttribute('data-view', 'workspace');
             document.getElementById('view-indicator').innerText = "Mesa de Operaciones Satélite";
+            prepararWorkspace();
+            programarPudChanged();
         }
 
         function volverAlHome() {
@@ -1980,20 +3278,21 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
             document.body.setAttribute('data-view', 'home');
             document.body.removeAttribute('data-mode');
             document.getElementById('view-indicator').innerText = "Entorno de Carga";
-            document.getElementById('w-pud-title').innerText = "PUD Activo";
             document.getElementById('banner-exito').style.display = 'none';
             document.getElementById('pud-capture-zone').style.display = 'none';
             document.getElementById('json-paster').value = "";
             document.getElementById('prompt-visual-viewer').value = "";
+            programarPudChanged(); // cierre del PUD: las herramientas reciben null
             recuperarHistorialReal();
         }
 
         function getActivePUDMeta() {
+            sincronizarJsonDesdeDom();
             return {
                 unit_name: document.getElementById('unit_name').value || window.pudActivoJson?.topic || 'PUD sin nombre',
                 subject: document.getElementById('subject').value || window.pudActivoJson?.meta?.subject || 'Sin materia',
                 year: document.getElementById('unit_year').value || window.pudActivoJson?.meta?.year || '',
-                content_html: document.getElementById('output-preview')?.innerHTML || '',
+                content_html: limpiarHtmlPUD(htmlParaGuardar()),
                 content_json: window.pudActivoJson ? JSON.stringify(window.pudActivoJson) : null,
                 docente_nombre: (document.getElementById('render-docente')?.textContent || '').trim(),
             };
@@ -2027,7 +3326,6 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
             }
 
             try {
-                console.log('guardarPUD payload', payload);
                 const { data, error } = await _supabase.from('pud_history').insert([payload]);
                 if (error) {
                     throw error;
@@ -2098,16 +3396,8 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
             }
         }
 
-        function cambiarPestaña(event, idHerramienta) {
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById('tab-' + idHerramienta).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
         function escapeHtml(value = '') {
-            return String(value)
+            return String(value ?? '')
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
@@ -2238,6 +3528,22 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
                     const badgeTexto = estaPresentado
                         ? `Presentado${item.presented_version ? ' v' + item.presented_version : ''}`
                         : 'Guardado';
+
+                    // Veredicto del coordinador sobre esta versión presentada
+                    // (columna nueva, ver supabase-migration-revision-coordinador.sql).
+                    // 'pending' o sin presentar todavía: no se muestra nada, para no
+                    // sumar ruido a un PUD que ni siquiera se presentó.
+                    let badgeRevision = '';
+                    let comentarioHtml = '';
+                    if (estaPresentado && item.review_status === 'approved') {
+                        badgeRevision = '<span class="history-badge is-approved">✅ Aprobado</span>';
+                    } else if (estaPresentado && item.review_status === 'changes_requested') {
+                        badgeRevision = '<span class="history-badge is-changes">✏️ Cambios solicitados</span>';
+                        if (item.review_comment) {
+                            comentarioHtml = `<p class="history-review-comment"><strong>El coordinador pidió corregir:</strong> ${escapeHtml(item.review_comment)}</p>`;
+                        }
+                    }
+
                     card.innerHTML = `
                         <div class="history-card-top">
                             <span class="history-badge${estaPresentado ? ' is-presented' : ''}">${badgeTexto}</span>
@@ -2245,10 +3551,13 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
                         </div>
                         <h4>${escapeHtml(item.unit_name || 'Sin título')}</h4>
                         <p><strong>Materia:</strong> ${escapeHtml(item.subject || 'Sin materia')}</p>
+                        ${badgeRevision ? `<div class="history-card-top" style="margin-top:6px; margin-bottom:0;">${badgeRevision}</div>` : ''}
+                        ${comentarioHtml}
                     `;
                     card.onclick = () => {
-                        document.getElementById('w-pud-title').innerText = "PUD Histórico: " + (item.unit_name || 'Sin título');
-                        preview.innerHTML = item.content_html || '<p style="color:#94a3b8;">No hay contenido disponible.</p>';
+                        preview.innerHTML = item.content_html
+                            ? limpiarHtmlPUD(item.content_html)
+                            : '<p style="color:#93A1A9;">No hay contenido disponible.</p>';
 
                         // Restaurar el contexto del PUD activo (topic/meta + campos del
                         // formulario de inicio): sin esto, getActivePUDMeta() no encuentra
@@ -2260,12 +3569,21 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
                         } catch (e) {
                             window.pudActivoJson = null;
                         }
+                        // Migración al cargar: los PUD viejos reciben ids estables.
+                        // Sin pud_uid guardado, se usa el id de la fila para que
+                        // abrir la misma versión dé siempre el mismo pudId.
+                        asegurarIdsJson(window.pudActivoJson, 'pud-' + item.id);
+                        anotarPud(window.pudActivoJson, 'pud-' + item.id);
                         document.getElementById('unit_name').value = item.unit_name || '';
                         document.getElementById('subject').value = item.subject || '';
                         document.getElementById('unit_year').value = item.year || '';
+                        sincronizarCampoNivelIngles();
 
+                        document.body.removeAttribute('data-mode');
                         document.body.setAttribute('data-view', 'workspace');
                         document.getElementById('view-indicator').innerText = "Mesa de Operaciones Satélite";
+                        prepararWorkspace();
+                        programarPudChanged();
                     };
                     container.appendChild(card);
                 });
@@ -2276,7 +3594,7 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
 
             } catch (err) {
                 console.error(err);
-                container.innerHTML = '<div class="history-empty-state" style="color:#ef4444;">Error de conexión local con el historial.</div>';
+                container.innerHTML = '<div class="history-empty-state" style="color:#C0503B;">Error de conexión local con el historial.</div>';
             }
         }
 
@@ -2297,85 +3615,603 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
 
         revisarConfirmacionSupabase();
 
+        // El callback no llama a Supabase directamente: supabase-js puede
+        // quedar bloqueado si se hacen consultas dentro de onAuthStateChange,
+        // así que el trabajo se difiere con setTimeout. TOKEN_REFRESHED ya no
+        // recarga el historial (pasaba cada hora y borraba la búsqueda).
         _supabase.auth.onAuthStateChange((event, session) => {
-            window.authUser = session?.user || null;
-            actualizarUIAuth();
-            if (window.authUser) {
-                mostrarApp();
-            } else if (event === 'SIGNED_OUT') {
-                mostrarGate();
+            setTimeout(() => {
+                window.authUser = session?.user || null;
+                actualizarUIAuth();
+                if (event === 'PASSWORD_RECOVERY') {
+                    manejarRecuperacionPassword();
+                    return;
+                }
+                if (window.authUser) {
+                    mostrarApp();
+                } else if (event === 'SIGNED_OUT') {
+                    mostrarGate();
+                }
+                if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+                    recuperarHistorialReal();
+                }
+            }, 0);
+        });
+
+        // =====================================================================
+        // PUD WORKSPACE: registro de herramientas, pestañas, divisor y
+        // contexto compartido. El contrato de mensajes con las herramientas
+        // (iframes) está documentado en pud-contexto.js.
+        // =====================================================================
+
+        // Registro de herramientas. Para sumar una, agregar una entrada:
+        //   id, nombre, icono, habilitada, etiqueta (ej. "Pronto"),
+        //   ubicacion: 'pestaña' (barra) o 'menu' (menú "más"),
+        //   montar(panel): crea la herramienta dentro de `panel` y devuelve
+        //   su iframe (si es un iframe, recibe el contexto del PUD solo).
+        // montar() se llama una sola vez, la primera vez que se abre.
+        const HERRAMIENTAS = [
+            { id: 'secuencias', nombre: 'Secuencias', icono: '📑', habilitada: true, ubicacion: 'pestaña',
+              montar: panel => montarIframe(panel, 'secuencias-epc.html', 'Generador de secuencias didácticas') },
+            { id: 'tareas', nombre: 'Tareas', icono: '📝', habilitada: true, ubicacion: 'pestaña',
+              montar: panel => montarIframe(panel, 'generador-tareas.html', 'Generador de tareas') },
+            { id: 'rubrica', nombre: 'Rúbrica', icono: '📏', habilitada: false, etiqueta: 'Pronto', ubicacion: 'pestaña' },
+            { id: 'adaptaciones', nombre: 'Adaptaciones', icono: '🧩', habilitada: false, etiqueta: 'Pronto', ubicacion: 'pestaña' }
+        ];
+
+        const workspace = {
+            activa: 'secuencias',   // última herramienta abierta
+            vista: 'pud',           // 'pud' (PUD a pantalla completa) o 'herramienta' (PUD en el lateral)
+            scroll: { pud: 0, lateral: 0 }, // posición de scroll del PUD en cada vista
+            montadas: new Map(),    // id -> { panel, iframe }
+            dirty: {}               // id -> true si tiene cambios sin guardar
+        };
+
+        const ES_ARCHIVO_LOCAL = window.location.protocol === 'file:';
+        const DESTINO_MENSAJES = ES_ARCHIVO_LOCAL ? '*' : window.location.origin;
+        function origenValido(origin) {
+            return origin === window.location.origin || (ES_ARCHIVO_LOCAL && (origin === 'null' || origin === 'file://'));
+        }
+
+        function herramienta(id) {
+            return HERRAMIENTAS.find(h => h.id === id);
+        }
+
+        function montarIframe(panel, src, titulo) {
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.title = titulo;
+            // Al cargar, la herramienta recibe el contexto actual del PUD.
+            iframe.addEventListener('load', () => enviarContexto(iframe, getPudContext()));
+            panel.appendChild(iframe);
+            return iframe;
+        }
+
+        function enviarContexto(iframe, ctx) {
+            if (iframe?.contentWindow) {
+                iframe.contentWindow.postMessage({ type: 'pud:context', ctx }, DESTINO_MENSAJES);
             }
-            if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-                recuperarHistorialReal();
+        }
+
+        // ---------- Barra de pestañas ----------
+        function renderToolbar() {
+            const barra = document.getElementById('tools-toolbar');
+            if (!barra) return;
+            const pestañas = HERRAMIENTAS.filter(h => h.ubicacion !== 'menu');
+            // "PUD" va primero y no es una herramienta: muestra el PUD a pantalla
+            // completa. Sin PUD (Mesa de Trabajo libre) no aparece.
+            const pestañaPud = hayPudEnMesa()
+                ? `<button type="button" class="tool-tab tool-tab-pud" data-vista="pud" aria-controls="panel-pud"
+                            ${workspace.vista === 'pud' ? 'aria-current="page"' : ''} title="Ver el PUD a pantalla completa">
+                            <span aria-hidden="true">📘</span>PUD
+                        </button>`
+                : '';
+            barra.innerHTML = pestañaPud + pestañas.map(h => {
+                const activa = h.id === workspace.activa && workspace.vista === 'herramienta';
+                return `<button type="button" class="tool-tab" data-tool="${h.id}"
+                            ${activa ? 'aria-current="page"' : ''}
+                            ${h.habilitada ? `aria-controls="tool-panel-${h.id}"` : 'disabled aria-disabled="true"'}
+                            title="${h.habilitada ? h.nombre : h.nombre + ': disponible pronto'}">
+                            <span aria-hidden="true">${h.icono}</span>${escapeHtml(h.nombre)}
+                            ${h.etiqueta ? `<span class="tool-badge">${escapeHtml(h.etiqueta)}</span>` : ''}
+                            ${workspace.dirty[h.id] ? '<span class="tool-dot" role="img" aria-label="Cambios sin guardar"></span>' : ''}
+                        </button>`;
+            }).join('') + `
+                <div class="tools-mas">
+                    <button type="button" class="tool-tab" id="tools-mas-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="tools-menu">Más ▾</button>
+                </div>`;
+        }
+
+        function renderMenuMas() {
+            const menu = document.getElementById('tools-menu');
+            const extras = HERRAMIENTAS.filter(h => h.ubicacion === 'menu');
+            menu.innerHTML = extras.length
+                ? extras.map(h => `<button type="button" role="menuitem" data-tool="${h.id}" ${h.habilitada ? '' : 'disabled'}>
+                        <span aria-hidden="true">${h.icono}</span>${escapeHtml(h.nombre)}
+                        ${h.etiqueta ? `<span class="tool-badge">${escapeHtml(h.etiqueta)}</span>` : ''}</button>`).join('')
+                : '<div class="tools-menu-vacio">Próximamente, más herramientas.</div>';
+        }
+
+        function abrirMenuMas(abrir) {
+            const menu = document.getElementById('tools-menu');
+            const btn = document.getElementById('tools-mas-btn');
+            if (!menu || !btn) return;
+            if (abrir) {
+                renderMenuMas();
+                const r = btn.getBoundingClientRect();
+                menu.style.top = (r.bottom + 6) + 'px';
+                menu.style.left = Math.max(8, r.right - 220) + 'px';
+                menu.hidden = false;
+                menu.querySelector('button:not(:disabled)')?.focus();
+            } else {
+                menu.hidden = true;
+            }
+            btn.setAttribute('aria-expanded', String(!!abrir));
+        }
+
+        // ---------- Vistas: PUD a pantalla completa o herramienta ----------
+        // Pestaña "PUD": el PUD a pantalla completa. Cualquier herramienta: el
+        // PUD pasa al lateral izquierdo (ancho del divisor) y la herramienta
+        // ocupa el resto. Es siempre el mismo #output-preview (misma fuente de
+        // datos, mismo guardado, mismo "pud:changed"): solo cambia el layout,
+        // así que no se destruye nada al ir y venir.
+        function hayPudEnMesa() {
+            return document.body.getAttribute('data-mode') !== 'libre';
+        }
+
+        function claveScroll(vista) {
+            return vista === 'pud' ? 'pud' : 'lateral';
+        }
+
+        const pudScroll = document.getElementById('pud-scroll');
+
+        function setVista(vista) {
+            // Sin PUD no hay vista "pud": la herramienta ocupa todo el ancho.
+            const nueva = vista === 'pud' && hayPudEnMesa() ? 'pud' : 'herramienta';
+            const anterior = workspace.vista;
+            if (anterior !== nueva) workspace.scroll[claveScroll(anterior)] = pudScroll.scrollTop;
+            workspace.vista = nueva;
+            document.body.setAttribute('data-ws-vista', nueva);
+            if (nueva === 'herramienta') mostrarHerramienta(workspace.activa);
+            actualizarTitulosPlegables();
+            renderToolbar();
+            if (anterior !== nueva) {
+                // Cambia el ancho del PUD: se vuelve al scroll que tenía esta vista.
+                const destino = workspace.scroll[claveScroll(nueva)];
+                pudScroll.scrollTop = destino;
+                requestAnimationFrame(() => { pudScroll.scrollTop = destino; });
+            }
+        }
+
+        function mostrarHerramienta(id) {
+            const h = herramienta(id);
+            if (!h || !h.habilitada) return;
+            const contenedor = document.getElementById('panel-herramientas');
+            if (!workspace.montadas.has(id)) {
+                const panel = document.createElement('section');
+                panel.className = 'tool-panel';
+                panel.id = 'tool-panel-' + id;
+                panel.setAttribute('aria-label', h.nombre);
+                contenedor.appendChild(panel);
+                const iframe = h.montar ? h.montar(panel) : null;
+                workspace.montadas.set(id, { panel, iframe });
+            }
+            // Las demás se ocultan, no se destruyen: conservan lo que se estaba editando.
+            workspace.montadas.forEach((m, otroId) => { m.panel.hidden = otroId !== id; });
+            workspace.activa = id;
+        }
+
+        function clicEnPestaña(id) {
+            const h = herramienta(id);
+            if (!h || !h.habilitada) return;
+            workspace.activa = id;
+            setVista('herramienta');
+        }
+
+        // Al abrir o cargar un PUD, la Mesa arranca siempre en la pestaña PUD
+        // a pantalla completa; sin PUD, en la última herramienta usada.
+        function prepararWorkspace() {
+            medirHeader();
+            plegadas = new Set(SECCIONES_PLEGADAS_POR_DEFECTO);
+            aplicarPlegado();
+            setVista(hayPudEnMesa() ? 'pud' : 'herramienta');
+            workspace.scroll = { pud: 0, lateral: 0 };
+            pudScroll.scrollTop = 0;
+        }
+
+        // ---------- Secciones plegables del PUD (en el lateral) ----------
+        const SECCIONES_PUD = [
+            { id: 'throughlines', titulo: 'THROUGHLINES' },
+            { id: 'topic', titulo: 'TOPIC' },
+            { id: 'metas', titulo: 'UNDERSTANDING GOALS' },
+            { id: 'desempenos', titulo: 'PERFORMANCES' }
+        ];
+        // Por defecto quedan abiertas metas y desempeños.
+        const SECCIONES_PLEGADAS_POR_DEFECTO = ['throughlines', 'topic'];
+        let plegadas = new Set(SECCIONES_PLEGADAS_POR_DEFECTO);
+
+        // El plegado se aplica con clases en #output-preview (el contenedor,
+        // que no se guarda), así no ensucia el HTML del PUD.
+        function aplicarPlegado() {
+            SECCIONES_PUD.forEach(sec => preview.classList.toggle('plegada-' + sec.id, plegadas.has(sec.id)));
+            actualizarTitulosPlegables();
+        }
+
+        // Los títulos de sección funcionan como botón solo en el lateral.
+        // Estos atributos son de la interfaz: htmlParaGuardar() los quita.
+        function actualizarTitulosPlegables() {
+            const lateral = workspace.vista === 'herramienta';
+            preview.querySelectorAll('.pud-section-title[data-seccion]').forEach(t => {
+                t.setAttribute('contenteditable', 'false');
+                if (lateral) {
+                    t.setAttribute('role', 'button');
+                    t.setAttribute('tabindex', '0');
+                    t.setAttribute('aria-expanded', String(!plegadas.has(t.dataset.seccion)));
+                } else {
+                    ['role', 'tabindex', 'aria-expanded'].forEach(a => t.removeAttribute(a));
+                }
+            });
+        }
+
+        function alternarSeccion(id) {
+            if (plegadas.has(id)) plegadas.delete(id);
+            else plegadas.add(id);
+            aplicarPlegado();
+        }
+
+        preview.addEventListener('click', (e) => {
+            if (workspace.vista !== 'herramienta') return;
+            const titulo = e.target.closest('.pud-section-title[data-seccion]');
+            if (titulo) alternarSeccion(titulo.dataset.seccion);
+        });
+
+        preview.addEventListener('keydown', (e) => {
+            if (workspace.vista !== 'herramienta' || (e.key !== 'Enter' && e.key !== ' ')) return;
+            const titulo = document.activeElement?.closest?.('.pud-section-title[data-seccion]');
+            if (!titulo || !preview.contains(titulo)) return;
+            e.preventDefault();
+            alternarSeccion(titulo.dataset.seccion);
+        });
+
+        // HTML del PUD tal como se guarda: sin los atributos de interfaz de
+        // los títulos plegables.
+        function htmlParaGuardar() {
+            const copia = preview.cloneNode(true);
+            copia.querySelectorAll('.pud-section-title').forEach(t =>
+                ['role', 'tabindex', 'aria-expanded', 'contenteditable'].forEach(a => t.removeAttribute(a)));
+            return copia.innerHTML;
+        }
+
+        function medirHeader() {
+            const header = document.querySelector('header');
+            if (header) document.documentElement.style.setProperty('--alto-header', header.offsetHeight + 'px');
+        }
+        window.addEventListener('resize', medirHeader);
+
+        // ---------- Divisor arrastrable ----------
+        const CLAVE_ANCHO_PUD = 'espacioDocente.anchoPud';
+        const ANCHO_PUD_DEFECTO = 30;
+
+        function leerAnchoGuardado() {
+            try {
+                const v = parseFloat(localStorage.getItem(CLAVE_ANCHO_PUD));
+                return Number.isFinite(v) ? v : ANCHO_PUD_DEFECTO;
+            } catch (err) {
+                return ANCHO_PUD_DEFECTO;
+            }
+        }
+
+        function aplicarAnchoPud(pct, guardar) {
+            const layout = document.getElementById('workspace-layout');
+            const ancho = layout?.clientWidth || window.innerWidth;
+            const minPct = Math.min(50, 280 / ancho * 100);
+            const valor = Math.round(Math.min(50, Math.max(minPct, pct)) * 10) / 10;
+            layout?.style.setProperty('--ancho-pud', valor + '%');
+            const divisor = document.getElementById('ws-divisor');
+            if (divisor) {
+                divisor.setAttribute('aria-valuenow', String(Math.round(valor)));
+                divisor.setAttribute('aria-valuetext', `PUD ${Math.round(valor)}% del ancho`);
+            }
+            if (guardar) {
+                try { localStorage.setItem(CLAVE_ANCHO_PUD, String(valor)); } catch (err) { /* sin storage: solo esta sesión */ }
+            }
+            return valor;
+        }
+
+        (function configurarDivisor() {
+            const divisor = document.getElementById('ws-divisor');
+            const layout = document.getElementById('workspace-layout');
+            if (!divisor || !layout) return;
+            let anchoActual = aplicarAnchoPud(leerAnchoGuardado(), false);
+
+            divisor.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                divisor.setPointerCapture(e.pointerId);
+                document.body.classList.add('ws-arrastrando');
+            });
+            divisor.addEventListener('pointermove', (e) => {
+                if (!divisor.hasPointerCapture(e.pointerId)) return;
+                const r = layout.getBoundingClientRect();
+                anchoActual = aplicarAnchoPud((e.clientX - r.left) / r.width * 100, false);
+            });
+            const soltar = (e) => {
+                if (!divisor.hasPointerCapture(e.pointerId)) return;
+                divisor.releasePointerCapture(e.pointerId);
+                document.body.classList.remove('ws-arrastrando');
+                anchoActual = aplicarAnchoPud(anchoActual, true);
+            };
+            divisor.addEventListener('pointerup', soltar);
+            divisor.addEventListener('pointercancel', soltar);
+
+            // Doble clic: alterna entre 30/70 y 50/50.
+            divisor.addEventListener('dblclick', () => {
+                anchoActual = aplicarAnchoPud(anchoActual < 40 ? 50 : 30, true);
+            });
+
+            // Teclado: flechas mueven de a 2%; Inicio/Fin van a 30% y 50%.
+            divisor.addEventListener('keydown', (e) => {
+                const pasos = { ArrowLeft: -2, ArrowRight: 2 };
+                if (e.key in pasos) anchoActual = aplicarAnchoPud(anchoActual + pasos[e.key], true);
+                else if (e.key === 'Home') anchoActual = aplicarAnchoPud(30, true);
+                else if (e.key === 'End') anchoActual = aplicarAnchoPud(50, true);
+                else return;
+                e.preventDefault();
+            });
+
+            window.addEventListener('resize', () => { anchoActual = aplicarAnchoPud(anchoActual, false); });
+        })();
+
+        // ---------- Eventos de la barra, el menú y el teclado ----------
+        document.getElementById('tools-toolbar')?.addEventListener('click', (e) => {
+            if (e.target.closest('#tools-mas-btn')) {
+                abrirMenuMas(document.getElementById('tools-menu').hidden);
+                return;
+            }
+            if (e.target.closest('.tool-tab[data-vista="pud"]')) { setVista('pud'); return; }
+            const btn = e.target.closest('.tool-tab[data-tool]');
+            if (btn) clicEnPestaña(btn.dataset.tool);
+        });
+
+        document.getElementById('tools-menu')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-tool]');
+            if (!btn) return;
+            abrirMenuMas(false);
+            clicEnPestaña(btn.dataset.tool);
+        });
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('tools-menu');
+            if (menu && !menu.hidden && !e.target.closest('#tools-menu, #tools-mas-btn')) abrirMenuMas(false);
+            const menuTipo = document.getElementById('pud-tipo-menu');
+            if (menuTipo && !menuTipo.hidden && !e.target.closest('#pud-tipo-menu, .pud-upt-sin-clasificar')) cerrarMenuTipo();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            // Primero se cierran los menús abiertos.
+            const menu = document.getElementById('tools-menu');
+            if (menu && !menu.hidden) { abrirMenuMas(false); document.getElementById('tools-mas-btn')?.focus(); return; }
+            const menuTipo = document.getElementById('pud-tipo-menu');
+            if (menuTipo && !menuTipo.hidden) { cerrarMenuTipo(); return; }
+        });
+
+        // Avisos de las herramientas: solo del mismo sitio y de un iframe propio.
+        window.addEventListener('message', (event) => {
+            if (!origenValido(event.origin) || !event.data || event.data.type !== 'tool:dirty') return;
+            for (const [id, m] of workspace.montadas) {
+                if (m.iframe && m.iframe.contentWindow === event.source) {
+                    workspace.dirty[id] = !!event.data.dirty;
+                    renderToolbar();
+                    return;
+                }
             }
         });
 
-        // Setup: cargar HTML dentro de un iframe en el tab correspondiente
-        (function setupHtmlTabLoader(){
-            function installLoader(tabKey, displayId, filename){
-                const display = document.getElementById(displayId);
-                if(!display) return;
+        // ---------- Contexto del PUD ----------
+        // Tipo de cada desempeño a partir de la columna UPT del PUD. Códigos
+        // del colegio: E / I / PF; también se leen los que usaban PUDs viejos.
+        const TIPO_POR_CODIGO_UPT = {
+            E: 'exploracion', EX: 'exploracion', EXPLORACION: 'exploracion', EXPLORATION: 'exploracion',
+            I: 'investigacion_guiada', IG: 'investigacion_guiada', GI: 'investigacion_guiada',
+            INVESTIGACIONGUIADA: 'investigacion_guiada', GUIDEDINQUIRY: 'investigacion_guiada',
+            PF: 'sintesis', FP: 'sintesis', ST: 'sintesis', SYNTHESIS: 'sintesis', SINTESIS: 'sintesis',
+            PROYECTOFINAL: 'sintesis', FINALPROJECT: 'sintesis'
+        };
 
-                function loadFile(){
-                    if (display.querySelector('iframe')) {
-                        return;
-                    }
+        function tipoDesdeCodigo(codigo) {
+            const clave = String(codigo || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .toUpperCase().replace(/[^A-Z]/g, '');
+            return TIPO_POR_CODIGO_UPT[clave] || 'sin_clasificar';
+        }
 
-                    display.innerHTML = '';
-                    const iframe = document.createElement('iframe');
-                    iframe.src = filename;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.minHeight = '520px';
-                    iframe.style.border = '0';
-                    display.appendChild(iframe);
-                }
+        function nuevoUid() {
+            return window.crypto?.randomUUID ? crypto.randomUUID() : 'pud-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        }
 
-                const tabBtn = document.querySelector(`button[onclick*="${tabKey}"]`);
-                if(tabBtn) tabBtn.addEventListener('click', loadFile);
+        // Ids estables en el JSON del PUD (se guardan dentro de content_json,
+        // sin cambiar el esquema): pud_uid, y uid en cada meta y desempeño.
+        function asegurarIdsJson(json, uidPorDefecto) {
+            if (!json || typeof json !== 'object') return json;
+            if (!json.pud_uid) json.pud_uid = uidPorDefecto || nuevoUid();
+            (json.understanding_goals || []).forEach((ug, i) => { if (ug && !ug.uid) ug.uid = 'm' + (i + 1); });
+            (json.performances || []).forEach((p, i) => { if (p && !p.uid) p.uid = 'd' + (i + 1); });
+            return json;
+        }
 
-                // Si la pestaña ya está activa al cargar la página, cargar el contenido inmediatamente.
-                const tabSection = document.getElementById(`tab-${tabKey}`);
-                if(tabSection && tabSection.classList.contains('active')){
-                    loadFile();
-                }
-            }
+        function raizPud() {
+            return preview.querySelector('[data-pud-uid]')
+                || preview.querySelector('#render-year')?.closest('table')?.parentElement
+                || null;
+        }
 
-            installLoader('secuencias', 'display-secuencias', 'secuencias-epc.html');
-            installLoader('tareas', 'display-tareas', 'generador-tareas.html');
+        function tablaDeSeccion(raiz, titulo) {
+            const encabezado = Array.from(raiz.querySelectorAll('.pud-section-title'))
+                .find(el => el.textContent.toUpperCase().includes(titulo));
+            const tabla = encabezado?.nextElementSibling;
+            return tabla && tabla.tagName === 'TABLE' ? tabla : null;
+        }
 
-            // Le pasa al Generador de Tareas el grado/materia/objetivos de la PUD
-            // activa (sin tocar installLoader: el iframe se crea una sola vez, así
-            // que el contexto se reenvía por postMessage cada vez que hace falta).
-            function construirContextoParaTareas() {
-                return {
-                    type: 'pud-workspace:contexto',
-                    grado: document.getElementById('unit_year')?.value || '',
-                    materia: document.getElementById('subject')?.value || '',
-                    unitName: document.getElementById('unit_name')?.value || window.pudActivoJson?.topic || '',
-                    topic: window.pudActivoJson?.topic || '',
-                    objetivos: (window.pudActivoJson?.understanding_goals || [])
-                        .slice(0, 3)
-                        .map(ug => ug.text)
-                        .filter(Boolean)
-                };
-            }
+        function filasDesempenos(raiz) {
+            const tabla = tablaDeSeccion(raiz, 'PERFORMANCES');
+            return tabla ? Array.from(tabla.rows).slice(1) : []; // la primera fila es el encabezado
+        }
 
-            function enviarContextoATareas() {
-                const iframe = document.querySelector('#display-tareas iframe');
-                if (!iframe || !iframe.contentWindow) return;
-                iframe.contentWindow.postMessage(construirContextoParaTareas(), '*');
-            }
+        function marcarTipoDesempeno(tr) {
+            const celda = tr.cells[2];
+            if (!celda || tr.dataset.desempenoId === 'pf') return;
+            const sinClasificar = tipoDesdeCodigo(celda.textContent) === 'sin_clasificar';
+            celda.classList.toggle('pud-upt-sin-clasificar', sinClasificar);
+            if (sinClasificar) celda.title = 'Tipo sin clasificar: tocá para elegir E, I o PF';
+            else celda.removeAttribute('title');
+        }
 
-            const tabBtnTareas = document.querySelector('button[onclick*="tareas"]');
-            if (tabBtnTareas) tabBtnTareas.addEventListener('click', enviarContextoATareas);
+        // Completa en el HTML del PUD lo que falte (PUDs viejos): uid del PUD,
+        // id de cada meta y desempeño, y la marca de "sin clasificar".
+        function anotarPud(json, uidPorDefecto) {
+            const raiz = raizPud();
+            if (!raiz) return null;
+            const uid = raiz.dataset.pudUid || json?.pud_uid || uidPorDefecto || nuevoUid();
+            raiz.dataset.pudUid = uid;
+            if (json) json.pud_uid = uid;
 
-            window.addEventListener('message', (event) => {
-                if (event.data && event.data.type === 'tareas:ready') {
-                    enviarContextoATareas();
-                }
+            // Títulos de sección con id, para plegarlos en el lateral.
+            raiz.querySelectorAll('.pud-section-title').forEach(t => {
+                const sec = SECCIONES_PUD.find(x => t.textContent.toUpperCase().includes(x.titulo));
+                if (sec) t.dataset.seccion = sec.id;
             });
-        })();
+
+            const tablaMetas = tablaDeSeccion(raiz, 'UNDERSTANDING GOALS');
+            Array.from(tablaMetas?.rows || []).forEach((tr, i) => {
+                if (!tr.dataset.metaId) tr.dataset.metaId = 'm' + (i + 1);
+            });
+
+            let n = 0;
+            filasDesempenos(raiz).forEach(tr => {
+                const esFinal = /FINAL PROJECT/i.test(tr.cells[0]?.textContent || '');
+                if (!esFinal) n++;
+                if (!tr.dataset.desempenoId) tr.dataset.desempenoId = esFinal ? 'pf' : 'd' + n;
+                if (tr.cells[2]) tr.cells[2].classList.add('pud-desempeno-upt');
+                marcarTipoDesempeno(tr);
+            });
+            actualizarTitulosPlegables();
+            return raiz;
+        }
+
+        // Lleva al JSON los tipos que el docente cambió a mano en el PUD.
+        function sincronizarJsonDesdeDom() {
+            const raiz = raizPud();
+            const json = window.pudActivoJson;
+            if (!raiz || !json) return;
+            json.pud_uid = raiz.dataset.pudUid || json.pud_uid;
+            filasDesempenos(raiz).forEach(tr => {
+                const p = (json.performances || []).find(x => x.uid === tr.dataset.desempenoId);
+                if (p && tr.cells[2]) p.upt = tr.cells[2].textContent.trim();
+            });
+        }
+
+        function textoLimpio(el) {
+            return (el?.textContent || '').replace(/\s+/g, ' ').trim();
+        }
+
+        // Contexto del PUD abierto, leído del HTML en pantalla para reflejar
+        // las ediciones manuales. null si no hay PUD abierto. Forma documentada
+        // en pud-contexto.js.
+        function getPudContext() {
+            if (document.body.getAttribute('data-view') !== 'workspace'
+                || document.body.getAttribute('data-mode') === 'libre') return null;
+            const raiz = raizPud();
+            if (!raiz) return null;
+
+            const metas = Array.from(tablaDeSeccion(raiz, 'UNDERSTANDING GOALS')?.rows || [])
+                .map(tr => ({ id: tr.dataset.metaId, texto: textoLimpio(tr.cells[0]).replace(/^(UG\s*)?\d+\s*:\s*/i, '') }))
+                .filter(m => m.id && m.texto);
+
+            const desempenos = filasDesempenos(raiz).map(tr => {
+                const esFinal = tr.dataset.desempenoId === 'pf';
+                const codigo = esFinal ? 'PF' : textoLimpio(tr.cells[2]);
+                return {
+                    id: tr.dataset.desempenoId,
+                    tipo: esFinal ? 'sintesis' : tipoDesdeCodigo(codigo),
+                    codigo,
+                    texto: textoLimpio(tr.cells[0]).replace(/^FINAL PROJECT:\s*/i, 'Proyecto final: ').replace(/\s*Assessment:.*$/i, '')
+                };
+            }).filter(d => d.id && d.texto);
+
+            return {
+                pudId: raiz.dataset.pudUid,
+                titulo: document.getElementById('unit_name').value.trim() || window.pudActivoJson?.topic || 'PUD sin nombre',
+                grado: textoLimpio(raiz.querySelector('#render-year')) || document.getElementById('unit_year').value,
+                materia: textoLimpio(raiz.querySelector('#render-subject')) || document.getElementById('subject').value,
+                metas,
+                desempenos
+            };
+        }
+
+        // "pud:changed" con debounce de 400 ms: edición, carga, cierre.
+        let pudChangedTimer = null;
+        function programarPudChanged() {
+            clearTimeout(pudChangedTimer);
+            pudChangedTimer = setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('pud:changed', { detail: getPudContext() }));
+            }, 400);
+        }
+
+        window.addEventListener('pud:changed', (e) => {
+            workspace.montadas.forEach(m => enviarContexto(m.iframe, e.detail));
+        });
+
+        preview.addEventListener('input', (e) => {
+            const fila = e.target.closest?.('tr[data-desempeno-id]')
+                || window.getSelection()?.anchorNode?.parentElement?.closest('tr[data-desempeno-id]');
+            if (fila) marcarTipoDesempeno(fila);
+            programarPudChanged();
+        });
+
+        // ---------- Asignar a mano el tipo de un desempeño sin clasificar ----------
+        let celdaTipoActiva = null;
+
+        function abrirMenuTipo(celda) {
+            const menu = document.getElementById('pud-tipo-menu');
+            celdaTipoActiva = celda;
+            menu.innerHTML = `<p>Tipo de este desempeño</p>
+                <button type="button" role="menuitem" data-codigo="E"><strong>E</strong>Exploración</button>
+                <button type="button" role="menuitem" data-codigo="I"><strong>I</strong>Investigación guiada</button>
+                <button type="button" role="menuitem" data-codigo="PF"><strong>PF</strong>Proyecto final de síntesis</button>`;
+            const r = celda.getBoundingClientRect();
+            menu.hidden = false;
+            menu.style.top = Math.min(window.innerHeight - menu.offsetHeight - 8, r.bottom + 4) + 'px';
+            menu.style.left = Math.max(8, Math.min(window.innerWidth - menu.offsetWidth - 8, r.left)) + 'px';
+            menu.querySelector('button')?.focus();
+        }
+
+        function cerrarMenuTipo() {
+            document.getElementById('pud-tipo-menu').hidden = true;
+            celdaTipoActiva = null;
+        }
+
+        preview.addEventListener('click', (e) => {
+            const celda = e.target.closest('.pud-upt-sin-clasificar');
+            if (celda) abrirMenuTipo(celda);
+        });
+
+        document.getElementById('pud-tipo-menu')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-codigo]');
+            if (!btn || !celdaTipoActiva) return;
+            const celda = celdaTipoActiva;
+            celda.textContent = btn.dataset.codigo;
+            marcarTipoDesempeno(celda.closest('tr'));
+            cerrarMenuTipo();
+            programarPudChanged();
+        });
+
+        renderToolbar();
+
+        ['unit_name', 'orientation', 'raw_input'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', sincronizarCampoNivelIngles);
+        });
+        document.getElementById('unit_year')?.addEventListener('change', sincronizarCampoNivelIngles);
+        sincronizarCampoNivelIngles();
 
         configurarHistorialMovil();
         inicializarSesionAuth();
@@ -2389,9 +4225,10 @@ Genera exactamente 4 'throughlines' relevantes y siempre completa 4 aunque el in
             if (homeView) homeView.style.display = 'none';
 
             document.body.setAttribute('data-mode', 'libre');
-            document.getElementById('w-pud-title').innerText = 'Mesa de Trabajo libre';
             document.getElementById('view-indicator').innerText = 'Mesa Libre sin PUD';
             document.body.setAttribute('data-view', 'workspace');
+            prepararWorkspace();
+            programarPudChanged(); // sin PUD: las herramientas reciben null
         }
     </script>
 </body>

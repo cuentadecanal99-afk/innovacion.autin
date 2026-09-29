@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Dirección General · Austin EBS</title>
+<link rel="icon" type="image/jpeg" href="austin-eco-bilingual-school-campana-argentina.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --ink:#141F26;
+    --petroleo:#26343E;
+    --petroleo-suave:#35505E;
+    --pergamino:#F4EFE6;
+    --pergamino-linea:#E3DBC8;
+    --naranja:#F18636;
+    --lima:#A9CF44;
+    --bronce:#B9862F;
+    --rojo:#C0503B;
+    --texto-claro:#F4EFE6;
+    --texto-tenue:#9FB1BB;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--texto-claro);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+
+  /* ---------- LOGIN ---------- */
+  #login-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(241,134,54,0.10), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(169,207,68,0.08), transparent 40%),
+      var(--ink);
+  }
+  .login-card{
+    width:100%;
+    max-width:420px;
+    background:var(--petroleo);
+    border:1px solid rgba(244,239,230,0.08);
+    border-radius:4px;
+    padding:44px 40px;
+    text-align:center;
+  }
+  .seal{
+    width:64px;height:64px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    border:2px solid var(--bronce);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:22px;
+    color:var(--bronce);
+    letter-spacing:1px;
+  }
+  .login-card h1{
+    font-size:22px;
+    font-weight:600;
+    margin:0 0 6px;
+    color:var(--texto-claro);
+  }
+  .login-card p{
+    color:var(--texto-tenue);
+    font-size:14px;
+    margin:0 0 28px;
+    line-height:1.5;
+  }
+  .login-card input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:3px;
+    border:1px solid rgba(244,239,230,0.18);
+    background:rgba(20,31,38,0.6);
+    color:var(--texto-claro);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    margin-bottom:14px;
+  }
+  .login-card input::placeholder{color:var(--texto-tenue);}
+  .btn-primary{
+    width:100%;
+    padding:13px 14px;
+    border:none;
+    border-radius:3px;
+    background:var(--lima);
+    color:#1A1006;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    transition:filter .15s;
+  }
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-primary:disabled{opacity:.5;cursor:default;}
+  .login-msg{margin-top:16px;font-size:13px;color:var(--lima);min-height:18px;}
+  .login-msg.error{color:var(--rojo);}
+
+  /* ---------- APP SHELL ---------- */
+  #app-screen{display:none;}
+  header.membrete{
+    background:var(--petroleo);
+    border-bottom:1px solid rgba(244,239,230,0.08);
+    padding:22px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .membrete-left{display:flex;align-items:center;gap:16px;}
+  .membrete-left .seal{width:46px;height:46px;font-size:16px;margin:0;}
+  .membrete-title{line-height:1.2;}
+  .membrete-title .kicker{
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--bronce);
+    font-weight:600;
+  }
+  .membrete-title h1{font-size:20px;margin:2px 0 0;font-weight:600;}
+  .membrete-right{text-align:right;font-size:13px;color:var(--texto-tenue);}
+  .membrete-right strong{color:var(--texto-claro);display:block;font-size:14px;}
+  .membrete-actions{display:flex;align-items:center;gap:8px;margin-top:8px;justify-content:flex-end;}
+  .btn-logout{
+    background:none;border:1px solid rgba(244,239,230,0.2);color:var(--texto-tenue);
+    padding:6px 12px;border-radius:3px;font-size:12px;cursor:pointer;
+    font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-logout:hover{border-color:var(--texto-claro);color:var(--texto-claro);}
+  .btn-cta{
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+    background:var(--lima);color:#1A1006;font-weight:600;font-size:12.5px;
+    padding:8px 15px;border-radius:20px;text-decoration:none;
+    font-family:'Inter',sans-serif;transition:filter .15s;
+  }
+  .btn-cta:hover{filter:brightness(1.08);}
+
+  main{max-width:1180px;margin:0 auto;padding:36px 40px 80px;}
+
+  /* KPI strip */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:1px;
+    background:rgba(244,239,230,0.08);
+    border:1px solid rgba(244,239,230,0.08);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:48px;
+  }
+  .kpi{
+    background:var(--petroleo);
+    padding:22px 24px;
+  }
+  .kpi .num{font-size:34px;font-weight:600;line-height:1;color:var(--texto-claro);}
+  .kpi .num small{font-size:18px;color:var(--texto-tenue);font-weight:500;}
+  .kpi .label{font-size:12px;color:var(--texto-tenue);margin-top:8px;letter-spacing:.4px;}
+
+  section{margin-bottom:56px;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:20px;
+    border-bottom:1px solid rgba(244,239,230,0.12);
+    padding-bottom:12px;
+  }
+  .section-head h2{font-size:19px;font-weight:600;margin:0;}
+  .section-head .eyebrow{
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bronce);
+    display:block;margin-bottom:4px;font-family:'Inter',sans-serif;font-weight:600;
+  }
+  .section-sub{font-size:13px;color:var(--texto-tenue);}
+
+  /* Onboarding roster */
+  .roster{
+    background:var(--petroleo);
+    border:1px solid rgba(244,239,230,0.08);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .roster-row{
+    display:grid;
+    grid-template-columns:1fr 140px 60px;
+    align-items:center;
+    gap:16px;
+    padding:14px 20px;
+    border-bottom:1px solid rgba(244,239,230,0.06);
+  }
+  .roster-row:last-child{border-bottom:none;}
+  .roster-row .who{font-size:13.5px;}
+  .roster-row .who .name-fallback{color:var(--texto-tenue);font-size:11px;}
+  .bar-track{
+    height:6px;background:rgba(244,239,230,0.1);border-radius:3px;overflow:hidden;
+  }
+  .bar-fill{height:100%;background:var(--lima);border-radius:3px;}
+  .bar-fill.mid{background:var(--naranja);}
+  .bar-fill.low{background:var(--rojo);}
+  .roster-row .pct{text-align:right;font-size:13px;}
+  .roster-empty{padding:28px 20px;color:var(--texto-tenue);font-size:13px;}
+
+  /* PUD ledger */
+  .nivel-block{margin-bottom:28px;}
+  .nivel-title{
+    font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--texto-tenue);
+    margin-bottom:12px;font-weight:600;
+  }
+  .seal-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+  }
+  @media (max-width:900px){.seal-grid{grid-template-columns:repeat(2,1fr);}}
+  .seal-card{
+    background:var(--petroleo);
+    border:1px solid rgba(244,239,230,0.08);
+    border-radius:4px;
+    padding:18px 16px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .seal-card:hover{border-color:var(--bronce);background:var(--petroleo-suave);}
+  .seal-card.active{border-color:var(--naranja);background:var(--petroleo-suave);}
+  .seal-ring{
+    width:52px;height:52px;border-radius:50%;
+    border:2px solid var(--bronce);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;
+    margin-bottom:10px;color:var(--texto-claro);
+  }
+  .seal-card .idioma{font-size:11px;color:var(--texto-tenue);text-transform:uppercase;letter-spacing:1px;}
+  .seal-card .count-label{font-size:12px;color:var(--texto-tenue);margin-top:2px;}
+
+  .drilldown{
+    margin-top:16px;
+    background:rgba(20,31,38,0.5);
+    border:1px solid rgba(244,239,230,0.08);
+    border-radius:4px;
+    display:none;
+  }
+  .drilldown.open{display:block;}
+  .drill-row{
+    display:grid;
+    grid-template-columns:1.6fr 1fr 100px 120px;
+    gap:14px;
+    padding:12px 18px;
+    font-size:13px;
+    border-bottom:1px solid rgba(244,239,230,0.06);
+    align-items:center;
+  }
+  .drill-row:last-child{border-bottom:none;}
+  .drill-row.head{
+    color:var(--texto-tenue);font-size:11px;text-transform:uppercase;letter-spacing:1px;
+    background:rgba(244,239,230,0.03);
+  }
+  .chip{
+    display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;
+  }
+  .chip.presented{background:rgba(169,207,68,0.15);color:var(--lima);}
+  .chip.draft{background:rgba(244,239,230,0.1);color:var(--texto-tenue);}
+  .chip.pending{background:rgba(244,239,230,0.1);color:var(--texto-tenue);}
+  .chip.approved{background:rgba(169,207,68,0.25);color:var(--lima);}
+  .chip.changes_requested{background:rgba(192,80,59,0.2);color:#E08A78;}
+  .drill-empty{padding:20px 18px;color:var(--texto-tenue);font-size:13px;}
+
+  /* Coordinadores roster */
+  .coord-row{
+    display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;align-items:center;
+    padding:14px 20px;border-bottom:1px solid rgba(244,239,230,0.06);font-size:13px;
+  }
+  .coord-row:last-child{border-bottom:none;}
+  .tag{
+    display:inline-block;background:rgba(244,239,230,0.08);border:1px solid rgba(244,239,230,0.1);
+    padding:2px 9px;border-radius:20px;margin:2px 5px 2px 0;font-size:11px;color:var(--texto-tenue);
+  }
+
+  /* Próximamente */
+  .soon-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:14px;
+  }
+  .soon-card{
+    border:1px dashed rgba(244,239,230,0.2);
+    border-radius:4px;
+    padding:20px 16px;
+    color:var(--texto-tenue);
+    font-size:13px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .soon-card .dot{width:6px;height:6px;border-radius:50%;background:var(--texto-tenue);}
+
+  /* Calendario institucional */
+  .evt-form{
+    display:grid;grid-template-columns:1.4fr 1fr 100px 1fr auto;gap:10px;
+    margin-bottom:22px;align-items:end;
+  }
+  .evt-form label{display:block;font-size:11px;color:var(--texto-tenue);margin-bottom:4px;}
+  .evt-form input,.evt-form select{
+    width:100%;padding:9px 10px;border-radius:3px;
+    border:1px solid rgba(244,239,230,0.18);
+    background:rgba(20,31,38,0.6);color:var(--texto-claro);
+    font-family:'Inter',sans-serif;font-size:13px;
+  }
+  .evt-form .full{grid-column:1/-1;}
+  .evt-form .btn-primary{padding:9px 16px;font-size:13px;white-space:nowrap;}
+  @media (max-width:900px){.evt-form{grid-template-columns:1fr 1fr;}}
+  .evt-row{
+    display:grid;grid-template-columns:130px 1fr 90px 40px;gap:14px;align-items:center;
+    padding:12px 20px;border-bottom:1px solid rgba(244,239,230,0.06);font-size:13px;
+  }
+  .evt-row:last-child{border-bottom:none;}
+  .evt-date{font-family:'IBM Plex Mono',monospace;color:var(--texto-claro);}
+  .evt-title{font-weight:600;}
+  .evt-desc{font-size:12px;color:var(--texto-tenue);margin-top:2px;}
+  .evt-tipo{font-size:11px;color:var(--texto-tenue);text-transform:uppercase;letter-spacing:.5px;}
+  .evt-delete{
+    background:none;border:1px solid rgba(244,239,230,0.2);color:var(--texto-tenue);
+    width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:13px;
+  }
+  .evt-delete:hover{border-color:var(--rojo);color:var(--rojo);}
+
+  #loading, #denied{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--texto-tenue);font-size:14px;text-align:center;padding:24px;
+  }
+  #denied strong{color:var(--texto-claro);font-family:'Fraunces',serif;font-size:20px;margin-bottom:10px;}
+
+  /* ---------- CELULAR ---------- */
+  @media (max-width:640px){
+    header.membrete{padding:16px;}
+    .membrete-right{text-align:left;}
+    .membrete-actions{justify-content:flex-start;}
+    main{padding:24px 16px 60px;}
+    .section-head{flex-wrap:wrap;gap:10px;}
+    .roster-row{grid-template-columns:1fr 70px 44px;padding-left:12px;padding-right:12px;}
+    .coord-row{grid-template-columns:1fr;gap:6px;}
+    .drill-row{grid-template-columns:1fr 1fr;}
+    .drill-row.head{display:none;}
+    .evt-form{grid-template-columns:1fr;}
+    .evt-row{grid-template-columns:1fr auto;padding:12px;}
+    .evt-row .evt-date,.evt-row .evt-tipo{grid-column:1;}
+    .evt-row .evt-delete{grid-column:2;grid-row:1;}
+    .seal-grid{grid-template-columns:1fr 1fr;}
+    .kpi .num{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <div class="seal">AE</div>
+    <h1>Panel de Dirección General</h1>
+    <p>Austin Eco Bilingual School — acceso exclusivo para Dirección.<br>Ingresá con tu email institucional y contraseña.</p>
+    <input type="email" id="email-input" placeholder="directora@austinebs-ah.edu.ar" autocomplete="email">
+    <input type="password" id="password-input" placeholder="Contraseña" autocomplete="current-password">
+    <button class="btn-primary" id="send-link-btn">Ingresar</button>
+
+    <div class="login-msg" id="login-msg"></div>
+  </div>
+</div>
+
+<div id="loading" style="display:none;">Verificando acceso…</div>
+
+<div id="denied" style="display:none;">
+  <strong>Acceso restringido</strong>
+  <p>Esta cuenta no tiene permisos de Dirección General sobre este panel.</p>
+  <button class="btn-logout" id="denied-logout-btn">Volver a intentar</button>
+</div>
+
+<div id="app-screen">
+  <header class="membrete">
+    <div class="membrete-left">
+      <div class="seal">AE</div>
+      <div class="membrete-title">
+        <span class="kicker">Austin EBS · Dirección General</span>
+        <h1>Panel Ejecutivo</h1>
+      </div>
+    </div>
+    <div class="membrete-right">
+      <strong id="director-name">—</strong>
+      <span id="today-date"></span>
+      <div class="membrete-actions">
+        <a class="btn-logout" href="https://mail.google.com/" target="_blank" rel="noopener">📧 Gmail</a>
+        <button class="btn-logout" id="logout-btn">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="kpi-row" id="kpi-row"></div>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Al Día</span>
+          <h2>Formación continua — cápsulas y encuestas</h2>
+        </div>
+        <a class="btn-cta" href="https://herramientadocentes.netlify.app/al-dia/index.html?vista=coordinacion" target="_blank" rel="noopener">+ Crear cápsula o encuesta</a>
+      </div>
+      <div class="kpi-row" id="aldia-kpis" style="margin-bottom:24px"></div>
+      <div class="nivel-title">Cápsulas</div>
+      <div id="aldia-capsulas" style="margin-bottom:28px"></div>
+      <div class="nivel-title">Encuestas</div>
+      <div class="roster" id="aldia-encuestas"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Espacio Docente</span>
+          <h2>Coordinación — revisión de PUDs</h2>
+        </div>
+        <div class="section-sub" id="pud-count-sub"></div>
+      </div>
+      <div class="kpi-row" id="revision-kpis" style="margin-bottom:24px"></div>
+      <div class="nivel-title">Coordinadores y sus permisos</div>
+      <div class="roster" id="coordinadores-roster" style="margin-bottom:28px"></div>
+      <div class="nivel-title">PUDs por nivel, ciclo e idioma</div>
+      <div id="pud-ledger"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Staff</span>
+          <h2>Onboarding — avance total</h2>
+        </div>
+        <div class="section-sub" id="onboarding-count-sub"></div>
+      </div>
+      <div class="roster" id="roster"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Calendario</span>
+          <h2>Reuniones y eventos institucionales</h2>
+        </div>
+        <div class="section-sub" id="eventos-count-sub"></div>
+      </div>
+      <div class="section-sub" style="margin-bottom:16px;">Lo que cargues acá aparece en el calendario anual del Panel de Bienvenida de Espacio Docente.</div>
+      <div class="evt-form">
+        <div>
+          <label for="evt-titulo">Título</label>
+          <input type="text" id="evt-titulo" placeholder="Reunión de equipo directivo">
+        </div>
+        <div>
+          <label for="evt-fecha">Fecha</label>
+          <input type="date" id="evt-fecha">
+        </div>
+        <div>
+          <label for="evt-hora">Hora</label>
+          <input type="time" id="evt-hora">
+        </div>
+        <div>
+          <label for="evt-tipo">Tipo</label>
+          <select id="evt-tipo">
+            <option value="evento">Evento</option>
+            <option value="reunion">Reunión</option>
+            <option value="feriado">Feriado</option>
+            <option value="entrega">Entrega</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="evt-crear-btn" type="button">+ Agregar</button>
+        <div class="full">
+          <label for="evt-descripcion">Descripción (opcional)</label>
+          <input type="text" id="evt-descripcion" placeholder="Detalles adicionales para el equipo">
+        </div>
+        <div class="full login-msg" id="evt-msg"></div>
+      </div>
+      <div class="roster" id="eventos-roster"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Próximamente</span>
+          <h2>Otros módulos</h2>
+        </div>
+      </div>
+      <div class="soon-row">
+        <div class="soon-card"><span class="dot"></span>Asistencia y licencias</div>
+        <div class="soon-card"><span class="dot"></span>Indicadores académicos</div>
+        <div class="soon-card"><span class="dot"></span>Comunicados institucionales</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyZXRmbmJkZGhib3NhY2ZnZHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mjk3MTcsImV4cCI6MjA4NzAwNTcxN30.P0HLqGab3tB5WdsVGYKXEyK572JvthHYFg7iu3MJpgo';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ---------- Clasificación de grado -> nivel/ciclo ----------
+const GRADO_INFO = {
+  'Sala de 3 años': {nivel:'Inicial', ciclo:'Jardín'},
+  'Sala de 4 años': {nivel:'Inicial', ciclo:'Jardín'},
+  'Sala de 5 años': {nivel:'Inicial', ciclo:'Jardín'},
+  '1° Grado Primaria': {nivel:'Primaria', ciclo:'1er Ciclo'},
+  '2° Grado Primaria': {nivel:'Primaria', ciclo:'1er Ciclo'},
+  '3° Grado Primaria': {nivel:'Primaria', ciclo:'1er Ciclo'},
+  '4° Grado Primaria': {nivel:'Primaria', ciclo:'2do Ciclo'},
+  '5° Grado Primaria': {nivel:'Primaria', ciclo:'2do Ciclo'},
+  '6° Grado Primaria': {nivel:'Primaria', ciclo:'2do Ciclo'},
+  '1° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Básico'},
+  '2° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Básico'},
+  '3° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Básico'},
+  '4° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Superior'},
+  '5° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Superior'},
+  '6° Año Secundaria': {nivel:'Secundaria', ciclo:'Ciclo Superior'},
+};
+const SEGMENTOS = [
+  {nivel:'Inicial', ciclo:'Jardín', idioma:'Castellano'},
+  {nivel:'Inicial', ciclo:'Jardín', idioma:'Inglés'},
+  {nivel:'Primaria', ciclo:'1er Ciclo', idioma:'Castellano'},
+  {nivel:'Primaria', ciclo:'1er Ciclo', idioma:'Inglés'},
+  {nivel:'Primaria', ciclo:'2do Ciclo', idioma:'Castellano'},
+  {nivel:'Primaria', ciclo:'2do Ciclo', idioma:'Inglés'},
+  {nivel:'Secundaria', ciclo:'Ciclo Básico', idioma:'Castellano'},
+  {nivel:'Secundaria', ciclo:'Ciclo Básico', idioma:'Inglés'},
+  {nivel:'Secundaria', ciclo:'Ciclo Superior', idioma:'Castellano'},
+  {nivel:'Secundaria', ciclo:'Ciclo Superior', idioma:'Inglés'},
+];
+const MATERIAS_INGLES = new Set(['social studies','language arts','literature','citizenship','speaking ws']);
+
+function normalizarGrado(year){
+  if(!year) return null;
+  const t = year.trim();
+  if(GRADO_INFO[t]) return t;
+  // intento flexible: buscar coincidencia por número + tipo
+  const match = Object.keys(GRADO_INFO).find(k => k.startsWith(t) || t.startsWith(k));
+  return match || null;
+}
+function inferirIdioma(subject){
+  if(!subject) return null;
+  const s = subject.trim().toLowerCase();
+  if(!s || s === 'sin materia') return null;
+  return MATERIAS_INGLES.has(s) ? 'Inglés' : 'Castellano';
+}
+function clasificarPud(p){
+  const gradoKey = normalizarGrado(p.year);
+  const info = gradoKey ? GRADO_INFO[gradoKey] : null;
+  const idioma = inferirIdioma(p.subject);
+  if(info && idioma){
+    return {key:`${info.nivel}|${info.ciclo}|${idioma}`, ...info, idioma};
+  }
+  return {key:'sin-clasificar'};
+}
+
+function segKey(s){ return `${s.nivel}|${s.ciclo}|${s.idioma}`; }
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Misma regla que Al Día: con la fecha de cierre vencida cuenta como cerrada.
+function encuestaAbierta(e){
+  return !!e.abierta && (!e.cierra_en || new Date(e.cierra_en).getTime() > Date.now());
+}
+// AAAA-MM-DD de hoy en hora local (toISOString() usa UTC: después de las
+// 21 h de Argentina ya devolvía el día siguiente).
+function fechaHoyLocal(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+const LABEL_REVISION = { pending:'Pendiente', approved:'Aprobado', changes_requested:'Con observaciones' };
+function estadoRevisionChip(p){
+  if (p.status !== 'presented') return `<span class="chip draft">Borrador</span>`;
+  const key = p.review_status || 'pending';
+  return `<span class="chip ${key}">${LABEL_REVISION[key] || key}</span>`;
+}
+
+// ---------- Auth ----------
+const els = {
+  login: document.getElementById('login-screen'),
+  loading: document.getElementById('loading'),
+  denied: document.getElementById('denied'),
+  app: document.getElementById('app-screen'),
+};
+function showOnly(id){
+  ['login-screen','loading','denied','app-screen'].forEach(x=>{
+    document.getElementById(x).style.display = (x===id) ? (x==='app-screen' ? 'block' : 'flex') : 'none';
+  });
+}
+
+document.getElementById('send-link-btn').addEventListener('click', async ()=>{
+  const email = document.getElementById('email-input').value.trim();
+  const password = document.getElementById('password-input').value;
+  const msg = document.getElementById('login-msg');
+  msg.className = 'login-msg';
+  if(!email || !password){ msg.textContent = 'Completá email y contraseña.'; msg.className='login-msg error'; return; }
+  const btn = document.getElementById('send-link-btn');
+  btn.disabled = true; btn.textContent = 'Ingresando…';
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = 'Ingresar';
+  if(error){ msg.textContent = 'Email o contraseña incorrectos.'; msg.className='login-msg error'; return; }
+  // onAuthStateChange se encarga de mostrar el panel
+});
+document.getElementById('password-input').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') document.getElementById('send-link-btn').click();
+});
+
+function resetLoginForm(){
+  document.getElementById('email-input').value = '';
+  document.getElementById('password-input').value = '';
+  document.getElementById('login-msg').textContent = '';
+  document.getElementById('login-msg').className = 'login-msg';
+}
+
+document.getElementById('logout-btn').addEventListener('click', async ()=>{ await sb.auth.signOut(); resetLoginForm(); showOnly('login-screen'); });
+document.getElementById('denied-logout-btn').addEventListener('click', async ()=>{ await sb.auth.signOut(); resetLoginForm(); showOnly('login-screen'); });
+
+let sessionVerified = false;
+
+// sessionVerified se marca al empezar (no al terminar): getSession() y
+// onAuthStateChange llegan casi juntos y el panel se cargaba dos veces.
+sb.auth.onAuthStateChange((event, session)=>{
+  if(event === 'SIGNED_OUT'){ sessionVerified = false; return; }
+  // Diferido: consultar Supabase dentro del callback puede bloquear supabase-js.
+  if(session && !sessionVerified){ setTimeout(() => handleSession(session), 0); }
+});
+
+async function init(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session){ handleSession(session); } else { showOnly('login-screen'); }
+}
+
+async function handleSession(session){
+  if(sessionVerified) return;
+  sessionVerified = true;
+  showOnly('loading');
+  const { data, error } = await sb.from('directores').select('email,nombre').eq('email', (session.user.email || '').trim().toLowerCase()).maybeSingle();
+  if(error || !data){ showOnly('denied'); return; }
+  document.getElementById('director-name').textContent = data.nombre || data.email;
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric' });
+  showOnly('app-screen');
+  loadDashboard();
+}
+
+// ---------- Data loading ----------
+async function loadDashboard(){
+  const [pudsRes, onboardingRes, coordRes, permGradosRes, permMateriasRes,
+         capsulasRes, confirmacionesRes, encuestasRes, respuestasRes] = await Promise.all([
+    sb.from('pud_history').select('id,unit_name,subject,year,docente_nombre,user_id,status,review_status,created_at'),
+    sb.rpc('director_onboarding_overview'),
+    sb.from('coordinadores').select('email,nombre'),
+    sb.from('coordinador_permiso_grados').select('email,grado'),
+    sb.from('coordinador_permiso_materias').select('email,materia'),
+    sb.from('capsulas').select('id,titulo,tipo,futura,publicado_en'),
+    sb.from('capsula_confirmaciones').select('capsula_id,user_id'),
+    sb.from('encuestas').select('id,titulo,abierta,cierra_en'),
+    sb.from('encuesta_respuestas').select('encuesta_id,user_id'),
+  ]);
+
+  const puds = pudsRes.data || [];
+  const onboarding = onboardingRes.data || [];
+  const coordinadores = coordRes.data || [];
+  const permGrados = permGradosRes.data || [];
+  const permMaterias = permMateriasRes.data || [];
+  const capsulas = capsulasRes.data || [];
+  const confirmaciones = confirmacionesRes.data || [];
+  const encuestas = encuestasRes.data || [];
+  const respuestas = respuestasRes.data || [];
+
+  renderKpis(puds, onboarding, capsulas, coordinadores);
+  renderAlDia(capsulas, confirmaciones, encuestas, respuestas);
+  renderCoordinacionSemaforo(puds);
+  renderCoordinadores(coordinadores, permGrados, permMaterias);
+  renderRoster(onboarding);
+  renderLedger(puds);
+  loadEventosCalendario();
+}
+
+// ---------- Calendario institucional ----------
+const TIPO_EVENTO_LABEL = { reunion:'Reunión', evento:'Evento', feriado:'Feriado', entrega:'Entrega', otro:'Otro' };
+let eventosCalendarioCache = [];
+
+async function loadEventosCalendario(){
+  const { data, error } = await sb.from('eventos_calendario')
+    .select('id,titulo,descripcion,fecha,hora,tipo')
+    .order('fecha');
+  if(error){ console.error('No se pudo cargar el calendario:', error); eventosCalendarioCache = []; }
+  else { eventosCalendarioCache = data || []; }
+  renderEventosCalendario();
+}
+
+function renderEventosCalendario(){
+  const el = document.getElementById('eventos-roster');
+  const sub = document.getElementById('eventos-count-sub');
+  const hoy = fechaHoyLocal();
+  const proximos = eventosCalendarioCache.filter(e => e.fecha >= hoy).length;
+  if(sub) sub.textContent = `${eventosCalendarioCache.length} evento${eventosCalendarioCache.length===1?'':'s'} · ${proximos} próximo${proximos===1?'':'s'}`;
+
+  if(!eventosCalendarioCache.length){
+    el.innerHTML = '<div class="roster-empty">Todavía no hay eventos cargados en el calendario.</div>';
+    return;
+  }
+  el.innerHTML = eventosCalendarioCache.map(e => {
+    const [y,m,d] = e.fecha.split('-');
+    return `
+      <div class="evt-row">
+        <div class="evt-date">${d}/${m}/${y}${e.hora ? ' · '+e.hora.slice(0,5) : ''}</div>
+        <div>
+          <div class="evt-title">${esc(e.titulo)}</div>
+          ${e.descripcion ? `<div class="evt-desc">${esc(e.descripcion)}</div>` : ''}
+        </div>
+        <div class="evt-tipo">${TIPO_EVENTO_LABEL[e.tipo] || esc(e.tipo)}</div>
+        <button class="evt-delete" type="button" title="Eliminar" onclick="eliminarEventoCalendario('${esc(e.id)}')">✕</button>
+      </div>`;
+  }).join('');
+}
+
+async function crearEventoCalendario(){
+  const tituloEl = document.getElementById('evt-titulo');
+  const fechaEl = document.getElementById('evt-fecha');
+  const horaEl = document.getElementById('evt-hora');
+  const tipoEl = document.getElementById('evt-tipo');
+  const descEl = document.getElementById('evt-descripcion');
+  const msg = document.getElementById('evt-msg');
+
+  const titulo = tituloEl.value.trim();
+  const fecha = fechaEl.value;
+  const hora = horaEl.value;
+  const tipo = tipoEl.value;
+  const descripcion = descEl.value.trim();
+
+  msg.className = 'login-msg';
+  if(!titulo || !fecha){
+    msg.textContent = 'Completá al menos el título y la fecha.';
+    msg.className = 'login-msg error';
+    return;
+  }
+
+  const btn = document.getElementById('evt-crear-btn');
+  btn.disabled = true; btn.textContent = 'Guardando…';
+  const { error } = await sb.from('eventos_calendario').insert([{
+    titulo, fecha, hora: hora || null, tipo, descripcion: descripcion || null,
+  }]);
+  btn.disabled = false; btn.textContent = '+ Agregar';
+
+  if(error){
+    msg.textContent = 'No se pudo guardar: ' + (error.message || 'error desconocido.');
+    msg.className = 'login-msg error';
+    return;
+  }
+
+  msg.textContent = 'Evento agregado.';
+  tituloEl.value = ''; fechaEl.value = ''; horaEl.value = ''; descEl.value = ''; tipoEl.value = 'evento';
+  await loadEventosCalendario();
+}
+
+async function eliminarEventoCalendario(id){
+  if(!confirm('¿Eliminar este evento del calendario?')) return;
+  const { error } = await sb.from('eventos_calendario').delete().eq('id', id);
+  if(error){ alert('No se pudo eliminar: ' + (error.message || 'error desconocido.')); return; }
+  await loadEventosCalendario();
+}
+
+document.getElementById('evt-crear-btn').addEventListener('click', crearEventoCalendario);
+
+function renderKpis(puds, onboarding, capsulas, coordinadores){
+  const presentados = puds.filter(p=>p.status==='presented').length;
+  const promedioOnboarding = onboarding.length
+    ? Math.round(onboarding.reduce((a,b)=>a+(Number(b.pct)||0),0) / onboarding.length)
+    : 0;
+  const publicadas = capsulas.filter(k=>!k.futura).length;
+
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi"><div class="num mono">${presentados}</div><div class="label">PUDs presentados a revisión</div></div>
+    <div class="kpi"><div class="num mono">${promedioOnboarding}<small>%</small></div><div class="label">Avance promedio de onboarding</div></div>
+    <div class="kpi"><div class="num mono">${publicadas}</div><div class="label">Cápsulas publicadas en Al Día</div></div>
+    <div class="kpi"><div class="num mono">${coordinadores.length}</div><div class="label">Coordinadores activos</div></div>
+  `;
+}
+
+function renderAlDia(capsulas, confirmaciones, encuestas, respuestas){
+  const publicadas = capsulas.filter(k=>!k.futura);
+  const abiertas = encuestas.filter(encuestaAbierta).length;
+
+  document.getElementById('aldia-kpis').innerHTML = `
+    <div class="kpi"><div class="num mono">${publicadas.length}</div><div class="label">Cápsulas publicadas</div></div>
+    <div class="kpi"><div class="num mono">${confirmaciones.length}</div><div class="label">Confirmaciones registradas</div></div>
+    <div class="kpi"><div class="num mono">${abiertas}<small>/${encuestas.length}</small></div><div class="label">Encuestas abiertas</div></div>
+  `;
+
+  const countByCapsula = {};
+  confirmaciones.forEach(c => { countByCapsula[c.capsula_id] = (countByCapsula[c.capsula_id]||0) + 1; });
+
+  const elCaps = document.getElementById('aldia-capsulas');
+  if (!capsulas.length){
+    elCaps.innerHTML = '<div class="roster-empty">Todavía no se publicó ninguna cápsula.</div>';
+  } else {
+    elCaps.innerHTML = `<div class="seal-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+      ${capsulas.map(k => `
+        <div class="seal-card" style="cursor:default">
+          <div class="seal-ring">${k.futura ? '—' : (countByCapsula[k.id]||0)}</div>
+          <div>${esc(k.titulo.length>34 ? k.titulo.slice(0,34)+'…' : k.titulo)}</div>
+          <div class="idioma">${k.futura ? 'Programada' : esc(k.tipo||'')}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  const elEnc = document.getElementById('aldia-encuestas');
+  if (!encuestas.length){
+    elEnc.innerHTML = '<div class="roster-empty">Todavía no hay encuestas.</div>';
+  } else {
+    const respByEncuesta = {};
+    respuestas.forEach(r => { respByEncuesta[r.encuesta_id] = (respByEncuesta[r.encuesta_id]||0)+1; });
+    elEnc.innerHTML = encuestas.map(e => `
+      <div class="roster-row" style="grid-template-columns:1fr 100px">
+        <div class="who">${esc(e.titulo)}<div class="name-fallback">${encuestaAbierta(e)?'Abierta':'Cerrada'}</div></div>
+        <div class="pct mono">${respByEncuesta[e.id]||0}</div>
+      </div>`).join('');
+  }
+}
+
+function renderCoordinacionSemaforo(puds){
+  const presentados = puds.filter(p=>p.status==='presented');
+  const counts = { pending:0, approved:0, changes_requested:0 };
+  presentados.forEach(p=>{ const k=p.review_status||'pending'; counts[k]=(counts[k]||0)+1; });
+  document.getElementById('revision-kpis').innerHTML = `
+    <div class="kpi"><div class="num mono">${presentados.length}</div><div class="label">PUDs presentados a revisión</div></div>
+    <div class="kpi"><div class="num mono">${counts.pending}</div><div class="label">Pendientes de revisión</div></div>
+    <div class="kpi"><div class="num mono">${counts.approved}</div><div class="label">Aprobados</div></div>
+    <div class="kpi"><div class="num mono">${counts.changes_requested}</div><div class="label">Con observaciones</div></div>
+  `;
+}
+
+function renderCoordinadores(coordinadores, permGrados, permMaterias){
+  const el = document.getElementById('coordinadores-roster');
+  if (!coordinadores.length){
+    el.innerHTML = '<div class="roster-empty">Todavía no hay coordinadores dados de alta.</div>';
+    return;
+  }
+  el.innerHTML = coordinadores.map(c => {
+    const grados = permGrados.filter(g=>g.email===c.email).map(g=>g.grado);
+    const materias = permMaterias.filter(m=>m.email===c.email).map(m=>m.materia);
+    const nombre = c.nombre || (c.email ? c.email.split('@')[0].replace(/[._]/g,' ') : 'Coordinador/a');
+    return `
+      <div class="coord-row">
+        <div class="who">${esc(nombre.charAt(0).toUpperCase()+nombre.slice(1))}<div class="name-fallback">${esc(c.email)}</div></div>
+        <div>${grados.length ? grados.map(g=>`<span class="tag">${esc(g)}</span>`).join('') : '<span class="tag">Todos los grados</span>'}</div>
+        <div>${materias.length ? materias.map(m=>`<span class="tag">${esc(m)}</span>`).join('') : '<span class="tag">Todas las materias</span>'}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderRoster(onboarding){
+  document.getElementById('onboarding-count-sub').textContent = `${onboarding.length} persona${onboarding.length===1?'':'s'}`;
+  const el = document.getElementById('roster');
+  if(!onboarding.length){ el.innerHTML = '<div class="roster-empty">Todavía no hay actividad de onboarding registrada.</div>'; return; }
+  el.innerHTML = onboarding.map(o=>{
+    const pct = Number(o.pct)||0;
+    const barClass = pct>=70?'':(pct>=35?'mid':'low');
+    const nombre = o.email ? o.email.split('@')[0].replace(/[._]/g,' ') : 'Usuario';
+    return `
+      <div class="roster-row">
+        <div class="who">${esc(nombre.charAt(0).toUpperCase()+nombre.slice(1))}<div class="name-fallback">${esc(o.email||'')}</div></div>
+        <div class="bar-track"><div class="bar-fill ${barClass}" style="width:${Math.min(pct,100)}%"></div></div>
+        <div class="pct mono">${pct}%</div>
+      </div>`;
+  }).join('');
+}
+
+function renderLedger(puds){
+  document.getElementById('pud-count-sub').textContent = `${puds.length} PUD${puds.length===1?'':'s'} en total`;
+
+  const grouped = {};
+  const sinClasificar = [];
+  puds.forEach(p=>{
+    const c = clasificarPud(p);
+    if(c.key==='sin-clasificar'){ sinClasificar.push(p); return; }
+    if(!grouped[c.key]) grouped[c.key] = [];
+    grouped[c.key].push(p);
+  });
+
+  const niveles = [
+    {nombre:'Nivel Inicial', segmentos: SEGMENTOS.filter(s=>s.nivel==='Inicial')},
+    {nombre:'Primaria', segmentos: SEGMENTOS.filter(s=>s.nivel==='Primaria')},
+    {nombre:'Secundaria', segmentos: SEGMENTOS.filter(s=>s.nivel==='Secundaria')},
+  ];
+
+  let html = '';
+  niveles.forEach(nv=>{
+    html += `<div class="nivel-block"><div class="nivel-title">${nv.nombre}</div><div class="seal-grid">`;
+    nv.segmentos.forEach(s=>{
+      const k = segKey(s);
+      const items = grouped[k] || [];
+      html += `
+        <div class="seal-card" data-key="${k}">
+          <div class="seal-ring">${items.length}</div>
+          <div>${s.ciclo}</div>
+          <div class="idioma">${s.idioma}</div>
+        </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  if(sinClasificar.length){
+    html += `
+      <div class="nivel-block">
+        <div class="nivel-title">Sin clasificar (falta grado o materia reconocible)</div>
+        <div class="seal-grid">
+          <div class="seal-card" data-key="sin-clasificar">
+            <div class="seal-ring">${sinClasificar.length}</div>
+            <div>Revisar carga</div>
+            <div class="idioma">—</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  html += `<div class="drilldown" id="drilldown"></div>`;
+  document.getElementById('pud-ledger').innerHTML = html;
+
+  grouped['sin-clasificar'] = sinClasificar;
+
+  const ledger = document.getElementById('pud-ledger');
+  ledger.querySelectorAll('.seal-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const key = card.dataset.key;
+      const wasActive = card.classList.contains('active');
+      ledger.querySelectorAll('.seal-card').forEach(c=>c.classList.remove('active'));
+      const dd = document.getElementById('drilldown');
+      if(wasActive){ dd.classList.remove('open'); dd.innerHTML=''; return; }
+      card.classList.add('active');
+      const items = grouped[key] || [];
+      dd.innerHTML = renderDrilldown(items);
+      dd.classList.add('open');
+      dd.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+}
+
+function renderDrilldown(items){
+  if(!items.length) return '<div class="drill-empty">No hay PUDs en este segmento.</div>';
+  const rows = items.map(p=>`
+    <div class="drill-row">
+      <div>${esc(p.unit_name || 'Sin título')}</div>
+      <div>${esc(p.docente_nombre || '—')}</div>
+      <div>${estadoRevisionChip(p)}</div>
+      <div>${esc(p.subject || '—')}</div>
+    </div>`).join('');
+  return `
+    <div class="drill-row head">
+      <div>Unidad</div><div>Docente</div><div>Estado</div><div>Materia</div>
+    </div>
+    ${rows}`;
+}
+
+init();
+</script>
+</body>
+</html>

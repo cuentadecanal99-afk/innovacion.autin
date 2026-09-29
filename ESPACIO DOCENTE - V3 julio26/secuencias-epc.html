@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secuencias Didácticas EpC | Austin Eco</title>
+    <link rel="icon" type="image/jpeg" href="austin-eco-bilingual-school-campana-argentina.jpg">
     <style>
         :root {
             --austin-blue: #1a2e5a;
@@ -73,6 +74,24 @@
             min-height: 160px;
         }
         textarea:focus { outline: none; border-color: var(--austin-blue); }
+
+        select {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #1e293b;
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        select:focus { border-color: var(--austin-blue); }
+
+        .optional-badge { text-transform: none; font-weight: 400; color: #94a3b8; }
+
+        .campo-edad { max-width: 320px; margin-bottom: 18px; }
 
         button.btn-main {
             margin-top: 14px;
@@ -185,6 +204,15 @@
         <p>Marco EpC — Harvard Project Zero &nbsp;|&nbsp; Austin Eco Bilingual School</p>
     </header>
 
+    <div id="del-pud" hidden></div>
+
+    <div class="form-group campo-edad">
+        <label id="label-nivel" for="f-nivel">Edad / Grado del alumno <span class="optional-badge">(opcional)</span></label>
+        <select id="f-nivel">
+            <option value="">Sin especificar</option>
+        </select>
+    </div>
+
     <label for="f-objetivo">Objetivo o tópico a desarrollar</label>
     <textarea id="f-objetivo" rows="6" placeholder="Describí el objetivo de comprensión, tópico generativo, contenidos clave o performances que querés secuenciar..."></textarea>
 
@@ -200,18 +228,205 @@
 
 </div>
 
+<script src="nivel-inicial.js"></script>
+<script src="pud-contexto.js"></script>
 <script>
+    // ---- Idioma del objetivo (mismo diccionario que generador-tareas.html / index.html) ----
+
+    function contarSenalesIdioma(texto) {
+        // Espacios al inicio/final para que las señales " el ", " la ", etc.
+        // también matcheen cuando esa palabra es la primera o la última del
+        // texto (si no, "El ciclo del agua" no matcheaba " el " por faltarle
+        // el espacio previo, y un texto corto terminaba en empate 0 a 0).
+        const cuerpo = ' ' + (texto || '').toLowerCase() + ' ';
+
+        const spanishSignals = [
+            ' y ', ' de ', ' la ', ' el ', ' los ', ' las ', ' que ', ' para ', ' por ',
+            ' con ', ' una ', ' unos ', ' alumno', ' docente', ' unidad', ' materia',
+            ' educación', ' enseñanza', ' aprendizaje', ' escuela', ' español'
+        ];
+        const englishSignals = [
+            ' and ', ' of ', ' the ', ' for ', ' with ', ' that ', ' students', ' teachers', ' unit',
+            ' subject', ' learning', ' school', ' class', ' english', ' bilingual', ' global', ' science', ' history'
+        ];
+
+        const countMatches = (terms) => terms.reduce((count, term) => {
+            const regex = new RegExp(term.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+            return count + ((cuerpo.match(regex) || []).length);
+        }, 0);
+
+        return { es: countMatches(spanishSignals), en: countMatches(englishSignals) };
+    }
+
+    function detectarIdiomaTexto(texto) {
+        const cuerpo = (texto || '').toLowerCase().trim();
+        if (!cuerpo) return 'es';
+        if (/[áéíóúñ¿¡]/.test(cuerpo)) return 'es';
+
+        const { es, en } = contarSenalesIdioma(cuerpo);
+        if (es > en) return 'es';
+        if (en > es) return 'en';
+
+        // Empate a cero: sin tildes ni señales claras de ningún idioma, se
+        // asume castellano por defecto (idioma principal de la escuela).
+        return 'es';
+    }
+
+    function bloqueIdiomaSalida(idioma) {
+        return idioma === 'en'
+            ? `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nIDIOMA DE SALIDA: INGLÉS\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nToda la secuencia generada (títulos, preguntas, actividades y consignas) debe redactarse íntegramente en inglés, sin importar el idioma de estas instrucciones.`
+            : `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nIDIOMA DE SALIDA: CASTELLANO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nToda la secuencia generada debe redactarse íntegramente en castellano.`;
+    }
+
+    // ---- Nivel (CEFR si el objetivo está en inglés, edad/grado si está en castellano) ----
+
+    const NIVELES_EN = {
+        A1: { label: 'A1 - Beginner', vocabulario: 'High-frequency, everyday words only (colors, family, routines, concrete objects). Avoid abstract terms.', gramatica: 'Present simple, regular plurals, sentences of 3-6 words. No compound tenses, no subordinate clauses.' },
+        A2: { label: 'A2 - Elementary', vocabulario: 'Everyday vocabulary plus basic academic terms of the topic, always introduced with a concrete example.', gramatica: 'Past simple and "going to" future. Sentences of 6-9 words with simple connectors (and, but, because).' },
+        B1: { label: 'B1 - Intermediate', vocabulario: 'Academic vocabulary of the topic, always introduced in context before being used freely.', gramatica: 'Present perfect, simple subordinate clauses, comparatives/superlatives. Sentences up to 12 words.' },
+        B2: { label: 'B2 - Upper Intermediate', vocabulario: 'Academic and abstract vocabulary, including technical terms of the topic without needing translation.', gramatica: 'Passive voice, cause-effect connectors, conditional clauses. Sentences up to 15-18 words with subordination.' },
+        C1: { label: 'C1 - Advanced', vocabulario: 'Advanced academic vocabulary, nuanced meaning, idiomatic collocations specific to the topic.', gramatica: 'Complex structures (mixed conditionals, passive voice across tenses), extended argumentation with contrast/qualification connectors.' },
+        C2: { label: 'C2 - Proficient', vocabulario: 'Near-native register vocabulary, including connotative nuance and specialized terminology without simplification.', gramatica: 'Full command of complex, varied structures, sophisticated textual cohesion, precise rhetorical argumentation on abstract topics.' }
+    };
+
+    const NIVELES_ES = {
+        '1° Grado Primaria': { label: '1° Grado Primaria', vocabulario: 'Cotidiano y muy concreto; evitar términos abstractos sin explicarlos primero.', gramatica: 'Oraciones de 4 a 6 palabras, una idea por oración, sin subordinadas.' },
+        '2° Grado Primaria': { label: '2° Grado Primaria', vocabulario: 'Cotidiano, con primeras palabras específicas del área siempre acompañadas de un ejemplo concreto.', gramatica: 'Oraciones de 5 a 8 palabras, con conectores simples (y, pero, porque).' },
+        '3° Grado Primaria': { label: '3° Grado Primaria', vocabulario: 'Específico del área, siempre explicado en contexto la primera vez que aparece.', gramatica: 'Oraciones de hasta 10 palabras, primeras subordinadas simples.' },
+        '4° Grado Primaria': { label: '4° Grado Primaria', vocabulario: 'Específico del área con mayor variedad; se pueden introducir sinónimos y familias de palabras.', gramatica: 'Oraciones de hasta 12 palabras, subordinadas simples y conectores de secuencia (primero, luego, finalmente).' },
+        '5° Grado Primaria': { label: '5° Grado Primaria', vocabulario: 'Técnico del área, con primeras nociones de argumentación y comparación.', gramatica: 'Oraciones de hasta 15 palabras, conectores de causa-consecuencia, subordinadas variadas.' },
+        '6° Grado Primaria': { label: '6° Grado Primaria', vocabulario: 'Técnico del área y vocabulario académico de transición a secundaria, con nociones de argumentación.', gramatica: 'Oraciones más complejas, conectores de causa-consecuencia y contraste, primeras estructuras de análisis crítico.' },
+        '1° Año Secundaria': { label: '1° Año Secundaria', vocabulario: 'Técnico del área, introducido en contexto pero ya sin simplificaciones excesivas; primeras nociones de terminología disciplinar.', gramatica: 'Oraciones de hasta 18 palabras, subordinadas variadas, conectores de causa-consecuencia y contraste.' },
+        '2° Año Secundaria': { label: '2° Año Secundaria', vocabulario: 'Técnico consolidado del área, con primeros términos abstractos propios de la disciplina.', gramatica: 'Subordinadas múltiples, voz pasiva, conectores de consecuencia y concesión; inicio de argumentación con evidencia.' },
+        '3° Año Secundaria': { label: '3° Año Secundaria', vocabulario: 'Académico y técnico específico, con matices de significado entre términos relacionados.', gramatica: 'Estructuras complejas con varias cláusulas, nexos de contraste y condición; argumentación con postura propia.' },
+        '4° Año Secundaria': { label: '4° Año Secundaria', vocabulario: 'Especializado del área, incluyendo terminología de uso profesional o académico.', gramatica: 'Registro formal sostenido, estructuras condicionales y comparativas complejas, síntesis de múltiples fuentes.' },
+        '5° Año Secundaria': { label: '5° Año Secundaria', vocabulario: 'Técnico-académico de nivel preuniversitario, con precisión terminológica exigida.', gramatica: 'Argumentación compleja y sostenida, con matización, contraargumentación y uso de evidencia para sustentar posturas.' },
+        '6° Año Secundaria': { label: '6° Año Secundaria', vocabulario: 'Académico de transición a nivel universitario, con manejo autónomo de terminología especializada.', gramatica: 'Pensamiento crítico expresado con estructuras sofisticadas, argumentación multicausal y análisis con autonomía total.' }
+    };
+
+    function tablaNiveles(idioma) {
+        return idioma === 'en' ? NIVELES_EN : NIVELES_ES;
+    }
+
+    function sincronizarSelectorNivel(idioma) {
+        const select = document.getElementById('f-nivel');
+        const label = document.getElementById('label-nivel');
+        if (!select || !label) return;
+        if (select.dataset.idioma === idioma) return;
+
+        // Las salas existen en los dos idiomas: si había una elegida, se conserva.
+        const salaPrevia = esSalaInicial(select.value) ? select.value : '';
+        select.dataset.idioma = idioma;
+        llenarSelectorNivel(select, tablaNiveles(idioma), idioma === 'en' ? 'Primaria y Secundaria (CEFR)' : 'Primaria y Secundaria');
+        select.value = salaPrevia;
+        if (!salaPrevia) delete select.dataset.autofilled;
+
+        label.innerHTML = idioma === 'en'
+            ? 'Sala o nivel de inglés <span class="optional-badge">(opcional)</span>'
+            : 'Sala / Grado del alumno <span class="optional-badge">(opcional)</span>';
+
+        if (window.contextoPUD) aplicarContextoPUD(window.contextoPUD);
+    }
+
+    function bloqueNivel(nivel, idioma) {
+        if (esSalaInicial(nivel)) {
+            return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${bloqueCalibracionInicial(nivel, idioma === 'en')}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nToda la secuencia (títulos, preguntas, consignas y experiencias) tiene que respetar este nivel.`;
+        }
+        const info = tablaNiveles(idioma)[nivel];
+        if (!info) return null;
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nCALIBRACIÓN POR NIVEL (${info.label})\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n- VOCABULARIO: ${info.vocabulario}\n- GRAMÁTICA/SINTAXIS: ${info.gramatica}\nAjustá la complejidad de las actividades, consignas y preguntas guía de los 5 pasos a este nivel.`;
+    }
+
+    function escapeHtml(value = '') {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // ---- Contexto del PUD activo (contrato en pud-contexto.js) ----
+    // Secuencias muestra todas las metas y todos los desempeños del PUD.
+
+    window.contextoPUD = null;
+
+    PudContexto.alRecibir(aplicarContextoPUD);
+
+    function aplicarContextoPUD(ctx) {
+        window.contextoPUD = ctx;
+
+        const selectNivel = document.getElementById('f-nivel');
+        // Las salas están en el selector de ambos idiomas; los grados, solo en castellano.
+        if (ctx?.grado && selectNivel && (selectNivel.dataset.idioma === 'es' || esSalaInicial(ctx.grado))
+            && (selectNivel.value === '' || selectNivel.dataset.autofilled === 'true')) {
+            const opcion = Array.from(selectNivel.options).find(o => o.value === ctx.grado.trim());
+            if (opcion) {
+                selectNivel.value = opcion.value;
+                selectNivel.dataset.autofilled = 'true';
+            }
+        }
+
+        PudContexto.renderBloque(document.getElementById('del-pud'), ctx, { filtro: 'todos' });
+    }
+
+    function bloqueContextoPUD(ctx) {
+        if (!ctx) return null;
+        const lineas = [];
+        if (ctx.materia) lineas.push(`- Materia/Área: ${ctx.materia}`);
+        if (ctx.titulo) lineas.push(`- Unidad didáctica: ${ctx.titulo}`);
+        if (ctx.metas?.length) lineas.push(`- Metas de comprensión de la unidad:\n${ctx.metas.map(m => `  · ${m.texto}`).join('\n')}`);
+        if (ctx.desempenos?.length) {
+            lineas.push(`- Desempeños de comprensión del PUD:\n${ctx.desempenos.map(d => `  · [${PudContexto.TIPOS[d.tipo]}] ${d.texto}`).join('\n')}`);
+        }
+        if (lineas.length === 0) return null;
+        return `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nCONTEXTO DE LA UNIDAD DIDÁCTICA (PUD) ACTIVA\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nTené en cuenta este contexto para que la secuencia sea coherente con la unidad en curso:\n${lineas.join('\n')}`;
+    }
+
+    const campoObjetivo = document.getElementById('f-objetivo');
+    sincronizarSelectorNivel(detectarIdiomaTexto(campoObjetivo.value));
+    // "Cambios sin guardar" = hay un objetivo escrito que todavía no se
+    // convirtió en prompt (o cambió desde el último prompt generado).
+    let objetivoDelUltimoPrompt = '';
+    function avisarSiHayCambios() {
+        const actual = campoObjetivo.value.trim();
+        PudContexto.avisarCambios(actual !== '' && actual !== objetivoDelUltimoPrompt);
+    }
+
+    campoObjetivo.addEventListener('input', () => {
+        sincronizarSelectorNivel(detectarIdiomaTexto(campoObjetivo.value));
+        avisarSiHayCambios();
+    });
+
+    // Si el docente toca el selector a mano, esa elección ya no es "autofill":
+    // sin este flag, la próxima vez que llega el contexto del PUD (ej. al
+    // volver a esta pestaña) pisaba silenciosamente la elección manual.
+    document.getElementById('f-nivel').addEventListener('change', function () {
+        delete this.dataset.autofilled;
+    });
+
     function construirPrompt() {
-        const objetivo = document.getElementById('f-objetivo').value.trim();
+        const objetivo = campoObjetivo.value.trim();
         if (!objetivo) { alert("Ingresá un objetivo o tópico."); return; }
 
-        const prompt = `Actúa como un experto en EpC (Enseñanza para la Comprensión, Harvard Project Zero) con experiencia en planificación didáctica para educación bilingüe.
+        const idioma = detectarIdiomaTexto(objetivo);
+        const nivel = document.getElementById('f-nivel').value;
+        const metaFrase = idioma === 'en' ? 'Students will develop understanding about...' : 'Los estudiantes desarrollarán comprensión sobre...';
+
+        const extras = [bloqueContextoPUD(window.contextoPUD), bloqueIdiomaSalida(idioma), bloqueNivel(nivel, idioma)]
+            .filter(Boolean)
+            .map(bloque => `\n\n${bloque}`)
+            .join('');
+
+        const prompt = esSalaInicial(nivel)
+            ? promptSecuenciaInicial(objetivo, extras, nivel, idioma === 'en')
+            : `Actúa como un experto en EpC (Enseñanza para la Comprensión, Harvard Project Zero) con experiencia en planificación didáctica para educación bilingüe.
 
 Tu tarea es generar una SECUENCIA DIDÁCTICA estructurada en exactamente 5 pasos según el marco EpC, a partir del siguiente objetivo o tópico:
 
 ---
 ${objetivo}
----
+---${extras}
 
 ESTRUCTURA OBLIGATORIA DE LOS 5 PASOS:
 
@@ -242,11 +457,62 @@ Para cada paso incluí:
 
 Al inicio del documento indicá:
 - Título de la secuencia
-- Meta de comprensión central (una oración que comience con "Los estudiantes desarrollarán comprensión sobre...")
+- Meta de comprensión central (una oración que comience con "${metaFrase}")
 
 El output debe estar listo para usar en el aula, con lenguaje claro y preciso. No agregues introducciones ni aclaraciones metodológicas dirigidas al docente fuera del formato solicitado.`;
 
         document.getElementById('output-box').textContent = prompt;
+        objetivoDelUltimoPrompt = objetivo;
+        avisarSiHayCambios();
+    }
+
+    // Jardín: los mismos 5 pasos EpC, traducidos a momentos de juego para
+    // la sala. Las reglas generales (duración, consignas, prohibiciones,
+    // lenguaje) vienen de nivel-inicial.js.
+    function promptSecuenciaInicial(objetivo, extras, sala, esIngles) {
+        const v = EJECUCION_INICIAL[sala];
+        return `Actúa como una docente experta en Nivel Inicial (Jardín), formada en EpC (Enseñanza para la Comprensión, Harvard Project Zero) y con experiencia en educación bilingüe.
+
+Tu tarea es generar una SECUENCIA DE EXPERIENCIAS PARA LA SALA en exactamente 5 momentos, a partir del siguiente tópico:
+
+---
+${objetivo}
+---${extras}
+
+${bloqueReglasInicial(sala, esIngles)}
+
+ESTRUCTURA OBLIGATORIA DE LOS 5 MOMENTOS:
+
+MOMENTO 1 — INVITACIÓN (Tópico generativo hecho juego)
+Un objeto sorpresa, un títere, una canción o una ronda que despierte curiosidad. Incluí la pregunta que abre el juego.
+
+MOMENTO 2 — EXPLORACIÓN (Metas de comprensión en acción)
+Los niños exploran con los sentidos y con el cuerpo. La docente acompaña con preguntas y comentarios, no explica ni da definiciones.
+
+MOMENTO 3 — JUEGO Y CONEXIÓN (Transferencia)
+Juego simbólico o en rincones donde usan lo que descubrieron en otra situación (la casita, el mercado, la granja, la huerta).
+
+MOMENTO 4 — CREACIÓN (Desempeño de comprensión visible)
+Una producción concreta hecha jugando: una construcción, una pintura grande, una dramatización, una canción inventada, un mural entre todos.
+
+MOMENTO 5 — RONDA DE CIERRE (Valoración continua)
+Una ronda breve de "¿qué descubrimos?", documentación con fotos o audios y algo para compartir con las familias. Sin evaluaciones escritas ni calificaciones.
+
+FORMATO DE ENTREGA:
+Para cada momento incluí:
+- Nombre con tono de juego
+- Duración (${v.minutos} minutos por experiencia)
+- Pregunta guía, como la diría un chico de ${v.edad}
+- 1 o 2 experiencias concretas, con la consigna oral textual que la docente les dice a los niños
+- Materiales necesarios (seguros para la edad)
+- Qué observa la docente durante el juego (en lugar de "cómo se evalúa")
+- Conexión con el marco EpC, en una línea
+
+Al inicio del documento indicá:
+- Título de la secuencia (máximo 4 palabras, con tono de juego o de cuento)
+- Meta de comprensión central (una oración que comience con "${metaInicial(esIngles)}")
+
+El output debe estar listo para usar en la sala, con lenguaje simple y cálido. No agregues introducciones ni fundamentación teórica fuera del formato solicitado.`;
     }
 
     async function copiar() {
