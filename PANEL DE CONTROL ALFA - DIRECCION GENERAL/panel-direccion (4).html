@@ -474,7 +474,7 @@
             <div class="chip-group" id="coord-materias"></div>
           </fieldset>
           <div class="full coord-form-acciones">
-            <button class="btn-primary" id="coord-crear-btn" type="button">Dar de alta e invitar</button>
+            <button class="btn-primary" id="coord-crear-btn" type="button">Dar de alta</button>
             <span class="login-msg" id="coord-msg"></span>
           </div>
         </div>
@@ -828,8 +828,8 @@ document.getElementById('evt-crear-btn').addEventListener('click', crearEventoCa
 
 // ---------- Alta de coordinadores ----------
 // crear_coordinador() (supabase-migration-altas-automaticas.sql) guarda el
-// coordinador y sus permisos en una sola transacción y dispara la invitación
-// por mail. Sin grados/materias marcados = ve todos.
+// coordinador y sus permisos en una sola transacción. La persona se registra sola
+// con su correo (sin confirmación por mail). Sin grados/materias = ve todos.
 let opcionesCoordinadorCargadas = false;
 
 // Jardín, Primaria y Secundaria, cada uno en orden numérico.
@@ -882,7 +882,7 @@ async function crearCoordinador(){
     p_grados: marcados('coord-grados'),
     p_materias: marcados('coord-materias'),
   });
-  btn.disabled = false; btn.textContent = 'Dar de alta e invitar';
+  btn.disabled = false; btn.textContent = 'Dar de alta';
 
   if(error){
     msg.textContent = error.code === 'PGRST202'
@@ -892,7 +892,7 @@ async function crearCoordinador(){
     return;
   }
 
-  msg.textContent = `Listo: le enviamos a ${email} un mail para que elija su contraseña.`;
+  msg.textContent = `Listo: ${email} ya es coordinador. Si todavía no tiene cuenta, que se registre en Espacio Docente con ese correo; si ya la tiene, entra con su contraseña de siempre.`;
   emailEl.value = ''; nombreEl.value = '';
   document.querySelectorAll('#coord-alta input[type=checkbox]').forEach(i => { i.checked = false; });
   await loadDashboard();
