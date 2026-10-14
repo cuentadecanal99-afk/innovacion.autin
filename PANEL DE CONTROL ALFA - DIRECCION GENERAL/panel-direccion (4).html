@@ -7,8 +7,8 @@
 <link rel="icon" type="image/jpeg" href="austin-eco-bilingual-school-campana-argentina.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.min.js" integrity="sha384-dl/4LkSyQ4uEucc48NM6VDZLAjLLq9yMzZ5JLXumBq7Ld33XBof73hseOqPhO89+" crossorigin="anonymous"></script>
 <style>
   :root{
     --ink:#141F26;
@@ -28,11 +28,11 @@
     margin:0;
     background:var(--ink);
     color:var(--texto-claro);
-    font-family:'Inter',sans-serif;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
     min-height:100vh;
   }
-  .mono{font-family:'IBM Plex Mono',monospace;}
-  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+  .mono{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;}
+  h1,h2,h3,.display{font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-0.01em;}
 
   /* ---------- LOGIN ---------- */
   #login-screen{
@@ -61,11 +61,11 @@
     border-radius:50%;
     border:2px solid var(--bronce);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Fraunces',serif;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-0.01em;
     font-weight:600;
     font-size:22px;
     color:var(--bronce);
-    letter-spacing:1px;
+    letter-spacing:0;
   }
   .login-card h1{
     font-size:22px;
@@ -86,7 +86,7 @@
     border:1px solid rgba(244,239,230,0.18);
     background:rgba(20,31,38,0.6);
     color:var(--texto-claro);
-    font-family:'Inter',sans-serif;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
     font-size:14px;
     margin-bottom:14px;
   }
@@ -101,7 +101,7 @@
     font-weight:600;
     font-size:14px;
     cursor:pointer;
-    font-family:'Inter',sans-serif;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
     transition:filter .15s;
   }
   .btn-primary:hover{filter:brightness(1.08);}
@@ -126,8 +126,8 @@
   .membrete-title{line-height:1.2;}
   .membrete-title .kicker{
     font-size:11px;
-    letter-spacing:2px;
-    text-transform:uppercase;
+    letter-spacing:0;
+    
     color:var(--bronce);
     font-weight:600;
   }
@@ -138,14 +138,14 @@
   .btn-logout{
     background:none;border:1px solid rgba(244,239,230,0.2);color:var(--texto-tenue);
     padding:6px 12px;border-radius:3px;font-size:12px;cursor:pointer;
-    font-family:'Inter',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
   }
   .btn-logout:hover{border-color:var(--texto-claro);color:var(--texto-claro);}
   .btn-cta{
     display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
     background:var(--lima);color:#1A1006;font-weight:600;font-size:12.5px;
     padding:8px 15px;border-radius:20px;text-decoration:none;
-    font-family:'Inter',sans-serif;transition:filter .15s;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;transition:filter .15s;
   }
   .btn-cta:hover{filter:brightness(1.08);}
 
@@ -179,8 +179,8 @@
   }
   .section-head h2{font-size:19px;font-weight:600;margin:0;}
   .section-head .eyebrow{
-    font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bronce);
-    display:block;margin-bottom:4px;font-family:'Inter',sans-serif;font-weight:600;
+    font-size:11px;letter-spacing:0;color:var(--bronce);
+    display:block;margin-bottom:4px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:600;
   }
   .section-sub{font-size:13px;color:var(--texto-tenue);}
 
@@ -214,7 +214,7 @@
   /* PUD ledger */
   .nivel-block{margin-bottom:28px;}
   .nivel-title{
-    font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--texto-tenue);
+    font-size:13px;letter-spacing:0;color:var(--texto-tenue);
     margin-bottom:12px;font-weight:600;
   }
   .seal-grid{
@@ -237,10 +237,10 @@
     width:52px;height:52px;border-radius:50%;
     border:2px solid var(--bronce);
     display:flex;align-items:center;justify-content:center;
-    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;font-weight:600;font-size:16px;
     margin-bottom:10px;color:var(--texto-claro);
   }
-  .seal-card .idioma{font-size:11px;color:var(--texto-tenue);text-transform:uppercase;letter-spacing:1px;}
+  .seal-card .idioma{font-size:11px;color:var(--texto-tenue);letter-spacing:0;}
   .seal-card .count-label{font-size:12px;color:var(--texto-tenue);margin-top:2px;}
 
   .drilldown{
@@ -262,7 +262,7 @@
   }
   .drill-row:last-child{border-bottom:none;}
   .drill-row.head{
-    color:var(--texto-tenue);font-size:11px;text-transform:uppercase;letter-spacing:1px;
+    color:var(--texto-tenue);font-size:11px;letter-spacing:0;
     background:rgba(244,239,230,0.03);
   }
   .chip{
@@ -285,6 +285,32 @@
     display:inline-block;background:rgba(244,239,230,0.08);border:1px solid rgba(244,239,230,0.1);
     padding:2px 9px;border-radius:20px;margin:2px 5px 2px 0;font-size:11px;color:var(--texto-tenue);
   }
+
+  /* Alta de coordinadores */
+  .coord-alta{margin-bottom:14px;border:1px solid rgba(244,239,230,0.12);border-radius:4px;}
+  .coord-alta summary{cursor:pointer;padding:12px 16px;font-size:13px;font-weight:600;color:var(--lima);list-style:none;}
+  .coord-alta summary::-webkit-details-marker{display:none;}
+  .coord-alta[open] summary{border-bottom:1px solid rgba(244,239,230,0.08);}
+  .coord-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px;}
+  .coord-form .full{grid-column:1/-1;}
+  .coord-form label,.coord-form legend{display:block;font-size:11px;color:var(--texto-tenue);margin-bottom:6px;}
+  .coord-form legend span{opacity:.7;margin-left:6px;}
+  .coord-form fieldset{border:none;margin:0;padding:0;min-width:0;}
+  .coord-form input[type=email],.coord-form input[type=text]{
+    width:100%;padding:9px 10px;border-radius:3px;border:1px solid rgba(244,239,230,0.18);
+    background:rgba(20,31,38,0.6);color:var(--texto-claro);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;
+  }
+  .chip-group{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip-group label{
+    display:inline-flex;align-items:center;gap:6px;margin:0;cursor:pointer;font-size:12px;color:var(--texto-claro);
+    padding:5px 10px;border-radius:20px;border:1px solid rgba(244,239,230,0.15);background:rgba(244,239,230,0.04);
+  }
+  .chip-group input{accent-color:var(--lima);margin:0;}
+  .chip-group label:has(input:checked){border-color:var(--lima);background:rgba(169,207,68,0.12);}
+  .coord-form-acciones{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .coord-form-acciones .btn-primary{width:auto;padding:9px 18px;font-size:13px;white-space:nowrap;}
+  .coord-form-acciones .login-msg{margin-top:0;}
+  @media (max-width:900px){.coord-form{grid-template-columns:1fr;}}
 
   /* Próximamente */
   .soon-row{
@@ -312,7 +338,7 @@
     width:100%;padding:9px 10px;border-radius:3px;
     border:1px solid rgba(244,239,230,0.18);
     background:rgba(20,31,38,0.6);color:var(--texto-claro);
-    font-family:'Inter',sans-serif;font-size:13px;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13px;
   }
   .evt-form .full{grid-column:1/-1;}
   .evt-form .btn-primary{padding:9px 16px;font-size:13px;white-space:nowrap;}
@@ -322,10 +348,10 @@
     padding:12px 20px;border-bottom:1px solid rgba(244,239,230,0.06);font-size:13px;
   }
   .evt-row:last-child{border-bottom:none;}
-  .evt-date{font-family:'IBM Plex Mono',monospace;color:var(--texto-claro);}
+  .evt-date{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--texto-claro);}
   .evt-title{font-weight:600;}
   .evt-desc{font-size:12px;color:var(--texto-tenue);margin-top:2px;}
-  .evt-tipo{font-size:11px;color:var(--texto-tenue);text-transform:uppercase;letter-spacing:.5px;}
+  .evt-tipo{font-size:11px;color:var(--texto-tenue);letter-spacing:.5px;}
   .evt-delete{
     background:none;border:1px solid rgba(244,239,230,0.2);color:var(--texto-tenue);
     width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:13px;
@@ -336,7 +362,7 @@
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
     color:var(--texto-tenue);font-size:14px;text-align:center;padding:24px;
   }
-  #denied strong{color:var(--texto-claro);font-family:'Fraunces',serif;font-size:20px;margin-bottom:10px;}
+  #denied strong{color:var(--texto-claro);font-family:'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-0.01em;font-size:20px;margin-bottom:10px;}
 
   /* ---------- CELULAR ---------- */
   @media (max-width:640px){
@@ -428,6 +454,31 @@
       </div>
       <div class="kpi-row" id="revision-kpis" style="margin-bottom:24px"></div>
       <div class="nivel-title">Coordinadores y sus permisos</div>
+      <details class="coord-alta" id="coord-alta">
+        <summary>+ Nuevo coordinador</summary>
+        <div class="coord-form">
+          <div>
+            <label for="coord-email">Correo</label>
+            <input type="email" id="coord-email" placeholder="nombre.apellido@austinebs-ah.edu.ar" autocomplete="off">
+          </div>
+          <div>
+            <label for="coord-nombre">Nombre (opcional)</label>
+            <input type="text" id="coord-nombre" placeholder="María López">
+          </div>
+          <fieldset class="full">
+            <legend>Grados que puede revisar <span>Sin marcar ninguno: todos los grados</span></legend>
+            <div class="chip-group" id="coord-grados"></div>
+          </fieldset>
+          <fieldset class="full">
+            <legend>Materias que puede revisar <span>Sin marcar ninguna: todas las materias</span></legend>
+            <div class="chip-group" id="coord-materias"></div>
+          </fieldset>
+          <div class="full coord-form-acciones">
+            <button class="btn-primary" id="coord-crear-btn" type="button">Dar de alta e invitar</button>
+            <span class="login-msg" id="coord-msg"></span>
+          </div>
+        </div>
+      </details>
       <div class="roster" id="coordinadores-roster" style="margin-bottom:28px"></div>
       <div class="nivel-title">PUDs por nivel, ciclo e idioma</div>
       <div id="pud-ledger"></div>
@@ -774,6 +825,81 @@ async function eliminarEventoCalendario(id){
 }
 
 document.getElementById('evt-crear-btn').addEventListener('click', crearEventoCalendario);
+
+// ---------- Alta de coordinadores ----------
+// crear_coordinador() (supabase-migration-altas-automaticas.sql) guarda el
+// coordinador y sus permisos en una sola transacción y dispara la invitación
+// por mail. Sin grados/materias marcados = ve todos.
+let opcionesCoordinadorCargadas = false;
+
+// Jardín, Primaria y Secundaria, cada uno en orden numérico.
+function ordenGrado(nombre){
+  const n = parseInt((nombre.match(/\d+/) || ['0'])[0], 10);
+  if(/sala/i.test(nombre)) return n;
+  if(/grado/i.test(nombre)) return 10 + n;
+  if(/año/i.test(nombre)) return 20 + n;
+  return 99;
+}
+
+function renderChips(contenedorId, valores){
+  document.getElementById(contenedorId).innerHTML = valores.length
+    ? valores.map(v => `<label><input type="checkbox" value="${esc(v)}">${esc(v)}</label>`).join('')
+    : '<span class="tag">No se pudieron cargar las opciones</span>';
+}
+
+async function cargarOpcionesCoordinador(){
+  if(opcionesCoordinadorCargadas) return;
+  const [gradosRes, areasRes] = await Promise.all([
+    sb.from('grados').select('nombre'),
+    sb.from('areas').select('name').order('name'),
+  ]);
+  const grados = (gradosRes.data || []).map(g => g.nombre).sort((a, b) => ordenGrado(a) - ordenGrado(b) || a.localeCompare(b));
+  renderChips('coord-grados', grados);
+  renderChips('coord-materias', (areasRes.data || []).map(a => a.name));
+  opcionesCoordinadorCargadas = !gradosRes.error && !areasRes.error;
+}
+
+async function crearCoordinador(){
+  const emailEl = document.getElementById('coord-email');
+  const nombreEl = document.getElementById('coord-nombre');
+  const msg = document.getElementById('coord-msg');
+  const email = emailEl.value.trim().toLowerCase();
+  const marcados = id => [...document.querySelectorAll(`#${id} input:checked`)].map(i => i.value);
+
+  msg.className = 'login-msg';
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    msg.textContent = 'Escribí un correo válido.';
+    msg.className = 'login-msg error';
+    emailEl.focus();
+    return;
+  }
+
+  const btn = document.getElementById('coord-crear-btn');
+  btn.disabled = true; btn.textContent = 'Dando de alta…';
+  const { error } = await sb.rpc('crear_coordinador', {
+    p_email: email,
+    p_nombre: nombreEl.value.trim(),
+    p_grados: marcados('coord-grados'),
+    p_materias: marcados('coord-materias'),
+  });
+  btn.disabled = false; btn.textContent = 'Dar de alta e invitar';
+
+  if(error){
+    msg.textContent = error.code === 'PGRST202'
+      ? 'Falta correr supabase-migration-altas-automaticas.sql en Supabase.'
+      : (error.message || 'No se pudo dar de alta.');
+    msg.className = 'login-msg error';
+    return;
+  }
+
+  msg.textContent = `Listo: le enviamos a ${email} un mail para que elija su contraseña.`;
+  emailEl.value = ''; nombreEl.value = '';
+  document.querySelectorAll('#coord-alta input[type=checkbox]').forEach(i => { i.checked = false; });
+  await loadDashboard();
+}
+
+document.getElementById('coord-crear-btn').addEventListener('click', crearCoordinador);
+document.getElementById('coord-alta').addEventListener('toggle', e => { if(e.target.open) cargarOpcionesCoordinador(); });
 
 function renderKpis(puds, onboarding, capsulas, coordinadores){
   const presentados = puds.filter(p=>p.status==='presented').length;
