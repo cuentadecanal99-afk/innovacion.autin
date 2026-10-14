@@ -1052,8 +1052,8 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.min.js" integrity="sha384-dl/4LkSyQ4uEucc48NM6VDZLAjLLq9yMzZ5JLXumBq7Ld33XBof73hseOqPhO89+" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js" integrity="sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+" crossorigin="anonymous"></script>
 <script>
 /* ============================================================
    CONFIGURACIÓN DE SUPABASE
@@ -1370,7 +1370,7 @@ const ONBOARDING_STRUCTURE = [
             {
                 id: 'tsel-s1', title: '¿Por qué importa lo emocional para aprender?', xp: 20, step_type: 'quiz',
                 media: { type: null, url: '' },
-                content_md: '## Sin regulación emocional, cuesta pensar\n\nUn estudiante que está desbordado, angustiado o a la defensiva no está en condiciones de comprender un tópico generativo ni de sostener una rutina de pensamiento — el cerebro prioriza gestionar la emoción por sobre el razonamiento complejo. Por eso lo emocional no es "un tema aparte" de lo académico: es la base sobre la que se apoya todo lo demás.\n\nEn Austin, el EOE (Equipo de Orientación Escolar) y el Acompañamiento Pedagógico están para sostener esto en los casos que lo requieren — pero el clima emocional cotidiano del aula depende, en primer lugar, de cada docente.',
+                content_md: '## Sin regulación emocional, cuesta pensar\n\nUn estudiante que está desbordado, angustiado o a la defensiva no está en condiciones de comprender un tópico generativo ni de sostener una rutina de pensamiento — el cerebro prioriza gestionar la emoción por sobre el razonamiento complejo. Por eso lo emocional no es "un tema aparte" de lo académico: es la base sobre la que se apoya todo lo demás.\n\nEn Austin, el EOE (Equipo de Orientación Escolar) y el Acompañamiento Pedagógico brindan soporte y acompañan tanto a docentes como a estudiantes en los casos que lo requieren. En el día a día, cada docente ocupa un lugar central como líder emocional del aula: con su presencia, sus intervenciones y su manera de vincularse, ayuda a los estudiantes a regular sus emociones y construye un clima de seguridad, confianza y disposición para aprender.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante llega angustiado por algo que pasó antes de tu clase. ¿Qué es más probable?', options: ['Que pueda concentrarse igual que cualquier otro día', 'Que le cueste más comprender y pensar hasta poder procesar lo que siente', 'Que la angustia no tenga relación con su aprendizaje ese día'] }
                 ]}
@@ -1386,9 +1386,9 @@ const ONBOARDING_STRUCTURE = [
             {
                 id: 'tsel-s3', title: 'Autorregulación en el aula', xp: 20, step_type: 'quiz',
                 media: { type: null, url: '' },
-                content_md: '## Herramientas simples, sostenidas en el tiempo\n\nAlgunas estrategias concretas para sostener la autorregulación en el día a día: nombrar la emoción en voz alta ("veo que estás frustrado/a con esto"), ofrecer una pausa breve antes de seguir, y tener un espacio o gesto acordado para pedir ese momento sin necesidad de explicar todo en el momento.\n\nEl modelado sigue siendo clave acá también: un docente que nombra sus propias emociones con naturalidad ("estoy un poco apurado/a hoy, vamos a organizarnos así") les muestra a los estudiantes que identificar y manejar emociones es normal, no una señal de debilidad.',
+                content_md: '## Herramientas simples, sostenidas en el tiempo\n\n- **Anticipar las transiciones**: avisar unos minutos antes de cambiar de actividad y explicar qué viene después, para dar tiempo a prepararse.\n- **Dividir las tareas en pasos pequeños**: cuando aparece el agobio, ayudar a identificar una primera acción posible: “Empecemos por leer la consigna juntos”.\n- **Ofrecer opciones acotadas**: “¿Preferís empezar por este ejercicio o por aquel?”. Poder elegir ayuda a recuperar una sensación de control.\n- **Incorporar pausas de movimiento**: estirarse, caminar brevemente o cambiar de postura entre actividades para aliviar la tensión y recuperar la atención.\n- **Bajar el ritmo y el tono de voz**: ante un estudiante desbordado, acercarse con calma, usar pocas palabras y darle tiempo para responder.\n- **Construir acuerdos en momentos de calma**: conversar previamente sobre qué puede ayudar cuando alguien se enoja o se frustra, y dejar esos recursos visibles en el aula.\n- **Acompañar el regreso a la actividad**: después de una pausa, ofrecer un paso sencillo para retomar, sin exigir una explicación inmediata de lo sucedido.\n- **Reconocer los avances en la regulación**: señalar acciones concretas, como pedir ayuda, hacer una pausa o expresar una necesidad: “Pudiste avisar que necesitabas un momento; eso nos ayudó a acompañarte”.\n\nEl modelado sigue siendo clave acá también: un docente que nombra sus propias emociones con naturalidad ("estoy un poco apurado/a hoy, vamos a organizarnos así") les muestra a los estudiantes que identificar y manejar emociones es normal, no una señal de debilidad.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
-                    { id: 'q1', text: '¿Cuál de estas es una estrategia simple de autorregulación para usar en el aula?', options: ['Ignorar la emoción hasta que se le pase sola', 'Nombrar la emoción y ofrecer una pausa breve antes de seguir', 'Pedirle al estudiante que se calme sin dar ninguna herramienta'] }
+                    { id: 'q1', text: '¿Cuál de estas es una estrategia simple de autorregulación para usar en el aula?', options: ['Ignorar la emoción hasta que se le pase sola', 'Anticipar las transiciones y dividir la tarea en pasos pequeños', 'Pedirle al estudiante que se calme sin dar ninguna herramienta'] }
                 ]}
             },
             {
@@ -1434,7 +1434,7 @@ const ONBOARDING_STRUCTURE = [
             {
                 id: 'tdp-s4', title: 'Conflicto: reflexión y reparación', xp: 25, step_type: 'quiz',
                 media: { type: null, url: '' },
-                content_md: '## El foco está en aprender del error, no solo en sancionarlo\n\nEsto conecta directo con el sistema de créditos de Austin que ya viste: una consecuencia bien pensada está relacionada con lo que pasó, es respetuosa y es razonable — no es un castigo desconectado ni desproporcionado. El objetivo no es que el estudiante "pague" por el error, sino que lo repare y aprenda algo de la situación.\n\nEn la práctica, esto significa dejar espacio para que el propio estudiante piense cómo reparar lo que pasó, en vez de que la sanción llegue ya resuelta desde el adulto.',
+                content_md: '## El foco está en aprender del error, no solo en sancionarlo\n\nEsto conecta directamente con el sistema de créditos de Austin que ya viste: una consecuencia bien pensada está relacionada con lo que pasó, es respetuosa y es razonable. El objetivo es que el estudiante pueda reconocer el impacto de sus acciones, asumir su responsabilidad y aprender de la situación.\n\nEn la práctica, esto significa dejar espacio para que el propio estudiante piense cómo reparar lo que pasó, con el acompañamiento del adulto. Es importante distinguir entre reponer y reparar: reemplazar un objeto roto permite resolver el daño material, pero no necesariamente repara el vínculo con la persona afectada. Esa reparación implica escuchar cómo se sintió el otro, reconocer el daño y sostener acciones que permitan reconstruir la confianza. No se resuelve siempre con una disculpa ni de manera inmediata: puede requerir tiempo, acompañamiento y respeto por los tiempos de quien fue afectado.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuáles son las tres cualidades de una consecuencia bien pensada, según este enfoque?', options: ['Rápida, dura y ejemplar', 'Relacionada con lo que pasó, respetuosa y razonable', 'Impuesta, inmediata y sin explicación'] }
                 ]}
@@ -1807,6 +1807,17 @@ async function handleSignup() {
         status.classList.add('is-error');
         return;
     }
+    // Los correos de alumnos empiezan con "st." (la base también los rechaza).
+    if (/^st\./i.test(email)) {
+        status.textContent = 'El onboarding es solo para el equipo del colegio; las cuentas de estudiantes no tienen acceso.';
+        status.classList.add('is-error');
+        return;
+    }
+    if (password.length < 8) {
+        status.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        status.classList.add('is-error');
+        return;
+    }
 
     if (DEMO_MODE) {
         setBtnLoading(btn, true, 'Creando cuenta…', 'Crear cuenta con mi correo');
@@ -1827,7 +1838,7 @@ async function handleSignup() {
             setBtnLoading(btn, false, '', 'Crear cuenta con mi correo');
             status.classList.add('is-error');
             status.textContent = check.reason === 'not_listed'
-                ? 'Este correo no está en la lista autorizada por el colegio. Pedile a coordinación que lo agregue.'
+                ? 'Usá tu correo institucional (@austinebs-ah.edu.ar). Si no tenés uno, pedile a coordinación que te habilite.'
                 : 'No se pudo verificar el correo. Intentá de nuevo en unos minutos.';
             return;
         }
@@ -1836,7 +1847,13 @@ async function handleSignup() {
     }
 
     status.textContent = 'Creando tu cuenta…';
-    const { data, error } = await _supabase.auth.signUp({ email, password });
+    // El link del mail de confirmación vuelve a esta misma página (no a la
+    // "Site URL" por defecto de Supabase). La URL tiene que estar en
+    // Authentication → URL Configuration → Redirect URLs.
+    const { data, error } = await _supabase.auth.signUp({
+        email, password,
+        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+    });
     setBtnLoading(btn, false, '', 'Crear cuenta con mi correo');
 
     if (error) {
