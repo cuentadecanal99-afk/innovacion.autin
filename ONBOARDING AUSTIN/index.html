@@ -264,6 +264,12 @@ a:focus-visible, button:focus-visible, input:focus-visible,
     min-height: 1.2em;
 }
 .login-status.is-error { color: var(--coral-600); }
+.link-forgot {
+    background: none; border: none; padding: 0; margin-top: 12px;
+    font: inherit; font-size: 0.8rem; font-weight: 600;
+    color: var(--moss-600); cursor: pointer; text-decoration: underline;
+}
+.link-forgot:hover { color: var(--moss-700); }
 
 .spinner {
     display: inline-block;
@@ -923,7 +929,7 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 
         <div class="field-group">
             <label for="login-email">Correo institucional</label>
-            <input type="email" id="login-email" placeholder="nombre.apellido@austineco.edu.ar" autocomplete="username">
+            <input type="email" id="login-email" placeholder="nombre.apellido@austinebs-ah.edu.ar" autocomplete="username">
         </div>
         <div class="field-group">
             <label for="login-password">Contraseña</label>
@@ -934,7 +940,26 @@ a:focus-visible, button:focus-visible, input:focus-visible,
             <button class="btn btn-primary" id="btn-login" onclick="handleLogin()">Iniciar sendero</button>
             <button class="btn btn-ghost" id="btn-signup" onclick="handleSignup()">Crear cuenta con mi correo</button>
         </div>
+        <button type="button" class="link-forgot" id="btn-forgot" onclick="handleForgotPassword()">¿Olvidaste tu contraseña?</button>
         <div class="login-status" id="login-status" aria-live="polite">Esperando datos de acceso…</div>
+    </div>
+
+    <!-- Se muestra al volver desde el mail de "recuperar contraseña" -->
+    <div class="login-card hidden" id="reset-card">
+        <h1>Elegí una contraseña nueva</h1>
+        <p class="login-sub">Escribila dos veces. Después vas a entrar directo al sendero.</p>
+        <div class="field-group">
+            <label for="reset-password">Contraseña nueva</label>
+            <input type="password" id="reset-password" placeholder="Al menos 8 caracteres" autocomplete="new-password">
+        </div>
+        <div class="field-group">
+            <label for="reset-password-2">Repetila</label>
+            <input type="password" id="reset-password-2" placeholder="La misma contraseña" autocomplete="new-password">
+        </div>
+        <div class="login-actions">
+            <button class="btn btn-primary" id="btn-reset" onclick="handleNuevaClave()">Guardar y entrar</button>
+        </div>
+        <div class="login-status" id="reset-status" aria-live="polite"></div>
     </div>
 </section>
 
@@ -1020,7 +1045,6 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 
             <div class="footer-links">
                 <a href="https://www.austinebs-ah.edu.ar/" target="_blank" rel="noopener">🌐 Sitio web del colegio</a>
-                <a href="mailto:coordinacion@austineco.edu.ar">✉️ Consultas a coordinación</a>
                 <a href="https://espacio-docente.netlify.app/" target="_blank" rel="noopener">📋 Espacio Docente (docentes)</a>
                 <a href="#" target="_blank" rel="noopener">📘 Manual de convivencia</a>
                 <a href="#" target="_blank" rel="noopener">💬 Soporte técnico del staff</a>
@@ -1064,6 +1088,10 @@ a:focus-visible, button:focus-visible, input:focus-visible,
    ============================================================ */
 const SUPABASE_URL = 'https://kretfnbddhbosacfgdup.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_HmbNgu4TXftJoEH6CSM6wQ_TlebMuly';
+
+// Se lee antes de crear el cliente: Supabase limpia el #hash de la URL
+// al procesar el link del mail de "recuperar contraseña".
+const ES_RECUPERACION_CLAVE = /type=recovery/.test(window.location.hash);
 
 let _supabase = null;
 try {
@@ -1827,7 +1855,19 @@ async function handleSignup() {
 
     if (error) {
         status.classList.add('is-error');
-        status.textContent = 'No se pudo crear la cuenta: ' + error.message;
+        // Supabase devuelve los errores en inglés; se traducen los habituales.
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('already registered') || msg.includes('already exists')) {
+            status.textContent = 'Ese correo ya tiene una cuenta. Usá "Iniciar sendero" con tu contraseña.';
+        } else if (msg.includes('no autorizado')) {
+            status.textContent = 'Usá tu correo institucional (@austinebs-ah.edu.ar). Si no tenés uno, pedile a coordinación que te habilite.';
+        } else if (msg.includes('rate limit') || msg.includes('too many') || error.status === 429) {
+            status.textContent = 'Hubo demasiados intentos seguidos. Esperá unos minutos y volvé a probar.';
+        } else if (msg.includes('password')) {
+            status.textContent = 'La contraseña no es válida: usá al menos 8 caracteres.';
+        } else {
+            status.textContent = 'No se pudo crear la cuenta. Intentá de nuevo en unos minutos; si sigue pasando, avisale a coordinación.';
+        }
         return;
     }
 
@@ -1879,6 +1919,79 @@ async function handleLogin() {
         status.classList.add('is-error');
         status.textContent = 'No se pudo conectar con Supabase. Revisá que SUPABASE_URL y SUPABASE_KEY estén bien configurados en el archivo.';
     }
+}
+
+/* ============================================================
+   RECUPERAR CONTRASEÑA
+   1) handleForgotPassword() manda el mail con el link (vuelve a esta
+      misma página, que tiene que estar en Authentication → URL
+      Configuration → Redirect URLs).
+   2) Al volver, el evento PASSWORD_RECOVERY (o el #type=recovery de
+      la URL) muestra #reset-card en vez de entrar al sendero.
+   3) handleNuevaClave() guarda la contraseña nueva y entra.
+   ============================================================ */
+async function handleForgotPassword() {
+    const email = document.getElementById('login-email').value.trim();
+    const status = document.getElementById('login-status');
+    const btn = document.getElementById('btn-forgot');
+    status.classList.remove('is-error');
+    if (!email) {
+        status.classList.add('is-error');
+        status.textContent = 'Escribí tu correo institucional arriba y volvé a tocar "¿Olvidaste tu contraseña?".';
+        document.getElementById('login-email').focus();
+        return;
+    }
+    if (DEMO_MODE) {
+        status.textContent = 'Modo demo: no hay contraseñas que recuperar.';
+        return;
+    }
+    btn.disabled = true;
+    status.textContent = 'Enviando el mail…';
+    const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + window.location.pathname
+    });
+    btn.disabled = false;
+    if (error && (error.status === 429 || /rate limit|too many/i.test(error.message || ''))) {
+        status.classList.add('is-error');
+        status.textContent = 'Hubo demasiados intentos seguidos. Esperá unos minutos y volvé a probar.';
+        return;
+    }
+    if (error) console.warn('resetPasswordForEmail:', error.message);
+    // Mismo mensaje exista o no la cuenta, para no revelar qué correos están registrados.
+    status.textContent = 'Si ese correo tiene una cuenta, te llegó un mail con un link para elegir una contraseña nueva. Revisá también la carpeta de spam.';
+}
+
+function mostrarFormularioNuevaClave() {
+    document.getElementById('app-shell').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.querySelector('#login-screen .login-card:not(#reset-card)').classList.add('hidden');
+    document.getElementById('reset-card').classList.remove('hidden');
+    document.getElementById('reset-password').focus();
+}
+
+async function handleNuevaClave() {
+    const p1 = document.getElementById('reset-password').value;
+    const p2 = document.getElementById('reset-password-2').value;
+    const status = document.getElementById('reset-status');
+    const btn = document.getElementById('btn-reset');
+    status.classList.add('is-error');
+    if (p1.length < 8) { status.textContent = 'La contraseña debe tener al menos 8 caracteres.'; return; }
+    if (p1 !== p2) { status.textContent = 'Las dos contraseñas no coinciden.'; return; }
+    status.classList.remove('is-error');
+    setBtnLoading(btn, true, 'Guardando…', 'Guardar y entrar');
+    const { data, error } = await _supabase.auth.updateUser({ password: p1 });
+    setBtnLoading(btn, false, '', 'Guardar y entrar');
+    if (error) {
+        status.classList.add('is-error');
+        status.textContent = /same|different/i.test(error.message || '')
+            ? 'La contraseña nueva tiene que ser distinta de la anterior.'
+            : 'No se pudo guardar. El link del mail puede haber vencido: pedí uno nuevo desde "¿Olvidaste tu contraseña?".';
+        return;
+    }
+    history.replaceState(null, '', window.location.pathname);
+    document.getElementById('reset-card').classList.add('hidden');
+    document.querySelector('#login-screen .login-card:not(#reset-card)').classList.remove('hidden');
+    await onLoginSuccess(data.user);
 }
 
 async function handleLogout() {
@@ -2561,6 +2674,11 @@ function mediaError() {
         return;
     }
     const { data: { session } } = await _supabase.auth.getSession();
+    if (ES_RECUPERACION_CLAVE) {
+        // Viene del mail de recuperar contraseña: primero elegir la nueva.
+        mostrarFormularioNuevaClave();
+        return;
+    }
     if (session && session.user) {
         await onLoginSuccess(session.user);
     }
@@ -2568,7 +2686,9 @@ function mediaError() {
 
 if (!DEMO_MODE && SUPABASE_CONFIGURADO) {
     _supabase.auth.onAuthStateChange((event) => {
-        if (event === 'SIGNED_OUT') {
+        if (event === 'PASSWORD_RECOVERY') {
+            mostrarFormularioNuevaClave();
+        } else if (event === 'SIGNED_OUT') {
             document.getElementById('app-shell').classList.add('hidden');
             document.getElementById('login-screen').classList.remove('hidden');
         }
