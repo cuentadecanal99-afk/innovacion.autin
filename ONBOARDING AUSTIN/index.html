@@ -1161,9 +1161,12 @@ function demoGuardarProgreso() {
      descargables sueltos).
    - Todo content_md es síntesis propia, corta, para reducir carga
      cognitiva — no hay texto completo de ninguna fuente.
-   - media queda vacío (type: null, url: '') en todos los pasos:
-     no hay video/imagen real todavía. Se puede completar por paso
-     más adelante (youtube/vimeo/drive/video/audio/image/iframe).
+   - media solo existe en el paso 1 de cada tópico: es el video de
+     presentación del nivel y su temática. Los demás pasos son solo
+     texto + preguntas (sin media, no se muestra el recuadro).
+     Por ahora queda vacío (type: null, url: '') en esos pasos 1:
+     todavía no hay videos. Para cargarlos, completar type y url
+     (youtube/vimeo/drive/video/...) en el paso 1 de cada tópico.
    - 1-2 preguntas de quiz por paso, todas con passing_score igual
      al total de preguntas (hay que acertar todas).
    ============================================================ */
@@ -1177,7 +1180,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 't1-s1', title: 'Quiénes somos', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Austin Eco Bilingual School\n\nSomos una comunidad bilingüe que educa hoy pensando en un mañana mejor. Cinco ejes atraviesan todo lo que hacemos: **sustentabilidad**, **ciudadanía global**, **bilingüismo real**, **comunidad** y la **Enseñanza para la Comprensión (EpC)**, el marco pedagógico de Harvard Project Zero que vas a conocer en el próximo tópico.\n\nA esto se suma nuestro proyecto institucional **"Every Step Matters"** (Building Wellbeing, One Habit at a Time): trabajamos hábitos como puente entre la vida escolar y la vida cotidiana, con registro grupal y visual. Es un proyecto de todos y para todos — también tuyo desde el primer día.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál de estos NO es uno de los cinco ejes institucionales de Austin?', options: ['Bilingüismo real', 'Competencia entre estudiantes', 'Ciudadanía global'] }
@@ -1185,7 +1188,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't1-s2', title: 'El equipo de Secundario', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Cómo está organizado el equipo\n\nLa Dirección General y del Nivel Secundario coordina el trabajo junto a las Coordinaciones Pedagógicas (español e inglés, por ciclo) y la Coordinación IB. El **Jefe de Preceptores** organiza al equipo de preceptores, que son tu primer punto de contacto para el día a día del aula.\n\nAdemás contás con un **Equipo de Apoyo**: el EOE (Equipo de Orientación Escolar, con psicóloga y coordinadora) y el Acompañamiento Pedagógico (en inglés y en español), pensados para consultar dudas sobre estudiantes con diagnósticos o perfiles divergentes.\n\nSi tenés dudas sobre a quién recurrir ante una situación puntual, tu Coordinación Pedagógica es siempre el primer paso.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Tenés una duda sobre cómo adecuar una propuesta para un estudiante con un diagnóstico específico. ¿A quién consultás primero?', options: ['Al Jefe de Preceptores', 'A tu Coordinación Pedagógica / EOE', 'Directamente a la familia'] }
@@ -1193,7 +1195,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't1-s3', title: 'Cómo nos comunicamos con las familias', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Comunicación con familias\n\nUsamos canales institucionales (Handing y Acadeu) para mantener a las familias informadas, además de entrevistas y reuniones. Antes de comunicar algo a una familia, conviene tener claros tres criterios: **qué** vamos a comunicar, **cuándo** es el momento adecuado, y **cómo** lo vamos a decir.\n\nSi surge información relevante en una reunión individual con una familia, es importante compartirla con tu Coordinación — así el equipo tiene una visión completa de cada estudiante, no solo vos.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Tuviste una reunión con la familia de un estudiante y surgió información importante. ¿Qué corresponde hacer?', options: ['Guardarla para vos, es información de la reunión', 'Compartirla con tu Coordinación Pedagógica', 'Esperar a que la familia la repita en otra reunión'] }
@@ -1201,7 +1202,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't1-s4', title: 'Organización del tiempo y del aula', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Puntualidad, espacios y entregas\n\nEl cumplimiento de horarios (sobre todo el ingreso al aula) y el presentismo son parte central de la cultura de trabajo en Austin. Los espacios compartidos se reservan con anticipación, y el material a imprimir también se anticipa — no es algo de último momento.\n\nLa entrega de notas y de PUDs se hace **a término**, y las devoluciones quedan registradas en actas. Pensá esto no como un trámite, sino como parte de darle previsibilidad al trabajo de todo el equipo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué material se recomienda anticipar en vez de resolver a último momento?', options: ['El material a imprimir', 'La corrección de exámenes', 'La lista de útiles'] }
@@ -1209,7 +1209,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't1-s5', title: 'Reglamento interno', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Sistema de créditos y dispositivos\n\nEl **sistema de créditos** es una herramienta formativa (no punitiva): promueve responsabilidad y autonomía progresiva. Ante una "quita de créditos", el foco está en la reflexión y la reparación, no solo en la sanción — y siempre se refuerzan también las acciones positivas.\n\nSobre el uso de celular y PCs en el aula: la disposición vigente requiere que el docente pueda supervisar el uso de dispositivos en todo momento. El colegio también cuenta con cámaras instaladas en distintos espacios.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cómo se entiende el sistema de créditos en Austin?', options: ['Como un castigo automático sin margen de reflexión', 'Como una herramienta formativa que también refuerza lo positivo', 'Como algo que solo aplica a los preceptores'] }
@@ -1225,7 +1224,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 't2-s1', title: '¿Qué es comprender?', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Conocimiento no es lo mismo que comprensión\n\nSaber datos (fechas, definiciones, fórmulas) es tener **conocimiento**. Poder usar ese conocimiento de forma flexible para resolver un problema nuevo, explicar, argumentar o decidir es **comprender**. Un estudiante puede saber una regla de memoria y aun así no comprenderla — comprender implica poder "jugar con la pelota", no solo tenerla.\n\nPor eso, en Austin no evaluamos solo si un estudiante recuerda información: buscamos evidencia de que puede pensar y actuar con flexibilidad a partir de lo que sabe.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante recita de memoria la definición de fotosíntesis pero no puede explicar qué pasaría si una planta no recibe luz. ¿Qué le falta?', options: ['Conocimiento', 'Comprensión', 'Nada, ya demostró lo que sabe'] }
@@ -1233,7 +1232,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't2-s2', title: 'Los 4 elementos del marco EpC', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Cuatro preguntas, cuatro elementos\n\nEl marco EpC organiza la planificación alrededor de 4 preguntas:\n\n- **¿Qué enseñar?** → Tópicos Generativos (temas centrales, con conexiones ricas)\n- **¿Qué deben comprender?** → Metas de Comprensión (concretas, medibles, ligadas al Tópico)\n- **¿Cómo enseñar para comprender?** → Desempeños de Comprensión (lo que los estudiantes *hacen* para construir y mostrar comprensión)\n- **¿Cómo lo sabemos?** → Valoración Continua (ciclos de retroalimentación a lo largo de toda la unidad, no solo al final)\n\nLos cuatro están conectados: cambiar uno afecta a los demás.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué elemento del marco EpC responde a "¿cómo sabemos que los estudiantes están comprendiendo?"?', options: ['Tópico Generativo', 'Desempeño de Comprensión', 'Valoración Continua'] }
@@ -1241,7 +1239,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't2-s3', title: 'EpC vs. enseñanza tradicional', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Confusiones típicas\n\nUna Meta de Comprensión ("los estudiantes comprenderán por qué...") no es lo mismo que un objetivo comportamental ("los estudiantes identificarán..."). El objetivo dice qué *hace* el estudiante; la Meta dice *por qué* lo hace y qué debería comprender al hacerlo.\n\nDe la misma forma, un Tópico Generativo no es simplemente un tema del temario: tiene que ser central a la disciplina, generar curiosidad genuina, ser accesible para los estudiantes, y conectar con otros temas y con el mundo real. Y un Desempeño de Comprensión no es cualquier actividad práctica — tiene que exigir usar lo aprendido en una situación nueva, no repetirlo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué diferencia a una Meta de Comprensión de un objetivo comportamental?', options: ['La Meta dice qué hace el estudiante; el objetivo dice por qué', 'No hay ninguna diferencia real', 'La Meta dice por qué y qué debería comprender el estudiante; el objetivo solo dice qué hace'] }
@@ -1249,7 +1246,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't2-s4', title: 'Practicá: armar un PUD (parte 1)', xp: 30, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El Organizador de Unidad (PUD)\n\nEl PUD es tu herramienta de planificación por unidad en Austin. Las primeras secciones son:\n\n- **Hilos Conductores**: las grandes preguntas que guían el aprendizaje disciplinar durante todo el año (no cambian unidad a unidad).\n- **Tópico Generativo**: el tema central de esta unidad puntual.\n- **Metas de Comprensión (MC1 a MC4)**: qué querés que tus estudiantes comprendan profundamente de ese tópico, mirando conocimiento, método, propósito y comunicación. Cada una se puede formular también como pregunta.\n\nEjemplo de una MC bien formulada: *"Los estudiantes comprenderán cómo un texto histórico refleja la perspectiva de quien lo escribió"* — no *"Los estudiantes identificarán las partes de un texto histórico"* (eso es un objetivo comportamental, no una Meta).',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál de estas es una Meta de Comprensión bien formulada para el campo MC1 del PUD?', options: ['Los estudiantes subrayarán las palabras clave del texto', 'Los estudiantes comprenderán por qué un mismo hecho histórico puede contarse desde perspectivas distintas', 'Los estudiantes entregarán el trabajo antes del viernes'] }
@@ -1257,7 +1253,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't2-s5', title: 'Practicá: armar un PUD (parte 2)', xp: 30, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Actividades, Desempeños y Valoración\n\nEsta sección del PUD conecta cada actividad con una Meta de Comprensión (columna MC), con un Tipo de Desempeño (**E**: Exploración, **I**: Investigación guiada, **PF**: Proyecto Final) y opcionalmente con Inteligencias Múltiples (IM) y Habilidades de Pensamiento (HP).\n\nUn Desempeño de Exploración suele ir al principio de la unidad (más abierto); uno de Investigación Guiada se enfoca en un aspecto concreto; el Proyecto Final de Síntesis integra todo lo aprendido. Cada actividad lleva también su forma de valoración: ¿va a ser formal o informal? ¿oral, escrita o gestual? ¿docente, entre pares o autovaloración?',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Estás diseñando la actividad de cierre de una unidad, donde los estudiantes integran todo lo trabajado. ¿Qué tipo de desempeño es (E / I / PF)?', options: ['E (Exploración)', 'I (Investigación guiada)', 'PF (Proyecto Final)'] }
@@ -1265,7 +1260,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't2-s6', title: 'La Planificación Anual', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El otro documento de planificación\n\nAdemás del PUD (por unidad), cada materia tiene una **Planificación Anual**: expectativas de logro, fundamentación del área, programa de contenidos y bibliografía (del docente y del alumno). Se entrega firmada, junto con la firma del equipo de gestión, y su bibliografía institucional de referencia es el Diseño Curricular de la Provincia de Buenos Aires.\n\nSe entrega el 20/02 según el calendario del ciclo — revisá el tópico "Este ciclo lectivo" para confirmar la fecha exacta de este año.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué diferencia principal hay entre el PUD y la Planificación Anual?', options: ['Son el mismo documento con distinto nombre', 'El PUD es por unidad (Hilos, Tópico, Metas, Desempeños); la Planificación Anual cubre todo el año (contenidos y bibliografía)', 'La Planificación Anual reemplaza al PUD desde este año'] }
@@ -1281,7 +1275,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 't3-s1', title: 'Cómo evaluamos en Austin', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Evaluación como proceso, no como examen final\n\nLa evaluación en Austin es integral (cognitiva, afectiva y sociocultural), procesal (mira el proceso, no solo el resultado), programática (se piensa desde la planificación) y flexible según los estilos de aprendizaje. No es solo formal: lo informal también cuenta para construir el juicio sobre el desempeño.\n\nHay momentos definidos: evaluación inicial → de proceso → trimestral → anual → de la calidad educativa. Cada docente comparte sus evaluaciones formales con Coordinación con anticipación, y se piden al menos dos instancias formales por cuatrimestre.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuántas evaluaciones formales, como mínimo, se esperan por cuatrimestre?', options: ['Una', 'Dos', 'Cinco'] }
@@ -1289,7 +1283,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't3-s2', title: 'Técnicas de evaluación y devolución', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Instrumentos y cómo corregir\n\nEn Austin usamos observación sistemática (checklist, registro anecdótico), situaciones orales, ejercicios prácticos, pruebas tipo test y resolución de problemas, según qué y para qué estemos evaluando.\n\nAl corregir, es clave señalar lo logrado y no solo lo que falta, usando comentarios que ayuden al estudiante a revisar sus propios errores (metacognición), con términos positivos. La devolución — que el estudiante entienda cómo obtuvo su calificación y con qué criterios — es tan importante como la corrección misma.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Al corregir una evaluación escrita, ¿qué enfoque se recomienda en Austin?', options: ['Señalar únicamente los errores, para que quede claro qué mejorar', 'Usar comentarios que ayuden al estudiante a reflexionar y revisar sus propios errores', 'No hace falta explicar los criterios de corrección'] }
@@ -1297,7 +1290,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't3-s3', title: 'La Escalera de la Retroalimentación', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Cuatro pasos para dar feedback\n\nCuando das o recibís retroalimentación, conviene seguir esta secuencia:\n\n1. **Clarificar**: primero entender bien lo que la otra persona quiso decir, antes de opinar.\n2. **Valorar**: reconocer lo positivo, las fortalezas, lo que funciona.\n3. **Expresar inquietudes**: como preguntas genuinas ("¿consideraste...?"), nunca como acusación.\n4. **Hacer sugerencias**: conectar las inquietudes con una propuesta concreta y constructiva.\n\nSaltarse el orden (por ejemplo, ir directo a las inquietudes sin clarificar ni valorar) suele generar una retroalimentación que se siente como una crítica, no como una ayuda.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Según la Escalera de la Retroalimentación, ¿qué paso va justo antes de "Expresar inquietudes"?', options: ['Hacer sugerencias', 'Valorar', 'Calificar'] }
@@ -1305,7 +1297,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't3-s4', title: 'La Pirámide de la Retroalimentación', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Tipos, formas y fuentes\n\nLa retroalimentación puede ser **formal** (con nota) o **informal** (una charla, un comentario) — y lo informal suele ser más impactante para la comprensión, porque invita a la reflexión en vez de depender de una calificación externa. También puede tomar distintas **formas** (oral, escrita, gestual) y venir de distintas **fuentes**: el docente, los compañeros, o la autovaloración del propio estudiante.\n\nUna buena práctica evaluativa combina los tres ejes en vez de apoyarse siempre en el mismo tipo, la misma forma y la misma fuente.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Por qué la retroalimentación informal puede ser más impactante que la formal?', options: ['Porque no requiere ningún esfuerzo del docente', 'Porque invita al estudiante a reflexionar, en vez de depender solo de una nota', 'Porque siempre es más breve'] }
@@ -1313,7 +1304,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 't3-s5', title: 'Criterios visibles y autoevaluación', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Que el estudiante sepa, desde antes de empezar, qué se espera\n\nLa Valoración Continua no arranca cuando se corrige un trabajo — arranca cuando el estudiante conoce los criterios *antes* de hacerlo. Una rúbrica bien construida no dice solo "bien" o "mal": describe niveles de desempeño observables ("logrado", "en proceso", "a trabajar") para cada criterio, de forma que el estudiante pueda ubicar su propio trabajo ahí.\n\nCon esos criterios visibles, la autoevaluación deja de ser "¿te parece que te fue bien?" y pasa a ser algo concreto: revisar el propio trabajo contra la rúbrica, antes de entregarlo. La coevaluación (entre pares) usa la misma rúbrica, pero con la mirada de un compañero. Ambas son evidencia tan válida como la corrección docente — y son las que más entrenan la revisión del propio proceso.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuándo conviene compartir la rúbrica de una actividad con los estudiantes?', options: ['Nunca, para no condicionar su trabajo', 'Recién al momento de corregir', 'Antes de que empiecen, para que sepan qué se espera'] }
@@ -1329,7 +1319,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tcp-s1', title: '¿Qué es una Cultura de Pensamiento?', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## El aula como comunidad que piensa\n\nLa Cultura de Pensamiento es el otro gran marco de Project Zero (Harvard), hermano de la EpC que ya conociste. Mientras la EpC organiza *qué* y *cómo* enseñar una unidad, la Cultura de Pensamiento se ocupa de algo más amplio: el clima cotidiano del aula, esté o no en curso una unidad puntual.\n\nSegún Ron Ritchhart, no alcanza con hacer "una actividad de pensamiento" de vez en cuando. Una verdadera cultura de pensamiento se sostiene en tres pilares que conviven todos los días: las **disposiciones de pensamiento** (curiosidad, apertura, búsqueda de evidencia), el **pensamiento visible** (hacer notorio lo que normalmente pasa solo "en la cabeza") y la **cultura del aula** que lo habilita o lo frena.\n\nUna clase puede estar muy ordenada y "tranquila" y aun así no ser una cultura de pensamiento — si nadie pregunta, nadie duda en voz alta y nadie revisa una idea propia.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un docente hace una actividad "creativa" una vez por trimestre, pero el resto de las clases son solo copiar y responder. ¿Tiene una Cultura de Pensamiento?', options: ['Sí, con una actividad alcanza', 'No — se sostiene en el día a día, no en actividades aisladas', 'Sí, siempre que la actividad tenga imágenes'] }
@@ -1337,7 +1327,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tcp-s2', title: 'Las 8 fuerzas culturales', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Lo que moldea la cultura de un aula\n\nRitchhart identifica 8 fuerzas culturales que, juntas, definen si una clase promueve o apaga el pensamiento:\n\n- **Expectativas**: qué se espera lograr, no solo qué tarea cumplir.\n- **Lenguaje**: el vocabulario de pensamiento que usás ("¿qué evidencia tenés?", "¿qué te hace pensar eso?").\n- **Tiempo**: dar tiempo real para pensar, no solo para responder rápido.\n- **Modelado**: mostrarte a vos mismo/a pensando en voz alta, dudas incluidas.\n- **Oportunidades**: actividades que realmente requieren pensar, no solo repetir.\n- **Rutinas**: estructuras simples y repetibles (ver paso siguiente).\n- **Interacciones**: cómo se escuchan y se retoman las ideas entre docente y estudiantes.\n- **Entorno físico**: qué se exhibe en las paredes — ¿trabajos terminados prolijos, o el pensamiento en proceso?\n\nLa más subestimada suele ser el **Modelado**: cuando un docente piensa en voz alta frente a la clase ("no estoy seguro, probemos esto..."), les muestra a los estudiantes que dudar y revisar es parte normal de pensar, no una debilidad.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un docente dice en voz alta: "Yo pensaba que esto era así, pero ahora que lo releo no estoy seguro, vamos a revisarlo juntos". ¿Qué fuerza cultural está usando principalmente?', options: ['Modelado', 'Entorno físico', 'Tiempo'] }
@@ -1345,7 +1334,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tcp-s3', title: 'Rutinas de pensamiento', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Estructuras simples para pensar en voz alta\n\nUna rutina de pensamiento es un protocolo breve y repetible — unos pocos pasos, fáciles de recordar — que cualquier docente puede usar con cualquier contenido para volver visible el pensamiento del grupo. No son actividades "extra": reemplazan al "¿alguna pregunta?" de siempre.\n\nAlgunas de las más usadas:\n\n- **Veo-Pienso-Me pregunto**: frente a una imagen, texto o problema — ¿qué observo?, ¿qué interpreto?, ¿qué me genera curiosidad? Ideal para abrir un tema nuevo.\n- **Antes pensaba… Ahora pienso…**: al cierre de una clase o unidad, para que cada estudiante note cómo cambió su propia comprensión. Muy útil para la Valoración Continua.\n- **Conectar-Extender-Desafiar**: ¿cómo se conecta esto con lo que ya sabía?, ¿qué idea nueva me abre?, ¿qué me sigue resultando difícil o discutible?\n- **Pienso-Me interesa-Investigo**: para lanzar una indagación o proyecto, identificando qué quiere investigar cada estudiante.\n\nUna rutina bien elegida puede ser, en sí misma, un Desempeño de Comprensión dentro de tu PUD.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Querés que cada estudiante note cómo cambió su propia idea sobre un tema después de trabajarlo en clase. ¿Qué rutina conviene usar?', options: ['Veo-Pienso-Me pregunto', 'Antes pensaba… Ahora pienso…', 'Conectar-Extender-Desafiar'] }
@@ -1353,7 +1341,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tcp-s4', title: 'Hacerlo parte de tu aula', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## De la teoría a la práctica cotidiana\n\nNo hace falta un proyecto especial para instalar una cultura de pensamiento — alcanza con sumar, de a poco, hábitos simples:\n\n- Cambiar "¿entendieron?" por preguntas que pidan evidencia: "¿qué te hace pensar eso?", "¿cómo lo sabés?".\n- Dar unos segundos de silencio real antes de pedir una respuesta (tiempo de espera).\n- Documentar el pensamiento del grupo: carteles con ideas en proceso, no solo trabajos terminados.\n- Elegir una rutina fija para abrir o cerrar tus clases, en vez de improvisar cada vez.\n\nEstos hábitos no compiten con la EpC ni con la Valoración Continua — las potencian: una rutina de pensamiento bien elegida puede ser el Desempeño de Comprensión de una clase, y la evidencia que deja (lo que los estudiantes escriben o dicen) es material directo para tu Valoración Continua.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál de estas es una forma simple de empezar a instalar una cultura de pensamiento en tu aula?', options: ['Esperar a tener un proyecto institucional especial', 'Reemplazar "¿entendieron?" por preguntas que pidan evidencia, y dar tiempo real para pensar', 'Solo exhibir trabajos ya terminados y prolijos en las paredes'] }
@@ -1369,7 +1356,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tsel-s1', title: '¿Por qué importa lo emocional para aprender?', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Sin regulación emocional, cuesta pensar\n\nUn estudiante que está desbordado, angustiado o a la defensiva no está en condiciones de comprender un tópico generativo ni de sostener una rutina de pensamiento — el cerebro prioriza gestionar la emoción por sobre el razonamiento complejo. Por eso lo emocional no es "un tema aparte" de lo académico: es la base sobre la que se apoya todo lo demás.\n\nEn Austin, el EOE (Equipo de Orientación Escolar) y el Acompañamiento Pedagógico brindan soporte y acompañan tanto a docentes como a estudiantes en los casos que lo requieren. En el día a día, cada docente ocupa un lugar central como líder emocional del aula: con su presencia, sus intervenciones y su manera de vincularse, ayuda a los estudiantes a regular sus emociones y construye un clima de seguridad, confianza y disposición para aprender.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante llega angustiado por algo que pasó antes de tu clase. ¿Qué es más probable?', options: ['Que pueda concentrarse igual que cualquier otro día', 'Que le cueste más comprender y pensar hasta poder procesar lo que siente', 'Que la angustia no tenga relación con su aprendizaje ese día'] }
@@ -1377,7 +1364,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tsel-s2', title: 'Las 5 competencias socioemocionales', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El modelo CASEL\n\nCASEL (Collaborative for Academic, Social and Emotional Learning) organiza lo socioemocional en 5 competencias:\n\n- **Autoconciencia**: reconocer las propias emociones y cómo influyen en la conducta.\n- **Autogestión**: regular esas emociones e impulsos para actuar con intención.\n- **Conciencia social**: entender y empatizar con la perspectiva de otros.\n- **Habilidades de relación**: construir y sostener vínculos positivos.\n- **Toma de decisiones responsable**: decidir considerando el impacto en uno mismo y en los demás.\n\nNo son "temas" que se dan una vez y ya está — son disposiciones que se entrenan en la interacción diaria, parecido a las disposiciones de pensamiento que ya viste en Cultura de Pensamiento.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante nota que está por reaccionar mal y decide respirar antes de responder. ¿Qué competencia CASEL está ejercitando principalmente?', options: ['Conciencia social', 'Autogestión', 'Toma de decisiones responsable'] }
@@ -1385,7 +1371,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tsel-s3', title: 'Autorregulación en el aula', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Herramientas simples, sostenidas en el tiempo\n\n- **Anticipar las transiciones**: avisar unos minutos antes de cambiar de actividad y explicar qué viene después, para dar tiempo a prepararse.\n- **Dividir las tareas en pasos pequeños**: cuando aparece el agobio, ayudar a identificar una primera acción posible: “Empecemos por leer la consigna juntos”.\n- **Ofrecer opciones acotadas**: “¿Preferís empezar por este ejercicio o por aquel?”. Poder elegir ayuda a recuperar una sensación de control.\n- **Incorporar pausas de movimiento**: estirarse, caminar brevemente o cambiar de postura entre actividades para aliviar la tensión y recuperar la atención.\n- **Bajar el ritmo y el tono de voz**: ante un estudiante desbordado, acercarse con calma, usar pocas palabras y darle tiempo para responder.\n- **Construir acuerdos en momentos de calma**: conversar previamente sobre qué puede ayudar cuando alguien se enoja o se frustra, y dejar esos recursos visibles en el aula.\n- **Acompañar el regreso a la actividad**: después de una pausa, ofrecer un paso sencillo para retomar, sin exigir una explicación inmediata de lo sucedido.\n- **Reconocer los avances en la regulación**: señalar acciones concretas, como pedir ayuda, hacer una pausa o expresar una necesidad: “Pudiste avisar que necesitabas un momento; eso nos ayudó a acompañarte”.\n\nEl modelado sigue siendo clave acá también: un docente que nombra sus propias emociones con naturalidad ("estoy un poco apurado/a hoy, vamos a organizarnos así") les muestra a los estudiantes que identificar y manejar emociones es normal, no una señal de debilidad.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál de estas es una estrategia simple de autorregulación para usar en el aula?', options: ['Ignorar la emoción hasta que se le pase sola', 'Anticipar las transiciones y dividir la tarea en pasos pequeños', 'Pedirle al estudiante que se calme sin dar ninguna herramienta'] }
@@ -1393,7 +1378,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tsel-s4', title: 'Vínculos y clima para aprender', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El vínculo antes que el contenido\n\nUn estudiante que siente que su docente lo conoce y lo tiene en cuenta participa más, se anima a equivocarse en voz alta y sostiene mejor el esfuerzo frente a una tarea difícil. Esto no reemplaza la exigencia académica — la sostiene: es mucho más fácil pedirle a alguien que se esfuerce cuando ya hay un vínculo de confianza construido.\n\nEste eje se conecta directamente con el próximo tópico, Disciplina Positiva y Convivencia: ahí vas a ver cómo intervenir frente a un conflicto sin romper ese vínculo que estuviste construyendo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué efecto tiene un buen vínculo docente-estudiante sobre la exigencia académica?', options: ['La reemplaza, ya no hace falta exigir', 'La sostiene: es más fácil pedir esfuerzo cuando hay confianza construida', 'No tiene ninguna relación con la exigencia académica'] }
@@ -1409,7 +1393,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tdp-s1', title: 'Firmeza y amabilidad, a la vez', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Ni autoritario ni permisivo\n\nLa Disciplina Positiva (Jane Nelsen) no es "dejar hacer" ni "mano dura" — es amabilidad y firmeza *al mismo tiempo*, no una cosa u otra. La amabilidad muestra respeto por el estudiante; la firmeza muestra respeto por vos mismo/a y por lo que la situación necesita.\n\nUn error común es pensar que hay que elegir entre las dos: o sos amable y "aflojás" el límite, o sos firme y perdés la calidez. Sostener ambas a la vez es lo que distingue a la Disciplina Positiva tanto del autoritarismo como del permisivismo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Según la Disciplina Positiva, ¿cómo debería sostenerse un límite?', options: ['Con firmeza, aunque implique perder la amabilidad', 'Con amabilidad, aunque implique aflojar el límite', 'Con amabilidad y firmeza al mismo tiempo'] }
@@ -1417,7 +1401,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tdp-s2', title: 'Conexión antes que corrección', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Primero el vínculo, después la conducta\n\nCuando un estudiante se porta mal, la reacción más instintiva es corregir la conducta de inmediato. Pero corregir sin conectar antes suele generar más resistencia, no menos: el estudiante se pone a la defensiva en vez de escuchar.\n\nConectar antes no significa "dejar pasar" lo que pasó — significa empezar reconociendo lo que el estudiante siente o necesita ("veo que estás muy enojado/a") antes de trabajar sobre la conducta. Recién ahí la corrección tiene chances reales de ser escuchada.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Por qué "conectar antes que corregir" suele funcionar mejor que corregir de entrada?', options: ['Porque evita tener que poner límites', 'Porque un estudiante a la defensiva escucha menos que uno que se siente reconocido', 'Porque hace que el conflicto se resuelva más rápido siempre'] }
@@ -1425,7 +1408,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tdp-s3', title: 'Límites y acuerdos, no solo reglas impuestas', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## De la regla impuesta al acuerdo construido\n\nUna regla que el grupo no ayudó a pensar se sostiene solo mientras hay control externo. Un acuerdo de convivencia construido junto con los estudiantes — aunque termine diciendo lo mismo que la regla — se sostiene mejor, porque hay apropiación de por medio.\n\nEsto no reemplaza el reglamento institucional (ver tópico "Bienvenida a Austin") — lo complementa: dentro de tu aula, hay margen para construir acuerdos puntuales de funcionamiento junto con el grupo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué ventaja tiene un acuerdo de convivencia construido con el grupo, frente a una regla solo impuesta?', options: ['Ninguna, el resultado es el mismo', 'Se sostiene mejor porque el grupo se apropia de él', 'Elimina la necesidad de cualquier límite'] }
@@ -1433,7 +1415,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tdp-s4', title: 'Conflicto: reflexión y reparación', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El foco está en aprender del error, no solo en sancionarlo\n\nEsto conecta directamente con el sistema de créditos de Austin que ya viste: una consecuencia bien pensada está relacionada con lo que pasó, es respetuosa y es razonable. El objetivo es que el estudiante pueda reconocer el impacto de sus acciones, asumir su responsabilidad y aprender de la situación.\n\nEn la práctica, esto significa dejar espacio para que el propio estudiante piense cómo reparar lo que pasó, con el acompañamiento del adulto. Es importante distinguir entre reponer y reparar: reemplazar un objeto roto permite resolver el daño material, pero no necesariamente repara el vínculo con la persona afectada. Esa reparación implica escuchar cómo se sintió el otro, reconocer el daño y sostener acciones que permitan reconstruir la confianza. No se resuelve siempre con una disculpa ni de manera inmediata: puede requerir tiempo, acompañamiento y respeto por los tiempos de quien fue afectado.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuáles son las tres cualidades de una consecuencia bien pensada, según este enfoque?', options: ['Rápida, dura y ejemplar', 'Relacionada con lo que pasó, respetuosa y razonable', 'Impuesta, inmediata y sin explicación'] }
@@ -1449,7 +1430,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tag-s1', title: '¿Qué es la agencia?', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Actuar sobre el mundo, no solo recibirlo\n\nLa agencia es la capacidad de un estudiante de actuar con intención sobre su entorno — sentir que sus decisiones importan y que puede transformar lo que lo rodea, en vez de ser un receptor pasivo de contenidos. No es lo mismo que "dar opciones": elegir el color de la carátula de una carpeta no es agencia, aunque técnicamente sea una elección.\n\nEn Austin, la agencia del estudiante es un eje propio, no un capricho: es la forma en que "Voz, elección, autonomía y capacidad de transformar el entorno" dejan de ser una frase y se vuelven algo que pasa todos los días en el aula.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un docente deja que cada estudiante elija el color de la carátula de su carpeta. ¿Eso es agencia del estudiante?', options: ['Sí, cualquier elección cuenta como agencia', 'No — es una elección decorativa, sin impacto real sobre el aprendizaje o el entorno', 'Sí, siempre que se elija en grupo'] }
@@ -1457,7 +1438,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tag-s2', title: 'Las 3 capacidades de Agency by Design', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Mirar, explorar, encontrar oportunidad\n\nAgency by Design es otra línea de Project Zero (Harvard), centrada en cómo se desarrolla la agencia a través del "hacer". Propone tres capacidades que se entrenan juntas:\n\n- **Mirar de cerca**: observar el entorno con atención, notando detalles y decisiones de diseño que normalmente pasan desapercibidas.\n- **Explorar la complejidad**: entender cómo funciona algo — qué partes lo componen, cómo se conectan, por qué está hecho así.\n- **Encontrar oportunidad**: identificar dónde se podría intervenir o rediseñar algo para mejorarlo.\n\nLa idea de fondo es la "sensibilidad al diseño": todo lo que nos rodea —un aula, una consigna, un reglamento— fue diseñado por alguien, en algún momento, y por lo tanto puede volver a diseñarse. Un estudiante que internaliza esto deja de ver su entorno como algo fijo.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un grupo de estudiantes nota que el sistema de turnos para usar un espacio compartido genera peleas, y propone un rediseño. ¿Qué capacidad de Agency by Design están usando principalmente?', options: ['Mirar de cerca', 'Encontrar oportunidad', 'Ninguna, eso no es parte del aprendizaje'] }
@@ -1465,7 +1445,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tag-s3', title: 'Qué hace (o deja de hacer) el docente', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## La agencia se habilita, no se otorga de una vez\n\nHabilitar agencia tiene menos que ver con "soltar todo el control" y más con decisiones puntuales del docente:\n\n- Dar tiempo real de silencio o de trabajo autónomo, sin llenarlo con instrucciones.\n- Dejar que un desempeño de exploración (ver tópico EpC) quede genuinamente abierto, en vez de guiarlo paso a paso hasta la única respuesta esperada.\n- Invitar a los estudiantes a identificar ellos mismos un problema, en vez de darles siempre el problema ya resuelto en consigna.\n- Tolerar el "estancamiento productivo": ese momento incómodo en que un grupo no sabe cómo seguir, pero está pensando.\n\nCuando el docente resuelve cada duda apenas aparece, sin querer, les está sacando a los estudiantes la oportunidad de ejercer agencia.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un grupo se queda trabado unos minutos sin saber cómo avanzar en un proyecto. ¿Qué conviene hacer para sostener su agencia?', options: ['Intervenir enseguida y decirles exactamente qué hacer', 'Tolerar ese momento de estancamiento y dejar que ellos busquen el camino', 'Cambiarles la consigna por una más simple'] }
@@ -1481,7 +1460,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tnd-s1', title: 'Neurodiversidad: variación, no déficit', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Cerebros distintos, no cerebros "rotos"\n\nLa neurodiversidad plantea que las diferencias en cómo funciona un cerebro (atención, procesamiento, regulación) son parte de la variación humana normal, no únicamente "problemas a corregir". Esto no significa bajar expectativas — significa mirar tanto las fortalezas como las dificultades de cada estudiante, en vez de definirlo solo por lo que le cuesta.\n\nEsta mirada es la que sostiene al Equipo de Apoyo de Austin (ver tópico "Bienvenida a Austin"): no está para "arreglar" a un estudiante, sino para ayudar a diseñar condiciones donde ese cerebro particular pueda aprender mejor.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué plantea el enfoque de neurodiversidad?', options: ['Que hay una única forma "normal" de aprender y el resto son fallas a corregir', 'Que las diferencias en cómo funciona un cerebro son parte de la variación humana, con fortalezas y dificultades propias', 'Que no hace falta adaptar nada porque todos aprenden igual'] }
@@ -1489,7 +1468,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tnd-s2', title: 'Memoria de trabajo y carga cognitiva', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## La mente tiene un límite de "mesa de trabajo"\n\nLa memoria de trabajo es donde sostenemos y manipulamos información mientras pensamos — y tiene una capacidad limitada, para cualquier cerebro. Cuando una consigna trae demasiada información nueva a la vez (instrucciones largas, varios pasos, lenguaje innecesariamente complejo), se satura esa "mesa de trabajo" y cuesta aprender, aunque el contenido en sí no sea tan difícil.\n\nBajar la carga innecesaria —dividir una consigna larga en pasos, sacar información que no aporta al objetivo de la clase— no es "facilitar de más": es sacar obstáculos que no tienen que ver con lo que realmente se quiere enseñar.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Una consigna trae seis instrucciones distintas en un solo párrafo largo. ¿Qué está en riesgo?', options: ['Nada, más información siempre ayuda', 'Saturar la memoria de trabajo con carga que no tiene que ver con el contenido en sí', 'Solo afecta a estudiantes con dificultades de atención'] }
@@ -1497,7 +1475,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tnd-s3', title: 'Funciones ejecutivas', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Lo que parece "desorganización" suele ser otra cosa\n\nLas funciones ejecutivas —inhibición, memoria de trabajo, flexibilidad cognitiva y planificación— son las que permiten arrancar una tarea, sostenerla, cambiar de una actividad a otra y organizar los pasos para llegar a un objetivo. Cuando fallan, se ve como "se olvida todo", "no puede empezar solo/a" o "se traba con cualquier cambio de plan" — y suele leerse como falta de esfuerzo o de interés, cuando no lo es.\n\nApoyos simples ayudan mucho acá: listas de pasos visibles, avisos antes de cambiar de actividad, y desglosar una tarea grande en partes más chicas.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante se traba cada vez que hay que cambiar de actividad sin aviso previo. ¿Qué es más probable que esté pasando?', options: ['Que simplemente no le interesa la clase', 'Una dificultad en funciones ejecutivas (flexibilidad cognitiva), no falta de esfuerzo', 'Que lo hace a propósito para llamar la atención'] }
@@ -1505,7 +1482,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tnd-s4', title: 'Diseñar para que aprenda cualquier cerebro', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Diseño Universal para el Aprendizaje (UDL)\n\nEn vez de adaptar caso por caso después de que algo falla, el UDL propone diseñar la clase desde el principio pensando en tres redes:\n\n- **El qué** (representación): ofrecer la información de más de una forma (texto, imagen, oral).\n- **El cómo** (acción y expresión): permitir mostrar lo aprendido de más de una forma (escrito, oral, un esquema).\n- **El por qué** (compromiso): sostener el interés y la motivación, por ejemplo dando algo de elección real dentro de la tarea.\n\nA esto se suma algo simple y muy efectivo para la memoria a largo plazo: la **práctica de recuperación** (repasar activamente lo aprendido, no solo releerlo) y el **repaso espaciado** (volver sobre un tema días después, no todo junto) ayudan mucho más a consolidar el aprendizaje que estudiar todo de una sola vez.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué ayuda más a consolidar el aprendizaje en la memoria a largo plazo?', options: ['Releer el material una sola vez, todo junto y de corrido', 'Repasar activamente y volver sobre el tema en distintos momentos (práctica de recuperación y repaso espaciado)', 'Memorizar todo la noche anterior a la evaluación'] }
@@ -1521,7 +1497,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tsteam-s1', title: 'Qué es STEAM (y qué no es)', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Más que ciencia con arte pegado al lado\n\nSTEAM (Ciencia, Tecnología, Ingeniería, Arte y Matemática) no es "usar una compu" ni "hacer un experimento suelto de vez en cuando" — es integrar disciplinas de verdad alrededor de un problema real, donde cada una aporta algo genuino a la solución.\n\nSi una actividad podría resolverse igual sacando alguna de las disciplinas de en medio, probablemente no sea una integración real sino varias materias trabajando en paralelo sobre el mismo tema.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál de estas describe mejor una integración STEAM real?', options: ['Usar una computadora en cualquier actividad de clase', 'Distintas disciplinas aportando algo genuino a resolver un mismo problema real', 'Hacer un experimento de ciencias una vez al mes'] }
@@ -1529,7 +1505,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tsteam-s2', title: 'El proceso de diseño', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Empatizar, definir, idear, prototipar, evaluar\n\nEl Design Thinking organiza un proyecto STEAM en fases: **empatizar** (entender el problema y a quién afecta), **definir** (precisar qué se va a resolver), **idear** (generar posibles soluciones), **prototipar** (construir una versión concreta, aunque sea simple) y **evaluar** (probarla y ver qué funciona).\n\nNo es un camino lineal de una sola pasada: lo normal es volver de "evaluar" a "idear" o a "prototipar" varias veces antes de llegar a algo que funcione.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un grupo prueba su prototipo, no funciona como esperaban, y vuelve a rediseñarlo. ¿Qué está pasando?', options: ['Algo salió mal y el proyecto fracasó', 'Es parte normal del proceso de diseño — se itera, no es lineal', 'No debería pasar si se planificó bien desde el principio'] }
@@ -1537,7 +1512,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tsteam-s3', title: 'El error como parte del proceso', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Un prototipo que falla también es información\n\nEn un proyecto STEAM, que un prototipo no funcione a la primera no es un fracaso — es información valiosa sobre qué ajustar. Evaluar estos proyectos solo por si "el resultado final funciona perfecto" desalienta justamente la actitud experimental que STEAM busca desarrollar.\n\nPor eso conviene valorar también el proceso: qué se probó, qué se aprendió de cada intento que no funcionó, y cómo se ajustó a partir de eso — no solo el objeto final.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Al evaluar un proyecto STEAM, ¿qué conviene tener en cuenta además del resultado final?', options: ['Nada más, solo importa si el prototipo final funciona perfecto', 'El proceso: qué se probó, qué se aprendió de los intentos fallidos y cómo se ajustó', 'Que no haya habido ningún error en el camino'] }
@@ -1553,7 +1527,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tbil-s1', title: 'Un entorno bilingüe, no solo una materia', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Bilingüismo como cultura cotidiana\n\nEn Austin, el bilingüismo no es "la materia de inglés" — es parte de la experiencia educativa y de la cultura diaria del colegio. La meta es que el idioma se escuche, se use y se respire en los distintos espacios de la escuela, no solo dentro de la clase de inglés.\n\nEsto es lo que distingue a un colegio bilingüe de uno que simplemente enseña inglés como materia.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cómo se entiende el bilingüismo en Austin?', options: ['Como una materia más, separada del resto de la vida escolar', 'Como parte de la cultura cotidiana, presente en distintos espacios del colegio', 'Como algo que solo compete a los docentes de inglés'] }
@@ -1561,7 +1535,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tbil-s2', title: 'El compromiso según tu rol', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## No se espera lo mismo de todos, pero sí algo de todos\n\nLos docentes de inglés usan el idioma de manera habitual y sostenida en sus clases. El resto de los docentes —sin necesidad de dominarlo como lengua materna— se compromete a comprenderlo e ir incorporando progresivamente su uso en situaciones cotidianas del aula.\n\nNo se trata de dar tu materia en inglés si no sos docente de inglés: se trata de sumar, entre todos, a un entorno realmente bilingüe.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Si no sos docente de inglés, ¿qué se espera de vos respecto del bilingüismo?', options: ['Nada, es responsabilidad exclusiva de los docentes de inglés', 'Comprenderlo e ir incorporando progresivamente su uso en situaciones cotidianas', 'Dar tu materia completamente en inglés desde el primer día'] }
@@ -1569,7 +1542,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tbil-s3', title: 'Cómo sumar desde cualquier materia', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Gestos simples, sostenidos en el tiempo\n\nAlgunas formas de sumar bilingüismo sin que sea una carga extra: usar saludos y consignas simples en inglés, incorporar vocabulario clave de tu materia en los dos idiomas, tener carteles bilingües en el aula, y celebrar cuando un estudiante se anima a decir algo en inglés — aunque no sea perfecto.\n\nLo que más suma acá no es el dominio nativo del idioma, sino la actitud sostenida: que los estudiantes vean el inglés circulando también fuera de su clase específica.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué es más importante para construir un entorno bilingüe real?', options: ['Que cada docente tenga un nivel nativo de inglés', 'Que el idioma circule de forma sostenida, aunque sea con gestos simples', 'Que solo se use inglés en la clase de inglés'] }
@@ -1585,26 +1557,26 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 't4-s1', title: 'Nuestro Eco Code', xp: 15, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Hábitos ambientales del día a día\n\nAlgunos hábitos clave en Austin: el papel se separa entre reuso y reciclaje (nunca se descarta sin pensar); los residuos se separan en plásticos/botellas, packaging y orgánicos, en los tachos ubicados en espacios compartidos; se apagan luces y dispositivos al salir del aula, y el aire acondicionado se deja en 24°C y apagado al finalizar; no se deja la canilla abierta.\n\nEstos hábitos no son solo institucionales — se espera que el docente los modele y los sostenga frente a los estudiantes, como parte del Eco Code que está exhibido en cada aula.',
-                activity: { type: 'quiz', passing_score: 1, questions: [
-                    { id: 'q1', text: '¿Cuál es la temperatura recomendada para el aire acondicionado en Austin?', options: ['18°C', '24°C', 'No hay una temperatura recomendada'] }
+                activity: { type: 'quiz', passing_score: 2, questions: [
+                    { id: 'q1', text: '¿Cuál es la diferencia entre los Objetivos de Desarrollo del Milenio (ODM) y los Objetivos de Desarrollo Sostenible (ODS)?', options: ['Los Objetivos de Desarrollo Sostenible se considerarán alcanzados cuando el 90% de todos los países hayan alcanzado las metas.', 'Todos los ODM se alcanzaron y, por tanto, hubo que crear nuevos objetivos (los ODS).', 'La diferencia es sólo el nombre: los objetivos reales son los mismos.', 'Los Objetivos de Desarrollo Sostenible abordan cuestiones relevantes para todo el mundo y no sólo para los países en desarrollo.'] },
+                    { id: 'q2', text: 'Si un país está posicionado en un lugar destacado del Índice de Sostenibilidad, esto significa que casi se han cumplido todos los ODS y no se requieren acciones adicionales.', options: ['Verdadero', 'Falso'] }
                 ]}
             },
             {
                 id: 't4-s2', title: 'La metodología Eco-Schools', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## De dónde sale nuestro Eco Code\n\nEl Eco Code de Austin no salió de la nada — es la aplicación local de la metodología internacional Eco-Schools (FEE), que organiza el trabajo ambiental de una escuela en pasos concretos:\n\n- **Eco-Comité**: un grupo con participación de estudiantes (en mayoría), docentes y otros actores de la comunidad, que impulsa el trabajo ambiental.\n- **Diagnóstico ambiental**: una auditoría real del estado ambiental del colegio — qué se gasta, qué se descarta, dónde hay margen de mejora.\n- **Plan de acción**: actividades concretas sobre esos temas (residuos, agua, energía), no solo buenas intenciones.\n- **Código ético**: el propio Eco Code — frases y compromisos que traducen todo lo anterior en hábitos que cualquiera puede seguir en el día a día.\n\nEl Eco Code que ya conociste es, ni más ni menos, el resultado visible de ese último paso.',
-                activity: { type: 'quiz', passing_score: 1, questions: [
-                    { id: 'q1', text: '¿Qué paso de la metodología Eco-Schools implica revisar qué se gasta y qué se descarta en el colegio?', options: ['Eco-Comité', 'Diagnóstico ambiental', 'Código ético'] }
+                activity: { type: 'quiz', passing_score: 2, questions: [
+                    { id: 'q1', text: '¿Quiénes son los responsables de alcanzar los ODS?', options: ['Gobiernos e instituciones públicas', 'El sector privado', 'Sociedad civil e instituciones no gubernamentales', 'Todas las anteriores'] },
+                    { id: 'q2', text: '¿Qué habilidades pueden desarrollar los estudiantes al participar en el aprendizaje activo sobre los ODS?', options: ['Pensamiento crítico', 'Colaboración', 'Creatividad', 'Todas las anteriores'] }
                 ]}
             },
             {
                 id: 't4-s3', title: 'Tu rol en el aula', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## No es solo tema de Ciencias Naturales\n\nLa educación ambiental funciona mejor integrada al currículo de cualquier materia —no solo Biología o Ciencias Naturales— que como una actividad aislada una vez al año. Un problema ambiental real puede ser excusa perfecta para un Tópico Generativo de Matemática (datos y estadística), Lengua (textos de opinión) o Historia (políticas públicas).\n\nY, como en Cultura de Pensamiento, el modelado sigue siendo la herramienta más simple: los estudiantes sostienen mejor un hábito ambiental cuando ven al adulto sosteniéndolo primero, sin necesidad de que se lo recuerden.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
-                    { id: 'q1', text: '¿Cuál es la forma más efectiva de integrar la educación ambiental al currículo?', options: ['Solo dentro de Ciencias Naturales, una vez al año', 'Integrada a cualquier materia, conectada con su contenido específico', 'Como una charla puntual sin conexión con las materias'] }
+                    { id: 'q1', text: '¿Cuál NO es un ejemplo de aprendizaje activo?', options: ['Una presentación en PowerPoint sobre los ODS realizada por un profesor en la que los alumnos reciben información clave sobre los ODS.', 'Excursión a una estación de reciclado con la posibilidad de hacer preguntas sobre el proceso de reciclado.', 'Un ejercicio de mapeo en el que se pide a los alumnos que relacionen un objeto (como una bolsa de té) con los 17 ODS.', 'Un juego de rol en el que se pide a los alumnos que representen a distintos países y sus prioridades de desarrollo.'] }
                 ]}
             }
         ]
@@ -1617,7 +1589,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tia-s1', title: 'La intención antes que la herramienta', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## No empezar por "¿qué herramienta uso?"\n\nLa pregunta de partida nunca es "¿qué app o IA puedo usar en esta clase?" — es "¿qué quiero que mis estudiantes comprendan o puedan hacer?". Recién después de eso tiene sentido preguntarse si alguna herramienta ayuda a lograrlo mejor.\n\nEl modelo SAMR ayuda a pensar el nivel de esa ayuda: **Sustitución** y **Aumento** son cambios menores (la tecnología reemplaza algo analógico, con o sin mejoras); **Modificación** y **Redefinición** son cambios más profundos, donde la tarea en sí se transforma y permite algo que antes no era posible. Conviene apuntar ahí, no quedarse solo en la sustitución por novedad.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál es la primera pregunta antes de sumar tecnología o IA a una clase?', options: ['¿Qué herramienta está de moda?', '¿Qué quiero que mis estudiantes comprendan o puedan hacer?', '¿Qué herramienta usan otros colegios?'] }
@@ -1625,7 +1597,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tia-s2', title: 'IA generativa: qué habilita y qué arriesga', xp: 25, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## Una herramienta potente, no un reemplazo del pensamiento\n\nBien usada, la IA generativa puede ayudar a explorar ideas, armar un primer borrador, investigar más rápido, dar feedback inmediato o hacer más accesible una tarea para un estudiante que lo necesita. Mal usada, puede terminar reemplazando el pensamiento del estudiante en vez de potenciarlo — y además puede equivocarse con total seguridad (una "alucinación"), así que nunca conviene aceptar lo que produce sin revisarlo.\n\nEl riesgo no es la herramienta en sí: es que el estudiante deje de pensar porque la IA ya "resolvió" la parte que justamente tenía que pensar él o ella.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Cuál es el principal riesgo de un uso mal pensado de la IA generativa en una tarea?', options: ['Que ahorre tiempo al estudiante', 'Que reemplace el pensamiento del estudiante en la parte que justamente tenía que pensar', 'Que el estudiante aprenda a usar una herramienta nueva'] }
@@ -1633,7 +1604,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tia-s3', title: 'Autoría, pensamiento crítico y criterios de uso', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## El estudiante sigue siendo responsable de lo que entrega\n\nUsar IA como apoyo no exime al estudiante de hacerse responsable de lo que finalmente entrega — igual que citar una fuente no exime de entender lo que se cita. Vale la pena enseñar explícitamente a cuestionar y verificar lo que una IA produce, en vez de pegarlo directo, y a ser transparente sobre cuándo y cómo se usó en un trabajo.\n\nEstos criterios de uso pueden variar según la actividad y la edad del grupo — lo importante es que estén claros de antemano, no que se descubran recién al corregir.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: 'Un estudiante usa IA para redactar parte de un trabajo. ¿Qué sigue siendo su responsabilidad?', options: ['Ninguna, la IA hizo el trabajo', 'Entender, revisar y hacerse responsable de lo que finalmente entrega', 'Solo copiar el resultado tal cual lo generó la IA'] }
@@ -1649,7 +1619,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 'tpi-s1', title: '"Every Step Matters"', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Building Wellbeing, One Habit at a Time\n\nEl proyecto institucional de Austin trabaja hábitos como puente entre la vida escolar y la vida cotidiana: no busca un cambio grande y puntual, sino sostener hábitos chicos en el tiempo, con registro grupal y visual del progreso.\n\nLa idea de fondo conecta directo con Educación Emocional y Social: el bienestar no es un tema aparte de lo académico — es una condición para poder aprender. "Every Step Matters" es la forma en que Austin lo vuelve concreto y visible en el día a día, no solo una frase.',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿Qué busca el proyecto "Every Step Matters"?', options: ['Un cambio grande y puntual en un solo evento', 'Sostener hábitos chicos en el tiempo, con registro grupal y visual', 'Reemplazar el trabajo del EOE'] }
@@ -1657,7 +1627,6 @@ const ONBOARDING_STRUCTURE = [
             },
             {
                 id: 'tpi-s2', title: 'Tu rol en el proyecto institucional', xp: 20, step_type: 'quiz',
-                media: { type: null, url: '' },
                 content_md: '## No es "un proyecto de otro equipo"\n\nEl proyecto institucional no es responsabilidad exclusiva de un equipo puntual — se sostiene porque cada docente lo hace propio: modelando los hábitos que promueve, sumándolo donde tenga sentido dentro de su materia o espacio de tutoría, y ayudando a sostener el registro visual del grupo.\n\n*Nota para Coordinación: este tópico conviene revisarlo cada vez que cambie el proyecto institucional del ciclo (nombre, eje, hábitos) — de forma similar a como se actualiza el tópico "Este ciclo lectivo" cada año.*',
                 activity: { type: 'quiz', passing_score: 1, questions: [
                     { id: 'q1', text: '¿De quién es responsabilidad sostener el proyecto institucional en el día a día?', options: ['Solo del equipo que lo diseñó originalmente', 'De cada docente, en su materia o espacio con el grupo', 'De las familias, no del colegio'] }
@@ -1677,7 +1646,7 @@ const ONBOARDING_STRUCTURE = [
         steps: [
             {
                 id: 't5-s1', title: 'Novedades y fechas 2026', xp: 10, step_type: 'info',
-                media: { type: null, url: '' },
+                media: { type: null, url: '' }, // video de presentación del nivel
                 content_md: '## Novedades de este ciclo\n\n- Cambios en infraestructura\n- Asistencia y presentismo\n- Definición de espacios\n- Reuniones bimestrales: Castellano e Inglés (Ciclo Básico) e IB\n\n## Fechas importantes\n\n- **Febrero**: reuniones de departamento y reunión IB\n- **18/02 – 03/03**: período de intensificación\n- **20/02**: entrega de planificación anual\n- **24/02**: inicio de clases 1er año HS\n- **27/02**: reunión general de familias (19 hs)\n- **02/03**: inicio de clases 2do a 5to año HS\n- **03/03**: inicio de clases 6to año HS\n- **06/03**: primer PUD y planificador IB\n- **09 al 13/03**: retroalimentación de las entregas\n- **31/03**: entrega de planillas administrativas\n\n*Nota para Coordinación: este es el único paso que hay que actualizar cada ciclo lectivo — no requiere tocar ningún otro tópico.*'
                 // step_type 'info' → no lleva `activity`, se completa con el botón "Marcar como leído"
             }
@@ -2389,7 +2358,7 @@ function renderStepPanel(topic, step, stepIndex, unlocked, done) {
     panel.innerHTML = `
         <div class="step-kicker">Paso ${stepIndex + 1} de ${topic.steps.length}</div>
         <h3>${escapeHtml(step.title)}</h3>
-        <div class="media-slot" id="media-slot"></div>
+        ${step.media ? '<div class="media-slot" id="media-slot"></div>' : ''}
         <div class="step-content-md">${mdHtml}</div>
         <div class="step-footer">
             <span class="xp-note">⭐ ${step.xp} XP al completar</span>
@@ -2398,7 +2367,8 @@ function renderStepPanel(topic, step, stepIndex, unlocked, done) {
         ${accionHtml}
     `;
 
-    document.getElementById('media-slot').innerHTML = renderMedia(step.media);
+    // Solo el paso 1 de cada nivel trae `media` (video de presentación).
+    if (step.media) document.getElementById('media-slot').innerHTML = renderMedia(step.media);
 }
 
 /* ============================================================
@@ -2544,7 +2514,7 @@ function extraerDriveId(url) {
 
 function renderMedia(media) {
     if (!media || !media.type || !media.url) {
-        return `<div class="media-slot is-empty">Sin recurso multimedia cargado para este paso todavía.</div>`;
+        return `<div class="media-slot is-empty">🎬 El video de presentación de este nivel estará disponible próximamente.</div>`;
     }
 
     switch (media.type) {
